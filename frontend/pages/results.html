@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultados - QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white rounded-3xl shadow-xl w-full max-w-lg overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-blue-800 to-blue-600 p-8 text-center text-white">
+      <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold">¡Diagnóstico completado!</h1>
+      <p class="text-blue-200 text-sm mt-1">Analizamos tus respuestas y determinamos tu nivel actual en QA Testing</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="p-6 space-y-6">
+
+      <!-- NIVEL Y PORCENTAJE -->
+      <div class="flex items-center gap-6 border-b pb-6">
+
+        <!-- Círculo de progreso -->
+        <div class="relative w-28 h-28 flex-shrink-0">
+          <svg class="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e7eb" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#2563eb" stroke-width="10"
+              stroke-linecap="round"
+              stroke-dasharray="263.8"
+              id="progressCircle"
+              stroke-dashoffset="263.8"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span id="porcentajeTexto" class="text-2xl font-black text-gray-800">0%</span>
+            <span class="text-xs text-gray-400">puntaje</span>
+          </div>
+        </div>
+
+        <!-- Nivel y descripción -->
+        <div class="flex-1">
+          <p class="text-xs text-gray-400 font-semibold uppercase mb-2">Tu nivel detectado</p>
+          <span id="nivelBadge" class="inline-flex items-center gap-2 text-white text-sm font-bold px-4 py-2 rounded-full mb-3">
+            🎯 <span id="nivelTexto">-</span>
+          </span>
+          <p id="nivelDesc" class="text-sm text-gray-600 leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- RUTA RECOMENDADA -->
+      <div>
+        <div class="flex justify-between items-start mb-1">
+          <div>
+            <p class="text-xs text-gray-400 font-semibold uppercase">Tu ruta recomendada</p>
+            <h2 id="rutaTitulo" class="text-lg font-bold text-gray-800"></h2>
+            <p id="rutaSubtitulo" class="text-sm text-gray-500"></p>
+          </div>
+          <div class="text-right text-sm text-gray-500">
+            Duración estimada<br>
+            <span id="rutaDuracion" class="font-bold text-gray-800 text-base"></span>
+          </div>
+        </div>
+
+        <!-- Módulos -->
+        <div id="modulos" class="mt-4 space-y-3"></div>
+      </div>
+
+      <!-- BOTONES -->
+      <div class="space-y-3 pt-2">
+        <button onclick="window.location.href='../pages/html/user.html'" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition text-base">
+          Iniciar mi ruta de aprendizaje →
+        </button>
+        <button onclick="window.location.href='/'" class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-3 rounded-2xl transition text-sm">
+          Explorar otras rutas disponibles
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/results.js"></script>
+</body>
+</html>

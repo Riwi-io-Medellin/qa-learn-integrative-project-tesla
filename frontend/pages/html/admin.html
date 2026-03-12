@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg h-screen p-5">
+    <h1 class="text-xl font-bold mb-8">Admin Console</h1>
+    <nav class="space-y-3">
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        Dashboard
+      </a>
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        User Management
+      </a>
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        Courses & Content
+      </a>
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        Learning Paths
+      </a>
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        Test Library
+      </a>
+      <a href="#" class="flex items-center text-gray-700 hover:text-blue-600">
+        Reports & Statistics
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold">Admin Management Console</h2>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate Report</button>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-gray-500 text-sm">TOTAL ACTIVE USERS</h3>
+        <p class="text-2xl font-bold">8,420</p>
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-gray-500 text-sm">TOTAL PROJECTS</h3>
+        <p class="text-2xl font-bold">42</p>
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-gray-500 text-sm">TOTAL TESTS REGISTERED</h3>
+        <p class="text-2xl font-bold">1,894</p>
+      </div>
+    </div>
+
+    <!-- User Table (compact) -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+      <h3 class="font-semibold mb-2">User Management</h3>
+      <table class="w-full text-left text-sm">
+        <thead class="border-b">
+          <tr>
+            <th class="py-2">User</th>
+            <th class="py-2">Role</th>
+            <th class="py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="py-2">Jane Doe</td>
+            <td class="py-2 text-blue-600">Admin</td>
+            <td class="py-2 text-green-600">Active</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2">Marcus Smith</td>
+            <td class="py-2 text-purple-600">Editor</td>
+            <td class="py-2 text-green-600">Active</td>
+          </tr>
+          <tr>
+            <td class="py-2">Ben Knight</td>
+            <td class="py-2 text-gray-600">User</td>
+            <td class="py-2 text-red-600">Suspended</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+
+
+  <script src="/users/admin.js"></script>
+
+
+</body>
+</html>
