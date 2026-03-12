@@ -47,7 +47,7 @@ export const env = {
 
     // Bcrypt
     bcrypt: {
-        SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS)
+        saltRounds: Number(process.env.BCRYPT_SALT_ROUNDS)
     }, 
 
     //Cors

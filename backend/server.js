@@ -3,7 +3,7 @@ import { env } from "./src/config/env.js";
 
 app.listen(env.port, (error)=>{
     try{
-        console.log(`Server run in htttp://localhost:${env.port}`)
+        console.log(`Server run in http://localhost:${env.port}`)
 
         if(error){
             console.error(error);
