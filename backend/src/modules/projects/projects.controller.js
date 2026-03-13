@@ -54,7 +54,6 @@ export const updateProject = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
-
 export const deleteProject = async (req, res) => {
     try {
         const id_user = req.user.id;
