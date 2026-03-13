@@ -52,7 +52,7 @@ export const loginUser = async (data) => {
     const token = jwt.sign(
         {
             id: existingUser.id_user,
-            role: existingUser.role_id
+            role: existingUser.role_name
         },
         env.jwt.secret,
         {

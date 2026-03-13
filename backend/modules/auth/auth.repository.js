@@ -14,14 +14,15 @@ export const findRoleByName = async (roleName) => {
 export const findUserByEmail = async (email) => {
     const query = `
     SELECT 
-        id_user, 
-        first_name, 
-        last_name, 
-        email, 
-        password_hash, 
-        id_role AS role_id
-    FROM users
-    WHERE email = $1
+        u.id_user, 
+        u.first_name, 
+        u.last_name, 
+        u.email, 
+        u.password_hash,
+        r.role_name
+    FROM users u
+    LEFT JOIN roles r ON u.id_role = r.id_role
+    WHERE u.email = $1
     `; 
     const result = await pool.query(query, [email]); 
     return result.rows[0]; 

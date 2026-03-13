@@ -51,6 +51,18 @@ export const updateCourse = async (id, data) => {
     return result.rows[0];
 };
 
+export const updateCourseStatus = async (id, status) => {
+    const query = `
+        UPDATE courses
+        SET status = $1,
+            updated_at = now()
+        WHERE id_course = $2
+        RETURNING id_course, status
+    `;
+    const result = await pool.query(query, [status, id]);
+    return result.rows[0];
+};
+
 export const deleteCourse = async (id) => {
     const query = `
         DELETE FROM courses

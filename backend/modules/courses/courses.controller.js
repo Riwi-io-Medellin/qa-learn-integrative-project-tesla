@@ -1,5 +1,6 @@
 // modules/courses/courses.controller.js
 import * as coursesService from './courses.service.js';
+import catchAsync from '../../middlewares/catchAsync.js';
 
 export const createCourse = async (req, res) => {
     try {
@@ -42,6 +43,11 @@ export const updateCourse = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+export const updateCourseStatus = catchAsync(async (req, res) => {
+    const course = await coursesService.updateCourseStatus(req.params.id, req.body.status);
+    res.status(200).json({ message: 'Status actualizado correctamente', course });
+});
 
 export const deleteCourse = async (req, res) => {
     try {

@@ -27,6 +27,14 @@ export const updateCourse = async (id, data) => {
     return updated;
 };
 
+export const updateCourseStatus = async (id, status) => {
+    const course = await coursesRepository.findCourseById(id);
+    if (!course) throw new Error('Curso no encontrado');
+
+    const updated = await coursesRepository.updateCourseStatus(id, status);
+    return updated;
+};
+
 export const deleteCourse = async (id) => {
     const course = await coursesRepository.findCourseById(id);
     if (!course) throw new Error('Curso no encontrado');
