@@ -4,12 +4,13 @@ import express from 'express';
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { diagnosticRoutes } from "./modules/diagnostic/diagnostic.routes.js";
 import { projectsRoutes } from "./modules/projects/projects.routes.js";
+import { env } from './config/env.js';
 
 await connectPostgres(); 
 
 const app = express(); 
 
-app.use(cors({ origin: '*' }));
+app.use(cors(env.frontendUrl));
 app.use(express.json()); 
 
 app.use('/auth', authRoutes);
