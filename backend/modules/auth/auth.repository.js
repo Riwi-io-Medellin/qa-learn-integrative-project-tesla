@@ -2,6 +2,17 @@ import { pool } from "../../src/config/db.js";
 
 //POST/api/auth/register 
 
+export const findUserById = async (id) => {
+    const query = `
+        SELECT u.id_user, u.first_name, u.last_name, u.email, r.role_name, u.status
+        FROM users u
+        LEFT JOIN roles r ON u.id_role = r.id_role
+        WHERE u.id_user = $1 AND u.deleted_at IS NULL
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+};
+
 //Find role by name 
 export const findRoleByName = async (roleName) => {
     const result = await pool.query(

@@ -45,3 +45,10 @@ export const logout = async (req, res) => {
         });
     }
 };
+
+import catchAsync from '../../middlewares/catchAsync.js';
+
+export const me = catchAsync(async (req, res) => {
+    const user = await authService.getMe(req.user.id);
+    res.status(200).json({ user });
+});

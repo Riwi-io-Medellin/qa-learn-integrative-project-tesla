@@ -69,3 +69,9 @@ export const loginUser = async (data) => {
 
     return { user, token};
 };
+
+export const getMe = async (id) => {
+    const user = await authRepository.findUserById(id);
+    if (!user) throw new Error('Usuario no encontrado');
+    return user;
+};

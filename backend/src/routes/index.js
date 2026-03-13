@@ -5,7 +5,9 @@ import { coursesRoutes } from '../../modules/courses/courses.routes.js';
 import { modulesRoutes } from '../../modules/course-modules/modules.routes.js';
 import { executionsRoutes } from '../../modules/executions/executions.routes.js';
 import { evidencesRoutes } from '../../modules/evidences/evidences.routes.js';
+import { learningRoutes } from '../../modules/learning-routes/routes.routes.js';
 import { libraryRoutes } from '../../modules/library/library.routes.js';
+import { levelsRoutes } from '../../modules/levels-roles/levels.routes.js';
 
 const router = Router();
 
@@ -15,6 +17,8 @@ router.use('/courses', coursesRoutes);
 router.use('/courses/:id_course/modules', modulesRoutes);
 router.use('/executions', executionsRoutes)
 router.use('/executions/:id_execution/evidences', evidencesRoutes);
+router.use('/routes', learningRoutes);
 router.use('/library', libraryRoutes);
+router.use('/', levelsRoutes);
 
 export default router;
