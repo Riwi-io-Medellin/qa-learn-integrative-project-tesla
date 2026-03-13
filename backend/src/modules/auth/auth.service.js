@@ -65,5 +65,5 @@ export const loginUser = async (data) => {
         role_id: existingUser.role_id
     }
 
-    return { user, token };
+    return { user, token};
 };

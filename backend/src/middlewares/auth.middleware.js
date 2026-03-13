@@ -17,7 +17,7 @@ export const authMiddleware = (req, res, next) => {
         
         // 3. Adjuntar el payload del usuario decodificado a la request
         req.user = decoded;
-
+        
         // 4. Continuar al siguiente middleware/controlador
         next();
     } catch (error) {
