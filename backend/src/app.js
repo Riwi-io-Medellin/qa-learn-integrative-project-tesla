@@ -15,6 +15,7 @@ import { evidencesRoutes }    from './modules/evidences/evidences.routes.js';
 import { learningRoutes }     from './modules/learning-routes/routes.routes.js';
 import { libraryRoutes }      from './modules/library/library.routes.js';
 import { levelsRoutes }       from './modules/levels-roles/levels.routes.js';
+import { stepsRoutes }        from './modules/steps/step.routes.js';
 
 import { errorHandler }       from './middlewares/error.middleware.js';
 
@@ -32,10 +33,11 @@ app.use('/api/users',  usersRoutes);
 // ── Diagnostic ───────────────────────────────────────────────────────────
 app.use('/api/diagnostic', diagnosticRoutes);
 
-// ── Projects → Requirements → Test Cases ─────────────────────────────────
+// ── Projects → Requirements → Test Cases → Steps ─────────────────────────
 app.use('/api/projects',                          projectsRoutes);
 app.use('/api/projects/:id/requirements',         requirementsRoutes);
 app.use('/api/projects/:id/test-cases',           testCasesRoutes);
+app.use('/api/test-cases/:case_id/steps',         stepsRoutes);
 
 // ── Courses → Modules ────────────────────────────────────────────────────
 app.use('/api/courses',                           coursesRoutes);
