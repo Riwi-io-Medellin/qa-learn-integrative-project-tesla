@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Learning Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/styles/user.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <!-- Logo -->
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="14" height="14" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="nav-logo-text">QA Learning<br><span>Lab</span></div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav-body">
+
+      <!-- Aprendizaje -->
+      <div class="nav-item active" id="navAprendizaje" onclick="toggleSub('aprendizaje'); navigate('ruta')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Aprendizaje
+        <svg class="nav-chevron open" id="chev-aprendizaje" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-aprendizaje">
+        <div class="nav-sub-item active" data-nav="ruta" onclick="navigate('ruta')"><span class="dot"></span>Ruta de Aprendizaje</div>
+        <div class="nav-sub-item" data-nav="dashboard" onclick="navigate('dashboard')"><span class="dot"></span>Dashboard</div>
+      </div>
+
+      <!-- Laboratorio -->
+      <div class="nav-item" id="navLaboratorio" onclick="toggleSub('laboratorio'); navigate('lab-pruebas')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        Laboratorio
+        <svg class="nav-chevron" id="chev-laboratorio" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="nav-sub hidden" id="sub-laboratorio">
+        <div class="nav-sub-item" data-nav="lab-pruebas"    onclick="navigate('lab-pruebas')"><span class="dot"></span>Pruebas</div>
+        <div class="nav-sub-item" data-nav="lab-dashboard"  onclick="navigate('lab-dashboard')"><span class="dot"></span>Dashboard</div>
+        <div class="nav-sub-item" data-nav="lab-repo"       onclick="navigate('lab-repo')"><span class="dot"></span>Repositorio</div>
+      </div>
+
+      <!-- Perfil -->
+      <div class="nav-item" id="nav-perfil" onclick="navigate('perfil')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        Perfil
+      </div>
+
+      <!-- Configuraciones -->
+      <div class="nav-item" id="nav-config" onclick="navigate('config')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        Configuraciones
+      </div>
+
+    </nav>
+
+    <!-- Footer usuario -->
+    <div class="nav-footer">
+      <div class="nav-avatar" id="avatarInitial">A</div>
+      <div style="flex:1;min-width:0;">
+        <div class="nav-user-name"  id="sidebarName">Usuario</div>
+        <div class="nav-user-level" id="sidebarLevel">Nivel</div>
+      </div>
+      <button onclick="logout()" style="background:none;border:none;cursor:pointer;color:var(--muted);" title="Cerrar sesión">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main-area">
+
+    <!-- Topbar -->
+    <header class="topbar" style="position:relative;">
+      <div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy)" id="topbarTitle">QA Learning Lab</div>
+        <div style="font-size:12px;color:var(--muted)" id="topbarSub"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <!-- Círculo de progreso -->
+        <div style="display:flex;align-items:center;gap:8px;background:var(--sky);border:1px solid var(--border);border-radius:10px;padding:6px 14px;">
+          <div style="position:relative;width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" style="transform:rotate(-90deg)">
+              <circle cx="16" cy="16" r="12" fill="none" stroke="var(--border)" stroke-width="3"/>
+              <circle id="progressCircle" cx="16" cy="16" r="12" fill="none" stroke="var(--bright)" stroke-width="3" stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="24"/>
+            </svg>
+            <span id="progressLabel" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--bright)">68</span>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:var(--navy)">% completado</span>
+        </div>
+        <!-- Notificaciones -->
+        <button id="notifBtn" onclick="toggleNotifPanel()" style="position:relative;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notifBadge" style="display:none;position:absolute;top:4px;right:4px;min-width:16px;height:16px;border-radius:99px;background:var(--fail);color:white;font-size:9px;font-weight:800;line-height:16px;text-align:center;padding:0 3px;"></span>
+        </button>
+
+        <!-- Panel de notificaciones (dropdown) -->
+        <div id="notifPanel" style="display:none;position:absolute;top:56px;right:16px;width:340px;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:999;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);">
+            <span style="font-size:13px;font-weight:800;color:var(--navy)">Notificaciones</span>
+            <button onclick="markAllRead()" style="font-size:11px;color:var(--bright);background:none;border:none;cursor:pointer;font-weight:600;">Marcar todo como leído</button>
+          </div>
+          <div id="notifList" style="max-height:360px;overflow-y:auto;"></div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border);text-align:center;">
+            <button onclick="loadAllNotifications()" style="font-size:12px;color:var(--bright);background:none;border:none;cursor:pointer;font-weight:600;">Ver todas las notificaciones</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Área de contenido — renderizada por JS -->
+    <div class="content" id="content"></div>
+
+  </div>
+</div>
+
+<script>
+// Guard: redirigir si no hay sesión
+(function() {
+  const u = JSON.parse(localStorage.getItem('currentUser'));
+  if (!u) window.location.href = '../../pages/login.html';
+})();
+</script>
+<script>
+// Toggle sub-menú en sidebar
+function toggleSub(section) {
+  const sub  = document.getElementById('sub-' + section);
+  const chev = document.getElementById('chev-' + section);
+  const hidden = sub.classList.toggle('hidden');
+  if (chev) chev.classList.toggle('open', !hidden);
+}
+</script>
+
+<script src="/frontend/js/users/views-aprendizaje.js"></script>
+<script src="/frontend/js/users/views-laboratorio.js"></script>
+<script src="/frontend/js/users/views-usuario.js"></script>
+<script src="/frontend/js/users/user.js"></script>
+<script src="/frontend/js/users/notifications.js"></script>
+
+</body>
+</html>
