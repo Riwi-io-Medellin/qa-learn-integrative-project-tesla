@@ -1,69 +1,55 @@
-import bcrypt from 'bcryptjs'; 
-import * as authRepository from "./auth.repository.js"; 
+import bcrypt from 'bcryptjs';
+import * as authRepository from './auth.repository.js';
 import { env } from '../../config/env.js';
 import jwt from 'jsonwebtoken';
 
 export const registerUser = async (data) => {
-    const { first_name, last_name, email, password } = data; 
+    const { first_name, last_name, email, password } = data;
 
+    const existingUser = await authRepository.findUserByEmail(email);
+    if (existingUser) throw new Error('Email already registered');
 
-    // Existing email?
-    const existingUser = await authRepository.findUserByEmail(email); 
+    const role = await authRepository.findRoleByName('STUDENT');
+    if (!role) throw new Error('Role STUDENT not found');
 
-    if (existingUser) {
-        throw new Error("Email already registered"); 
-    }
+    const hashedPassword = await bcrypt.hash(password, env.bcrypt.saltRounds);
 
-
-    //Obtain rol student 
-    const role = await authRepository.findRoleByName('STUDENT')
-    if (!role) throw new Error('Rol STUDENT not found');
-
-    //Encrypt password 
-    const hashedPassword = await bcrypt.hash(password, env.bcrypt.saltRounds); 
-
-    //Create user 
-    const user = await authRepository.createUser({
+    return authRepository.createUser({
         id_role: role.id_role,
         first_name,
         last_name,
         email,
-        password: hashedPassword
-    }); 
-
-    return user; 
-}; 
+        password: hashedPassword,
+    });
+};
 
 export const loginUser = async (data) => {
-
-    const {email, password} = data; 
-
+    const { email, password } = data;
 
     const existingUser = await authRepository.findUserByEmail(email);
+    if (!existingUser) throw new Error('Invalid credentials');
 
-    const isMatch = await bcrypt.compare(password, existingUser.password_hash); 
-
-    if(!existingUser || !isMatch){
-        throw new Error("Invalid credentials");
-    }
+    const isMatch = await bcrypt.compare(password, existingUser.password_hash);
+    if (!isMatch) throw new Error('Invalid credentials');
 
     const token = jwt.sign(
-        {
-            id: existingUser.id_user,
-            role: existingUser.role_id
-        },
+        { id: existingUser.id_user, role: existingUser.role_name },
         env.jwt.secret,
-        {
-            expiresIn: env.jwt.expiresIn
-        }
-    ); 
+        { expiresIn: env.jwt.expiresIn }
+    );
 
     const user = {
-        id: existingUser.id_user,
-        name: existingUser.first_name, 
-        email: existingUser.email, 
-        role_id: existingUser.role_id
-    }
+        id:    existingUser.id_user,
+        name:  existingUser.first_name,
+        email: existingUser.email,
+        role:  existingUser.role_name,
+    };
 
-    return { user, token};
+    return { user, token };
+};
+
+export const getMe = async (id) => {
+    const user = await authRepository.findUserById(id);
+    if (!user) throw new Error('User not found');
+    return user;
 };
