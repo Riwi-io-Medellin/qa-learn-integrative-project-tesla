@@ -36,13 +36,19 @@ if (loginForm) {
       localStorage.setItem("token", token);
       localStorage.setItem("currentUser", JSON.stringify(user));
 
-      // Verificar si ya tiene diagnóstico
+      // Si es ADMIN va directo al panel de admin
+      if (user.role?.toUpperCase() === "ADMIN") {
+        window.location.href = "./html/admin.html";
+        return;
+      }
+
+      // Si es STUDENT verificar si ya tiene diagnóstico
       const diagRes = await fetch(`${API}/api/diagnostic`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const diags = await diagRes.json();
 
-      if (diags.length > 0) {
+      if (Array.isArray(diags) && diags.length > 0) {
         window.location.href = "./html/user.html";
       } else {
         window.location.href = "./survey.html";
@@ -52,4 +58,9 @@ if (loginForm) {
       showError("error", "Error de conexión con el servidor");
     }
   });
+}
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = msg;
 }

@@ -33,7 +33,7 @@ if (registerForm) {
     const last_name  = parts.slice(1).join(" ") || parts[0];
 
     try {
-      const res = await fetch(`${API}/api/auth/register`, {
+      const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ first_name, last_name, email, password })
