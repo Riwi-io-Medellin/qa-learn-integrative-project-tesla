@@ -56,8 +56,9 @@ qa-learn/
     │       ├── views-usuario.js      # Perfil + configuración
     │       └── admin.js              # Panel de administración
     └── styles/
-        ├── user.css
+        ├── index.css
         └── survey.css
+        ├── user.css
 ```
 
 ---

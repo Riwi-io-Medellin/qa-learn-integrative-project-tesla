@@ -23,6 +23,14 @@ async function apiFetch(path, opts = {}) {
   if (u.role?.toUpperCase() !== 'ADMIN') { window.location.href = '../user.html'; }
 })();
 
+window.history.pushState(null, '', window.location.href);
+window.addEventListener('popstate', () => {
+    const u = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!u || u.role?.toUpperCase() !== 'ADMIN') {
+        window.location.href = '../../pages/login.html';
+    }
+});
+
 function setText(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
 function setHTML(id, v)  { const e = document.getElementById(id); if (e) e.innerHTML  = v; }
 function logout() { localStorage.clear(); window.location.href = '../../pages/login.html'; }
@@ -153,17 +161,22 @@ async function users() {
                 background:${u.status==='ACTIVE'?'#ECFDF5':'#FEF2F2'};
                 color:${u.status==='ACTIVE'?'#059669':'#DC2626'}">${u.status}</span>
             </td>
-            <td style="padding:14px 20px">
+            <td style="padding:14px 20px;display:flex;flex-direction:column;gap:4px;">
               <button onclick="toggleUserStatus('${u.id_user}','${u.status}')"
-                style="font-size:11px;padding:5px 12px;border-radius:8px;border:1.5px solid #E5E7EB;background:white;cursor:pointer;
+                style="font-size:11px;padding:5px 12px;border-radius:8px;background:white;cursor:pointer;
+                border:1.5px solid ${u.status==='ACTIVE'?'#FECACA':'#BBF7D0'};
                   color:${u.status==='ACTIVE'?'#DC2626':'#059669'}">
-                ${u.status === 'ACTIVE' ? '🔴 Suspender' : '🟢 Activar'}
+                ${u.status === 'ACTIVE' ? 'SUSPENDER' : 'ACTIVAR'}
+              </button>
+              <button onclick="deleteUser('${u.id_user}')"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:none;background:#DC2626;cursor:pointer;color:white;font-weight:700;">
+                ELIMINAR
               </button>
             </td>
           </tr>`).join('') || '<tr><td colspan="5" style="padding:24px;text-align:center;color:#6B7280">Sin usuarios</td></tr>'}
         </tbody>
       </table>
-    </div>`);
+    </div>`); 
 }
 
 async function toggleUserStatus(id, currentStatus) {
@@ -184,6 +197,14 @@ async function toggleUserStatus(id, currentStatus) {
     }
     await users();
   } catch(e) { alert('Error de conexión: ' + e.message); }
+}
+
+async function deleteUser(id) {
+  if (!confirm('¿Eliminar este usuario? Esta acción no se puede deshacer.')) return;
+  try {
+    await apiFetch('/api/users/' + id, { method: 'DELETE' });
+    await users();
+  } catch(e) { alert('Error al eliminar: ' + e.message); }
 }
 
 // ══════════════════════════════════════════

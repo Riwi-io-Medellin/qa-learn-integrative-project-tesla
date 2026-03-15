@@ -30,10 +30,11 @@ if (registerForm) {
     // Separar nombre en first_name y last_name
     const parts      = nombre.split(" ");
     const first_name = parts[0];
-    const last_name  = parts.slice(1).join(" ") || parts[0];
+    const last_name = parts.slice(1).join(" ") || "";
+
 
     try {
-      const res = await fetch(`${API}/auth/register`, {
+      const res = await fetch(`${API}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ first_name, last_name, email, password })
