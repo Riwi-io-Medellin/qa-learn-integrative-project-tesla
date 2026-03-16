@@ -1,5 +1,4 @@
 // login.js — conectado al backend
-
 const API = "http://localhost:3000";
 
 const loginForm = document.getElementById("loginForm");
@@ -7,12 +6,18 @@ const loginForm = document.getElementById("loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", async e => {
     e.preventDefault();
+    hideError("error");
 
     const email    = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
     if (!email || !password) {
       showError("error", "Completa todos los campos");
+      return;
+    }
+
+    if (password.length < 8) {
+      showError("error", "La contraseña debe tener mínimo 8 caracteres");
       return;
     }
 
@@ -58,12 +63,4 @@ if (loginForm) {
       showError("error", "Error de conexión con el servidor");
     }
   });
-}
-
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.textContent = msg;
-    el.classList.remove('hidden');
-  }
 }

@@ -1,10 +1,8 @@
-const btnLogin = document.getElementById("btnLogin");
-const btnSign = document.getElementById("btnSign");
+// Animaciones de scroll para los elementos con clase .reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
 
-btnLogin.addEventListener("click", () => {
-  window.location.href = "login.html";
-});
-
-btnSign.addEventListener("click", () => {
-  window.location.href = "register.html";
-});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
