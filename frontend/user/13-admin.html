@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Console — QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../styles/custom.css"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:'#1E3A5F',royal:'#2E4FBA',bright:'#3B5BDB',sky:'#EEF2FB',ink:'#1A1A2E',muted:'#4A5073',border:'#D0D9F0',pass:'#2D9B6F',fail:'#C0392B'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif']}}}}</script>
+  <style>
+    body { background:#F4F6FB; }
+    .sidebar { width:220px; min-height:100vh; background:#1E3A5F; position:fixed; top:0; left:0; display:flex; flex-direction:column; padding:24px 0; z-index:100; }
+    .sidebar-logo { display:flex; align-items:center; gap:10px; padding:0 20px 24px; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:16px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; font-size:13px; font-weight:600; color:rgba(255,255,255,0.6); cursor:pointer; transition:all 0.2s; border-left:3px solid transparent; }
+    .nav-item:hover { color:white; background:rgba(255,255,255,0.06); }
+    .nav-item.active { color:white; background:rgba(255,255,255,0.1); border-left-color:#3B5BDB; }
+    .main { margin-left:220px; min-height:100vh; padding:28px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .stat-card { background:white; border-radius:14px; padding:20px; border:1px solid #E8EDF5; }
+    .stat-val { font-size:26px; font-weight:800; color:#1E3A5F; }
+    .stat-label { font-size:12px; color:#4A5073; margin-top:4px; }
+    .card { background:white; border-radius:14px; border:1px solid #E8EDF5; overflow:hidden; }
+    .card-header { padding:16px 20px; border-bottom:1px solid #E8EDF5; display:flex; justify-content:space-between; align-items:center; }
+    .card-title { font-size:14px; font-weight:700; color:#1E3A5F; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { text-align:left; padding:10px 20px; color:#4A5073; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; background:#F9FAFB; }
+    td { padding:13px 20px; border-bottom:1px solid #F3F4F6; color:#1E3A5F; }
+    tr:last-child td { border-bottom:none; }
+    .btn { padding:8px 16px; border-radius:9px; font-size:12px; font-weight:700; cursor:pointer; border:none; transition:all 0.15s; }
+    .btn-primary { background:#3B5BDB; color:white; }
+    .btn-primary:hover { background:#2E4FBA; }
+    .btn-danger { background:#C0392B; color:white; }
+    .btn-danger:hover { background:#a93226; }
+    .btn-outline { background:white; color:#4A5073; border:1.5px solid #D0D9F0; }
+    .btn-outline:hover { border-color:#3B5BDB; color:#3B5BDB; }
+    .btn-success { background:#2D9B6F; color:white; }
+    .btn-warning { background:white; color:#C0392B; border:1.5px solid #fecaca; }
+    .qa-badge { padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .form-panel { display:none; padding:20px; border-bottom:1px solid #E8EDF5; background:#F9FAFB; }
+    .form-input { width:100%; padding:9px 12px; border:1.5px solid #D0D9F0; border-radius:9px; font-size:13px; margin-bottom:10px; box-sizing:border-box; outline:none; font-family:inherit; }
+    .form-input:focus { border-color:#3B5BDB; }
+    .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; display:inline-block; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    #content { animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="width:34px;height:34px;border-radius:9px;background:#3B5BDB;display:flex;align-items:center;justify-content:center">
+        <svg style="width:18px;height:18px;color:white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div>
+        <p style="font-size:14px;font-weight:800;color:white">QA Learn</p>
+        <p style="font-size:10px;color:rgba(255,255,255,0.4)">Admin Console</p>
+      </div>
+    </div>
+
+    <nav style="flex:1">
+      <div class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">
+        <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" data-view="users" onclick="navigate('users')">
+        <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-4a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        Usuarios
+      </div>
+      <div class="nav-item" data-view="courses" onclick="navigate('courses')">
+        <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Cursos
+      </div>
+      <div class="nav-item" data-view="library" onclick="navigate('library')">
+        <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+        Repositorio
+      </div>
+    </nav>
+
+    <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div id="adminInitial" style="width:32px;height:32px;border-radius:50%;background:#3B5BDB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white">A</div>
+        <div>
+          <p id="adminName" style="font-size:12px;font-weight:700;color:white">Admin</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.4)">Administrador</p>
+        </div>
+      </div>
+      <button onclick="doLogout()" class="btn btn-outline" style="width:100%;font-size:12px;color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.15);background:transparent">
+        Cerrar sesion
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle" style="font-size:20px;font-weight:800;color:#1E3A5F">Dashboard</h1>
+        <p style="font-size:12px;color:#4A5073;margin-top:2px">Panel de administracion QA Learn</p>
+      </div>
+    </div>
+    <div id="content"></div>
+  </main>
+
+  <script type="module" src="../scripts/views/13-admin.js"></script>
+</body>
+</html>
