@@ -201,7 +201,7 @@ Login → Panel Admin
 
 > Luisa Higuita
 
-> Samuel
+> Samuel Cardona
 
 > Sebastian Mejia
 
