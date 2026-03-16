@@ -198,10 +198,15 @@ Login → Panel Admin
 ## Equipo
 
 > Juan Jose Peña  
+
 > Luisa Higuita
+
 > Samuel
+
 > Sebastian Mejia
+
 > Juan Manuel Narvaez
+
 > Juan Loaiza
 
 
