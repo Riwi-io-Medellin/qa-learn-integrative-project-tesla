@@ -1,8 +1,21 @@
 import { pool } from '../../config/db.js';
 
+// ── Validation helper ─────────────────────────────────────────────────────
+
+export const findActiveTestCase = async (id_test_case) => {
+    const result = await pool.query(
+        `SELECT id_test_case FROM test_cases
+         WHERE id_test_case = $1 AND deleted_at IS NULL`,
+        [id_test_case]
+    );
+    return result.rows[0];
+};
+
+// ── Library CRUD ──────────────────────────────────────────────────────────
+
 export const createLibraryTest = async (data) => {
     const result = await pool.query(
-        `INSERT INTO library_tests(id_test_case, id_admin, category, tags)
+        `INSERT INTO library_tests (id_test_case, id_admin, category, tags)
          VALUES ($1, $2, $3, $4)
          RETURNING id_library, id_test_case, id_admin, category, tags, validated_at`,
         [data.id_test_case, data.id_admin, data.category, data.tags]
@@ -10,27 +23,20 @@ export const createLibraryTest = async (data) => {
     return result.rows[0];
 };
 
-export const findAllLibraryTests = async ({ category } = {}) => {
-    let query = `
-        SELECT lt.id_library, lt.category, lt.tags, lt.validated_at,
-               tc.title, tc.type, tc.description, tc.preconditions
-        FROM library_tests lt
-        JOIN test_cases tc ON lt.id_test_case = tc.id_test_case
-    `;
-    const values = [];
-    if (category) { values.push(category); query += ` WHERE lt.category = $1`; }
-    query += ` ORDER BY lt.validated_at DESC`;
-    const result = await pool.query(query, values);
+export const findAllLibraryTests = async () => {
+    const result = await pool.query(
+        `SELECT id_library, id_test_case, id_admin, category, tags, validated_at
+         FROM library_tests
+         ORDER BY validated_at DESC`
+    );
     return result.rows;
 };
 
 export const findLibraryTestById = async (id) => {
     const result = await pool.query(
-        `SELECT lt.id_library, lt.category, lt.tags, lt.validated_at,
-                tc.title, tc.type, tc.description, tc.preconditions
-         FROM library_tests lt
-         JOIN test_cases tc ON lt.id_test_case = tc.id_test_case
-         WHERE lt.id_library = $1`,
+        `SELECT id_library, id_test_case, id_admin, category, tags, validated_at
+         FROM library_tests
+         WHERE id_library = $1`,
         [id]
     );
     return result.rows[0];
@@ -47,7 +53,9 @@ export const findLibraryTestByTestCase = async (id_test_case) => {
 export const updateLibraryTest = async (id, data) => {
     const result = await pool.query(
         `UPDATE library_tests
-         SET category = COALESCE($1, category), tags = COALESCE($2, tags), updated_at = now()
+         SET category   = COALESCE($1, category),
+             tags       = COALESCE($2, tags),
+             updated_at = now()
          WHERE id_library = $3
          RETURNING id_library, id_test_case, id_admin, category, tags, updated_at`,
         [data.category, data.tags, id]

@@ -4,22 +4,23 @@ import { authMiddleware } from '../../middlewares/auth.middleware.js';
 import { validateSchema } from '../../middlewares/validate.middleware.js';
 import { createStepSchema, updateStepSchema, patchStepSchema } from './step.schemas.js';
 
+// mergeParams: true es obligatorio para recibir :id y :case_id del router padre
 export const stepsRoutes = Router({ mergeParams: true });
 
-// POST /api/test-cases/:case_id/steps
-stepsRoutes.post('/', authMiddleware, validateSchema(createStepSchema), createStep);
+// POST   /api/projects/:id/test-cases/:case_id/steps
+stepsRoutes.post('/',         authMiddleware, validateSchema(createStepSchema), createStep);
 
-// GET /api/test-cases/:case_id/steps
-stepsRoutes.get('/', authMiddleware, getSteps);
+// GET    /api/projects/:id/test-cases/:case_id/steps
+stepsRoutes.get('/',          authMiddleware, getSteps);
 
-// GET /api/test-cases/:case_id/steps/:step_id
-stepsRoutes.get('/:step_id', authMiddleware, getStepById);
+// GET    /api/projects/:id/test-cases/:case_id/steps/:step_id
+stepsRoutes.get('/:step_id',  authMiddleware, getStepById);
 
-// PUT /api/test-cases/:case_id/steps/:step_id
-stepsRoutes.put('/:step_id', authMiddleware, validateSchema(updateStepSchema), updateStep);
+// PUT    /api/projects/:id/test-cases/:case_id/steps/:step_id
+stepsRoutes.put('/:step_id',  authMiddleware, validateSchema(updateStepSchema), updateStep);
 
-// PATCH /api/test-cases/:case_id/steps/:step_id
+// PATCH  /api/projects/:id/test-cases/:case_id/steps/:step_id
 stepsRoutes.patch('/:step_id', authMiddleware, validateSchema(patchStepSchema), patchStep);
 
-// DELETE /api/test-cases/:case_id/steps/:step_id
+// DELETE /api/projects/:id/test-cases/:case_id/steps/:step_id
 stepsRoutes.delete('/:step_id', authMiddleware, deleteStep);

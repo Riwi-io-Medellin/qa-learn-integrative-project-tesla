@@ -1,14 +1,15 @@
-import app from "./src/app.js";
-import { env } from "./src/config/env.js";
+import app from './src/app.js';
+import { env } from './src/config/env.js';
 
-app.listen(env.port, (error)=>{
-    try{
-        console.log(`Server run in http://localhost:${env.port}`)
+const server = app.listen(env.port, () => {
+    console.log(`Server running at http://localhost:${env.port}`);
+});
 
-        if(error){
-            console.error(error);
-        }
-    }catch(error){
-        console.log('Error to inicialize server: ',error); 
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Error: port ${env.port} is already in use`);
+    } else {
+        console.error('Server error:', error);
     }
-}); 
+    process.exit(1);
+});
