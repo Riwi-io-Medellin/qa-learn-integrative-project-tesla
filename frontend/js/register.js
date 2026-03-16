@@ -30,8 +30,7 @@ if (registerForm) {
     // Separar nombre en first_name y last_name
     const parts      = nombre.split(" ");
     const first_name = parts[0];
-    const last_name = parts.slice(1).join(" ") || "";
-
+    const last_name  = parts.slice(1).join(" ") || parts[0];
 
     try {
       const res = await fetch(`${API}/api/auth/register`, {

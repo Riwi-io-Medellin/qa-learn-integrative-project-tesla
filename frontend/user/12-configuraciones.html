@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configuraciones — QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",card:"#F7F9FF",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["DM Mono","monospace"]}}}}</script>
+  <style>
+    .content-area{height:calc(100vh - 64px);overflow-y:auto}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#D0D9F0;border-radius:4px}
+    input:focus,select:focus{outline:none;border-color:#3B5BDB;box-shadow:0 0 0 3px rgba(59,91,219,.12)}
+  </style>
+</head>
+<body class="font-sans antialiased bg-sky">
+<div class="flex h-screen overflow-hidden">
+
+<aside class="w-60 flex-shrink-0 bg-white border-r border-border flex flex-col" style="min-height:100vh;">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-5 border-b border-border flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#3B5BDB;">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <span class="font-extrabold text-navy text-sm">QA Learn</span>
+      </div>
+    </div>
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+    <div data-active="false">
+      <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="background:rgba(59,91,219,0.08);">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#3B5BDB"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="text-sm font-bold" style="color:#1E3A5F;">Aprendizaje</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#3B5BDB;transform:rotate(0deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-bold" style="color:#3B5BDB;background:rgba(59,91,219,0.08);"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#3B5BDB"></div>Dashboard</a>
+        <a href="07-ruta.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Ruta de Aprendizaje</a>
+      </div>
+    </div>
+    <div data-active="false">
+      <a href="08-dashboard-laboratorio.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Laboratorio</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#4A5073;transform:rotate(-90deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="08-dashboard-laboratorio.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Dashboard</a>
+        <a href="09-pruebas.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Pruebas</a>
+        <a href="10-biblioteca.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Repositorio</a>
+      </div>
+    </div>
+    <div>
+      <a href="11-perfil.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Perfil</span>
+      </a>
+    </div>
+    <div>
+      <a href="12-configuraciones.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all" style="background:rgba(59,91,219,0.08)">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-bold" style="color:#1E3A5F">Configuraciones</span>
+      </a>
+    </div>
+    </nav>
+    <!-- Footer: usuario + logout -->
+    <div class="px-4 py-3 border-t border-border flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <div id="sb-avatar" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#3B5BDB;">U</div>
+        <div class="min-w-0 flex-1">
+          <p id="sb-name" class="text-xs font-bold text-navy truncate">Usuario</p>
+          <p id="sb-level" class="text-xs text-muted truncate">Estudiante</p>
+        </div>
+        <button id="logout-btn" title="Cerrar sesion" class="text-muted hover:text-fail transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+<!-- MAIN -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+  <header class="h-16 bg-white border-b border-border flex items-center px-6 flex-shrink-0">
+    <div>
+      <h1 class="text-base font-bold text-navy">Configuraciones</h1>
+      <p class="text-xs text-muted">Personaliza tu experiencia en QA Learn</p>
+    </div>
+  </header>
+
+  <div class="flex-1 overflow-y-auto p-6">
+    <div class="max-w-2xl space-y-4">
+
+      <!-- Apariencia -->
+      <div class="bg-white rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-extrabold text-navy mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          Apariencia
+        </h2>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-sm font-semibold text-navy">Tema oscuro</p>
+            <p class="text-xs text-muted">Cambiar al modo oscuro para reducir el brillo</p>
+          </div>
+          <button id="theme-toggle" onclick="toggleTheme()" class="relative w-11 h-6 rounded-full transition-all duration-300" style="background:#D0D9F0">
+            <span id="theme-dot" class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300"></span>
+          </button>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="setTheme('light')" id="btn-light" class="p-4 rounded-xl border-2 text-sm font-semibold transition-all" style="border-color:#3B5BDB;color:#3B5BDB;background:white">
+            <div class="h-8 bg-sky rounded-lg mb-2"></div>
+            ☀️ Claro
+          </button>
+          <button onclick="setTheme('dark')" id="btn-dark" class="p-4 rounded-xl border-2 text-sm font-semibold transition-all" style="border-color:#D0D9F0;color:#4A5073;background:white">
+            <div class="h-8 rounded-lg mb-2" style="background:#1A1A2E"></div>
+            🌙 Oscuro
+          </button>
+        </div>
+      </div>
+
+      <!-- Información personal -->
+      <div class="bg-white rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-extrabold text-navy mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Información personal
+        </h2>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div>
+            <label class="block text-xs font-bold text-navy mb-1.5">Nombre</label>
+            <input id="cfg-fname" type="text" class="w-full px-4 py-2.5 rounded-xl border border-border text-sm" style="outline:none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-navy mb-1.5">Apellido</label>
+            <input id="cfg-lname" type="text" class="w-full px-4 py-2.5 rounded-xl border border-border text-sm" style="outline:none"/>
+          </div>
+        </div>
+        <button onclick="saveProfile()" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90" style="background:#3B5BDB">
+          Guardar cambios
+        </button>
+        <span id="profile-saved" class="hidden ml-3 text-xs font-semibold" style="color:#2D9B6F">✓ Guardado</span>
+      </div>
+
+      <!-- Gestión de cuenta -->
+      <div class="bg-white rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-extrabold text-navy mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Gestión de cuenta
+        </h2>
+        <div class="space-y-3">
+          <!-- Email -->
+          <div class="flex items-center justify-between p-4 rounded-xl" style="background:#F7F9FF;border:1px solid #D0D9F0">
+            <div>
+              <p class="text-xs font-bold text-navy">Correo electrónico</p>
+              <p id="cfg-email-display" class="text-sm text-muted mt-0.5">—</p>
+            </div>
+            <button onclick="showChangeEmail()" class="px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-sky" style="border:1.5px solid #D0D9F0;color:#4A5073">Cambiar</button>
+          </div>
+          <!-- Contraseña -->
+          <div class="flex items-center justify-between p-4 rounded-xl" style="background:#F7F9FF;border:1px solid #D0D9F0">
+            <div>
+              <p class="text-xs font-bold text-navy">Contraseña</p>
+              <p class="text-sm text-muted mt-0.5">••••••••</p>
+            </div>
+            <button onclick="togglePassSection()" class="px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-sky" style="border:1.5px solid #D0D9F0;color:#4A5073">Cambiar</button>
+          </div>
+          <!-- Cambio contraseña (oculto por defecto) -->
+          <div id="pass-section" class="hidden p-4 rounded-xl" style="background:#F7F9FF;border:1px solid #D0D9F0">
+            <div class="space-y-3">
+              <input id="cfg-current-pass" type="password" placeholder="Contraseña actual" class="w-full px-4 py-2.5 rounded-xl border border-border text-sm" style="outline:none"/>
+              <input id="cfg-new-pass" type="password" placeholder="Nueva contraseña (mín. 6 caracteres)" class="w-full px-4 py-2.5 rounded-xl border border-border text-sm" style="outline:none"/>
+              <input id="cfg-confirm-pass" type="password" placeholder="Confirmar nueva contraseña" class="w-full px-4 py-2.5 rounded-xl border border-border text-sm" style="outline:none"/>
+              <p id="pass-error" class="hidden text-xs font-semibold" style="color:#C0392B"></p>
+              <div class="flex gap-2">
+                <button onclick="changePass()" class="flex-1 py-2.5 rounded-xl text-xs font-bold text-white" style="background:#3B5BDB">Actualizar contraseña</button>
+                <button onclick="togglePassSection()" class="px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-sky" style="border:1.5px solid #D0D9F0;color:#4A5073">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sesión y cuenta -->
+      <div class="bg-white rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-extrabold text-navy mb-4">Sesión</h2>
+        <div class="space-y-2">
+          <button onclick="logoutNow()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all hover:bg-sky text-left" style="border:1px solid #D0D9F0;color:#4A5073">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Cerrar sesión
+          </button>
+          <button onclick="if(confirm('¿Estás seguro? Esta acción no se puede deshacer.')) alert('Función disponible en v2.')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left" style="border:1px solid #FCA5A5;color:#C0392B;background:#FEF2F2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Eliminar mi cuenta
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+const BASE_URL = 'http://localhost:3000/api';
+const _TOKEN12 = localStorage.getItem('qa_token');
+if (!_TOKEN12) window.location.href = '../public/02-login.html';
+const _U12   = JSON.parse(localStorage.getItem('qa_user') || '{}');
+const _diag12 = JSON.parse(localStorage.getItem('qa_last_diagnostic') || 'null');
+
+// Sidebar
+const _dn12  = _U12.first_name ? (_U12.first_name+' '+(_U12.last_name||'')).trim() : (_U12.name||'Usuario');
+const _ini12 = (_U12.first_name?_U12.first_name[0]:(_U12.name||'U')[0]).toUpperCase()+(_U12.last_name?_U12.last_name[0].toUpperCase():'');
+if (document.getElementById('sb-avatar')) document.getElementById('sb-avatar').textContent = _ini12;
+if (document.getElementById('sb-name'))   document.getElementById('sb-name').textContent   = _dn12;
+if (document.getElementById('sb-level') && _diag12?.level) document.getElementById('sb-level').textContent = _diag12.level.label;
+if (document.getElementById('logout-btn')) document.getElementById('logout-btn').onclick = async () => {
+  try { await fetch(BASE_URL+'/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+_TOKEN12}}); } catch {}
+  localStorage.clear(); window.location.href = '../public/02-login.html';
+};
+
+async function apiFetch12(p, o={}) {
+  const h = {'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN12,...(o.headers||{})};
+  const r = await fetch(BASE_URL+p, {...o, headers:h});
+  const d = await r.json().catch(()=>({}));
+  if (r.status===401) { localStorage.clear(); window.location.href='../public/02-login.html'; return null; }
+  if (!r.ok) throw new Error(d.error||d.message||'Error '+r.status);
+  return d;
+}
+
+function showToast12(msg, color='#3B5BDB') {
+  const e = document.createElement('div');
+  e.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;color:#1E3A5F;background:white;box-shadow:0 8px 32px rgba(30,58,95,0.15);border-left:4px solid '+color+';font-family:Plus Jakarta Sans,sans-serif';
+  e.textContent = msg;
+  document.body.appendChild(e);
+  setTimeout(() => { e.style.opacity='0'; e.style.transition='opacity .3s'; setTimeout(()=>e.remove(),300); }, 3000);
+}
+
+// ── Tema ─────────────────────────────────────────────────────────────────
+let _darkMode = localStorage.getItem('qa_theme') === 'dark';
+
+function setTheme(mode) {
+  _darkMode = mode === 'dark';
+  localStorage.setItem('qa_theme', mode);
+  updateThemeUI();
+}
+function toggleTheme() { setTheme(_darkMode ? 'light' : 'dark'); }
+function updateThemeUI() {
+  const toggle = document.getElementById('theme-toggle');
+  const dot    = document.getElementById('theme-dot');
+  const btnL   = document.getElementById('btn-light');
+  const btnD   = document.getElementById('btn-dark');
+  if (_darkMode) {
+    if (toggle) toggle.style.background = '#3B5BDB';
+    if (dot)    dot.style.transform = 'translateX(20px)';
+    if (btnD) { btnD.style.borderColor='#3B5BDB'; btnD.style.color='#3B5BDB'; }
+    if (btnL) { btnL.style.borderColor='#D0D9F0'; btnL.style.color='#4A5073'; }
+  } else {
+    if (toggle) toggle.style.background = '#D0D9F0';
+    if (dot)    dot.style.transform = 'translateX(0)';
+    if (btnL) { btnL.style.borderColor='#3B5BDB'; btnL.style.color='#3B5BDB'; }
+    if (btnD) { btnD.style.borderColor='#D0D9F0'; btnD.style.color='#4A5073'; }
+  }
+}
+
+// ── Cargar datos ──────────────────────────────────────────────────────────
+async function initConfig() {
+  updateThemeUI();
+  try {
+    const data = await apiFetch12('/auth/me');
+    const me   = data?.user || data;
+    if (document.getElementById('cfg-fname')) document.getElementById('cfg-fname').value = me.first_name || '';
+    if (document.getElementById('cfg-lname')) document.getElementById('cfg-lname').value = me.last_name  || '';
+    if (document.getElementById('cfg-email-display')) document.getElementById('cfg-email-display').textContent = me.email || '—';
+  } catch {}
+}
+
+// ── Guardar perfil ────────────────────────────────────────────────────────
+function saveProfile() {
+  const fn = document.getElementById('cfg-fname').value.trim();
+  const ln = document.getElementById('cfg-lname').value.trim();
+  if (!fn || !ln) { showToast12('Nombre y apellido son obligatorios.', '#C0392B'); return; }
+  const cur = JSON.parse(localStorage.getItem('qa_user') || '{}');
+  localStorage.setItem('qa_user', JSON.stringify({...cur, first_name:fn, last_name:ln, name:fn}));
+  if (document.getElementById('sb-name')) document.getElementById('sb-name').textContent = (fn+' '+ln).trim();
+  const saved = document.getElementById('profile-saved');
+  if (saved) { saved.classList.remove('hidden'); setTimeout(()=>saved.classList.add('hidden'),3000); }
+  showToast12('Información actualizada.', '#2D9B6F');
+}
+
+// ── Contraseña ────────────────────────────────────────────────────────────
+function togglePassSection() {
+  const s = document.getElementById('pass-section');
+  if (!s) return;
+  s.classList.toggle('hidden');
+  ['cfg-current-pass','cfg-new-pass','cfg-confirm-pass'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const errEl = document.getElementById('pass-error');
+  if (errEl) errEl.classList.add('hidden');
+}
+
+function changePass() {
+  const np    = document.getElementById('cfg-new-pass')?.value || '';
+  const cp    = document.getElementById('cfg-confirm-pass')?.value || '';
+  const errEl = document.getElementById('pass-error');
+  if (errEl) errEl.classList.add('hidden');
+  if (np.length < 6) {
+    if (errEl) { errEl.textContent='Mínimo 6 caracteres.'; errEl.classList.remove('hidden'); }
+    return;
+  }
+  if (np !== cp) {
+    if (errEl) { errEl.textContent='Las contraseñas no coinciden.'; errEl.classList.remove('hidden'); }
+    return;
+  }
+  showToast12('Cambio de contraseña disponible en v2.', '#3B5BDB');
+  togglePassSection();
+}
+
+function showChangeEmail() {
+  showToast12('Cambio de email disponible en v2.', '#3B5BDB');
+}
+
+// ── Sesión ────────────────────────────────────────────────────────────────
+async function logoutNow() {
+  try { await apiFetch12('/auth/logout', {method:'POST'}); } catch {}
+  localStorage.clear();
+  window.location.href = '../public/02-login.html';
+}
+
+// Iniciar
+document.addEventListener('DOMContentLoaded', initConfig);
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const ni=document.querySelectorAll('nav > div');
+  ni.forEach(function(item){
+    const link=item.querySelector(':scope > a');const sub=item.querySelector(':scope > div');const chev=link?link.querySelector('svg:last-child'):null;
+    if(!link)return;const ia=item.dataset.active==='true';
+    if(sub){sub.style.overflow='hidden';sub.style.transition='max-height 0.25s ease';if(ia){sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}else{sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}}
+    if(!sub)return;
+    link.addEventListener('click',function(e){e.preventDefault();const io=sub.style.maxHeight!=='0px'&&sub.style.maxHeight!=='';ni.forEach(function(o){if(o===item)return;const s=o.querySelector(':scope > div');const ch=o.querySelector(':scope > a svg:last-child');if(s)s.style.maxHeight='0';if(ch)ch.style.transform='rotate(-90deg)';});if(io){sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}else{sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}});
+  });
+});
+</script>
+</body>
+</html>

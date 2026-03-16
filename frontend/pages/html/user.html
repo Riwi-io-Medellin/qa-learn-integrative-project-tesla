@@ -6,7 +6,6 @@
   <title>QA Learning Lab</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/frontend/styles/user.css">
-  <link rel="stylesheet" href="/frontend/styles/responsive.css">
 </head>
 <body>
 <div class="app">
@@ -113,12 +112,7 @@
 // Guard: redirigir si no hay sesión
 (function() {
   const u = JSON.parse(localStorage.getItem('currentUser'));
-  const t = localStorage.getItem('token');
-  console.log('Guard: User =', u ? 'Existe' : 'No existe', ', Token =', t ? 'Existe' : 'No existe');
-  if (!u || !t) {
-    alert('Sesión expirada. Por favor inicia sesión nuevamente.');
-    window.location.href = '../../pages/login.html';
-  }
+  if (!u) window.location.href = '../../pages/login.html';
 })();
 </script>
 <script>
@@ -130,13 +124,9 @@ function toggleSub(section) {
   if (chev) chev.classList.toggle('open', !hidden);
 }
 </script>
-
-<script src="/frontend/js/users/views-aprendizaje.js"></script>
-<script src="/frontend/js/users/views-laboratorio.js"></script>
-<script src="/frontend/js/users/views-usuario.js"></script>
+<script src="/frontend/js/auth.js"></script>
+<script src="/frontend/js/users/data.js"></script>
+<script src="/frontend/js/users/views.js"></script>
 <script src="/frontend/js/users/user.js"></script>
-<script src="/frontend/js/uploads.js"></script>
-<script src="/frontend/js/users/executions.js"></script>
-
 </body>
 </html>
