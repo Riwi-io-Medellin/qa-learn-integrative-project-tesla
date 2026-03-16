@@ -59,6 +59,7 @@ qa-learn/
         ├── index.css
         └── survey.css
         ├── user.css
+        ├── responsive.css
 ```
 
 ---
