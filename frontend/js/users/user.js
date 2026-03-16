@@ -9,6 +9,20 @@ async function apiFetch(path) {
   return r.json();
 }
 
+// Helper para normalizar respuestas de API
+function normalizeArrayResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (data?.courses) return data.courses;
+  if (data?.modules) return data.modules;
+  if (data?.projects) return data.projects;
+  if (data?.testCases) return data.testCases;
+  if (data?.executions) return data.executions;
+  if (data?.evidences) return data.evidences;
+  if (data?.users) return data.users;
+  if (data?.libraryTests) return data.libraryTests;
+  return [];
+}
+
 const state = {
   user: {}, nivelKey: 'intermedio', porcentaje: 50,
   courses: [], selectedCourse: null,
@@ -48,9 +62,11 @@ async function init() {
   }
 
   try { 
-    const data = await apiFetch('/api/courses'); state.courses = data.courses || data || []; 
-  } 
-  catch { state.courses = []; }
+    const data = await apiFetch('/api/courses');
+    state.courses = normalizeArrayResponse(data);
+  } catch { 
+    state.courses = []; 
+  }
 
   const nivel = LEVELS[state.nivelKey];
   const p     = state.porcentaje;

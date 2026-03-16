@@ -1,0 +1,149 @@
+/* ══════════════════════════════════════════
+   responsive.css — QA Learn
+   Agregar DESPUÉS de user.css, survey.css e index.css
+   ══════════════════════════════════════════ */
+
+/* ── TABLET (max 1024px) ── */
+@media (max-width: 1024px) {
+
+  /* Sidebar más angosta */
+  .sidebar { width: 160px; }
+
+  /* Grids de 4 → 2 columnas */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Grids de 3 → 2 columnas */
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Contenido con menos padding */
+  .content { padding: 16px; }
+}
+
+/* ── MOBILE (max 768px) ── */
+@media (max-width: 768px) {
+
+  /* ── LAYOUT PRINCIPAL ── */
+  .app { flex-direction: column; height: auto; min-height: 100vh; overflow: auto; }
+
+  /* Sidebar horizontal en mobile */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .nav-logo { padding: 12px 16px; border-bottom: none; border-right: 1px solid var(--border); }
+
+  .nav-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .nav-item {
+    padding: 8px 10px;
+    font-size: 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    width: auto;
+  }
+
+  .nav-chevron { display: none; }
+
+  .nav-sub {
+    display: none; /* En mobile se ocultan los submenús por espacio */
+  }
+
+  .nav-footer {
+    width: 100%;
+    border-top: 1px solid var(--border);
+    padding: 8px 16px;
+  }
+
+  /* Área principal ocupa todo */
+  .main-area { flex: 1; overflow: visible; }
+
+  .topbar {
+    height: auto;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .content { padding: 12px; overflow-y: visible; }
+
+  /* ── GRIDS ── */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid-3 { grid-template-columns: 1fr; gap: 10px; }
+  .grid-2 { grid-template-columns: 1fr; gap: 10px; }
+
+  /* ── CARDS ── */
+  .card { padding: 14px; }
+  .stat-card { padding: 14px 16px; }
+  .stat-val { font-size: 22px; }
+
+  /* ── TABLAS ── */
+  .tbl { font-size: 12px; }
+  .tbl th { padding: 8px 10px; font-size: 10px; }
+  .tbl td { padding: 10px; }
+
+  /* Ocultar columnas menos importantes en mobile */
+  .tbl th:nth-child(3),
+  .tbl td:nth-child(3) { display: none; }
+
+  /* ── BOTONES ── */
+  .btn { padding: 8px 14px; font-size: 12px; }
+
+  /* ── PILLS ── */
+  .pill { padding: 6px 12px; font-size: 11px; }
+
+  /* ── MODALES ── */
+  div[style*="position:fixed"] > div,
+  div[style*="position: fixed"] > div {
+    width: 95vw !important;
+    max-height: 85vh !important;
+    overflow-y: auto;
+    margin: 0 auto;
+  }
+
+  /* ── INDEX PAGE ── */
+  .grid.md\:grid-cols-2 { grid-template-columns: 1fr !important; }
+  .grid.md\:grid-cols-3 { grid-template-columns: 1fr !important; }
+
+  /* ── LOGIN / REGISTER ── */
+  .left-panel { display: none; } /* Ocultar panel izquierdo en mobile */
+  body.h-screen { height: auto !important; }
+  body.flex.overflow-hidden { overflow: auto !important; }
+
+  /* ── SURVEY ── */
+  .survey-card { padding: 20px 16px !important; margin: 12px !important; }
+}
+
+/* ── MOBILE PEQUEÑO (max 480px) ── */
+@media (max-width: 480px) {
+
+  .grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-val { font-size: 20px; }
+  .card { padding: 12px; }
+  .content { padding: 8px; }
+
+  .topbar { padding: 10px 12px; }
+
+  /* Botones full width en pantallas muy pequeñas */
+  .btn-primary, .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Nav items más compactos */
+  .nav-item { font-size: 10px; padding: 6px 8px; }
+  .nav-item svg { width: 14px; height: 14px; }
+}

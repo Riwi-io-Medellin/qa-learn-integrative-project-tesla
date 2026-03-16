@@ -6,8 +6,7 @@
   <title>QA Learning Lab</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/frontend/styles/user.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><circle cx='16' cy='16' r='4' fill='none' stroke='white' stroke-width='2.5'/><path d='M16 4v4M16 24v4M4 16h4M24 16h4' stroke='white' stroke-width='2.5' stroke-linecap='round'/></svg>">
-
+  <link rel="stylesheet" href="/frontend/styles/responsive.css">
 </head>
 <body>
 <div class="app">
@@ -114,7 +113,12 @@
 // Guard: redirigir si no hay sesión
 (function() {
   const u = JSON.parse(localStorage.getItem('currentUser'));
-  if (!u) window.location.href = '../../pages/login.html';
+  const t = localStorage.getItem('token');
+  console.log('Guard: User =', u ? 'Existe' : 'No existe', ', Token =', t ? 'Existe' : 'No existe');
+  if (!u || !t) {
+    alert('Sesión expirada. Por favor inicia sesión nuevamente.');
+    window.location.href = '../../pages/login.html';
+  }
 })();
 </script>
 <script>
@@ -131,6 +135,8 @@ function toggleSub(section) {
 <script src="/frontend/js/users/views-laboratorio.js"></script>
 <script src="/frontend/js/users/views-usuario.js"></script>
 <script src="/frontend/js/users/user.js"></script>
+<script src="/frontend/js/uploads.js"></script>
+<script src="/frontend/js/users/executions.js"></script>
 
 </body>
 </html>

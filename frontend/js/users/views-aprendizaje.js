@@ -22,9 +22,11 @@ async function ruta() {
 
   if (state.courses.length === 0) {
     try { 
-      const data = await apiFetch('/api/courses'); state.courses = data.courses || data || []; 
-    } 
-    catch { state.courses = []; }
+      const data = await apiFetch('/api/courses');
+      state.courses = normalizeArrayResponse(data);
+    } catch { 
+      state.courses = []; 
+    }
   }
 
   if (state.courses.length === 0) {
@@ -43,12 +45,14 @@ async function ruta() {
 }
 
 function renderCourseList() {
-  setHTML('course-list', state.courses.map(c => `
-    <div class="mod-item ${state.selectedCourse?.id_course===c.id_course?'active':''}"
-         style="margin-bottom:4px;cursor:pointer;" onclick="selectCourse('${c.id_course}')">
-      <p style="font-size:12px;font-weight:700;color:var(--navy)">${c.title}</p>
-      <p style="font-size:11px;color:var(--muted)">${c.status||'ACTIVE'}</p>
-    </div>`).join(''));
+  var coursesHtml = state.courses.map(function(c) {
+    var activeClass = (state.selectedCourse?.id_course === c.id_course) ? 'active' : '';
+    return '<div class="mod-item ' + activeClass + '" style="margin-bottom:4px;cursor:pointer;" onclick="selectCourse(\'' + c.id_course + '\')">'
+         + '<p style="font-size:12px;font-weight:700;color:var(--navy)">' + c.title + '</p>'
+         + '<p style="font-size:11px;color:var(--muted)">' + (c.status||'ACTIVE') + '</p>'
+         + '</div>';
+  }).join('');
+  setHTML('course-list', coursesHtml);
 }
 
 async function selectCourse(id) {
@@ -62,9 +66,11 @@ async function loadModules(id_course) {
   setHTML('module-pills', '<span style="font-size:12px;color:var(--muted)">Cargando módulos...</span>');
   setHTML('module-content', '');
   try { 
-    const data = await apiFetch('/api/courses/'+id_course+'/modules'); state.modules = data.modules || data || []; 
+    const data = await apiFetch('/api/courses/'+id_course+'/modules');
+    state.modules = normalizeArrayResponse(data);
+  } catch { 
+    state.modules = []; 
   }
-  catch { state.modules = []; }
 
   if (state.modules.length === 0) {
     setHTML('module-pills', '');
@@ -76,12 +82,12 @@ async function loadModules(id_course) {
   renderModuleContent();
 }
 
-  function renderModulePills() {
-  setHTML('module-pills', state.modules.map(m => `
-    <button class="pill ${state.selectedModule?.id_module===m.id_module?'active':''}"
-            onclick="selectModule('${m.id_module}')">
-      ${isCompleted(m.id_module) ? '✓ ' : ''}${m.title}
-    </button>`).join(''));
+function renderModulePills() {
+  var pillsHtml = state.modules.map(function(m) {
+    var activeClass = (state.selectedModule?.id_module === m.id_module) ? 'active' : '';
+    return '<button class="pill ' + activeClass + '" onclick="selectModule(\'' + m.id_module + '\')">' + m.title + '</button>';
+  }).join('');
+  setHTML('module-pills', pillsHtml);
 }
 
 function selectModule(id) {
@@ -103,27 +109,25 @@ function renderModuleContent() {
     .replace(/^\d+\. (.+)$/gm,'<li style="font-size:13px;color:var(--muted);line-height:1.7;margin-left:16px">$1</li>')
     .replace(/\n\n/g,'<br>');
 
-const idx = state.modules.findIndex(m2 => m2.id_module === m.id_module);
-setHTML('module-content', `
-  <div style="padding:4px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--bright)">${state.selectedCourse?.title||''}</span>
-      <span class="badge badge-muted">Módulo ${m.orders||idx+1} de ${state.modules.length}</span>
-    </div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.8;">${html}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
-      <button class="btn btn-outline" onclick="prevModule()" ${idx>0?'':'disabled style="opacity:.4;cursor:default"'}> Anterior</button>
-      <button onclick="completeModule('${m.id_module}')" 
-        style="font-size:12px;padding:8px 20px;border-radius:8px;cursor:pointer;font-weight:700;
-          background:${isCompleted(m.id_module)?'#ECFDF5':'#3B5BDB'};
-          color:${isCompleted(m.id_module)?'#059669':'white'};
-          border:${isCompleted(m.id_module)?'1.5px solid #059669':'none'}">
-        ${isCompleted(m.id_module) ? ' Completado' : 'Marcar como completado'}
-      </button>
-      <button class="btn btn-primary" onclick="nextModule()" ${idx<state.modules.length-1?'':'disabled style="opacity:.4;cursor:default"'}> Siguiente </button>
-    </div>
-  </div>`);
+  const idx = state.modules.findIndex(m2 => m2.id_module === m.id_module);
+  const courseTitle = state.selectedCourse?.title || '';
+  const orderNum = m.orders || idx + 1;
+  const totalModules = state.modules.length;
+  const prevDisabled = idx > 0 ? '' : 'disabled style="opacity:.4;cursor:default"';
+  const nextDisabled = idx < totalModules - 1 ? '' : 'disabled style="opacity:.4;cursor:default"';
 
+  setHTML('module-content', `
+    <div style="padding:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--bright)">${courseTitle}</span>
+        <span class="badge badge-muted">Módulo ${orderNum} de ${totalModules}</span>
+      </div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8;">${html}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
+        <button class="btn btn-outline" onclick="prevModule()" ${prevDisabled}>← Anterior</button>
+        <button class="btn btn-primary" onclick="nextModule()" ${nextDisabled}>Siguiente →</button>
+      </div>
+    </div>`);
 }
 
 function prevModule() {
@@ -135,44 +139,34 @@ function nextModule() {
   if (idx < state.modules.length-1) selectModule(state.modules[idx+1].id_module);
 }
 
-function getCompletedModules() {
-  return JSON.parse(localStorage.getItem('completedModules') || '[]');
-}
-
-function isCompleted(id_module) {
-  return getCompletedModules().includes(id_module);
-}
-
-function completeModule(id_module) {
-  const completed = getCompletedModules();
-  if (!completed.includes(id_module)) {
-    completed.push(id_module);
-    localStorage.setItem('completedModules', JSON.stringify(completed));
-  }
-  renderModuleContent();
-  renderModulePills();
-}
-
 function dashboard() {
+  var statsHtml = [[state.porcentaje+'%','Diagnóstico'],[state.courses.length,'Cursos disponibles'],[state.projects.length,'Proyectos'],['—','Casos ejecutados']].map(function(item) {
+    return '<div class="stat-card"><div class="stat-val" style="color:var(--bright)">' + item[0] + '</div><div class="stat-label">' + item[1] + '</div></div>';
+  }).join('');
+
+  var coursesListHtml = state.courses.length > 0
+    ? state.courses.map(function(c) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">'
+             + '<span style="font-size:13px;color:var(--navy)">' + c.title + '</span>'
+             + '<span class="badge badge-blue">' + c.status + '</span>'
+             + '</div>';
+      }).join('')
+    : '<p style="font-size:13px;color:var(--muted)">Sin cursos</p>';
+
+  const nivel = LEVELS[state.nivelKey];
+
   setHTML('content', `
     <div class="grid-4" style="margin-bottom:20px;">
-      ${[[state.porcentaje+'%','Diagnóstico'],[state.courses.length,'Cursos disponibles'],[state.projects.length,'Proyectos'],['—','Casos ejecutados']].map(([v,l])=>`
-      <div class="stat-card"><div class="stat-val" style="color:var(--bright)">${v}</div><div class="stat-label">${l}</div></div>`).join('')}
+      ${statsHtml}
     </div>
     <div class="grid-2" style="align-items:start;">
       <div class="card">
         <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Cursos disponibles</h3>
-        ${state.courses.length > 0
-          ? state.courses.map(c=>`
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--navy)">${c.title}</span>
-              <span class="badge badge-blue">${c.status}</span>
-            </div>`).join('')
-          : '<p style="font-size:13px;color:var(--muted)">Sin cursos</p>'}
+        ${coursesListHtml}
       </div>
       <div style="background:linear-gradient(135deg,#1E3A5F,#2563eb);border-radius:14px;padding:24px;color:white;">
         <div style="font-size:24px;margin-bottom:8px;">🎯</div>
-        <p style="font-weight:800;font-size:15px;margin-bottom:6px;">${LEVELS[state.nivelKey].label}</p>
+        <p style="font-weight:800;font-size:15px;margin-bottom:6px;">${nivel.label}</p>
         <p style="font-size:12px;opacity:.8;margin-bottom:16px;">Diagnóstico: ${state.porcentaje}%</p>
         <button class="btn" style="background:white;color:var(--bright);width:100%;justify-content:center;" onclick="navigate('ruta')">Ir a mi ruta →</button>
       </div>

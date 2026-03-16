@@ -7,8 +7,18 @@ async function perfil() {
   const p     = state.porcentaje;
 
   if (state.projects.length === 0) {
-    try { state.projects = await apiFetch('/api/projects'); } catch {}
+    try { 
+      const data = await apiFetch('/api/projects');
+      state.projects = normalizeArrayResponse(data);
+    } catch {}
   }
+
+  var summaryHtml = [[p+'%','Diagnóstico'],[state.courses.length,'Cursos'],[state.projects.length,'Proyectos']].map(function(item) {
+    return '<div style="text-align:center;padding:12px;background:var(--sky);border-radius:10px;">'
+         + '<div style="font-size:20px;font-weight:800;color:var(--navy)">' + item[0] + '</div>'
+         + '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + item[1] + '</div>'
+         + '</div>';
+  }).join('');
 
   setHTML('content', `
     <div class="grid-2" style="align-items:start;gap:20px;">
@@ -26,11 +36,7 @@ async function perfil() {
         <div class="card">
           <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Resumen</h3>
           <div class="grid-3">
-            ${[[p+'%','Diagnóstico'],[state.courses.length,'Cursos'],[state.projects.length,'Proyectos']].map(([v,l])=>`
-            <div style="text-align:center;padding:12px;background:var(--sky);border-radius:10px;">
-              <div style="font-size:20px;font-weight:800;color:var(--navy)">${v}</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px">${l}</div>
-            </div>`).join('')}
+            ${summaryHtml}
           </div>
         </div>
         <div class="card">
@@ -43,17 +49,20 @@ async function perfil() {
 }
 
 function config() {
+  const emailVal = state.user.email || '—';
+  const nivelLabel = LEVELS[state.nivelKey].label;
+
   setHTML('content', `
     <div style="max-width:640px;">
       <div class="card">
         <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Cuenta</h3>
         <div style="padding:12px;background:var(--sky);border-radius:10px;margin-bottom:8px;">
           <p style="font-size:12px;font-weight:700;color:var(--navy)">Email</p>
-          <p style="font-size:12px;color:var(--muted)">${state.user.email||'—'}</p>
+          <p style="font-size:12px;color:var(--muted)">${emailVal}</p>
         </div>
         <div style="padding:12px;background:var(--sky);border-radius:10px;margin-bottom:14px;">
           <p style="font-size:12px;font-weight:700;color:var(--navy)">Nivel</p>
-          <p style="font-size:12px;color:var(--muted)">${LEVELS[state.nivelKey].label}</p>
+          <p style="font-size:12px;color:var(--muted)">${nivelLabel}</p>
         </div>
         <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="logout()">↪ Cerrar sesión</button>
       </div>

@@ -2,11 +2,20 @@
 
 async function labPruebas() {
   setHTML('content', '<div style="padding:40px;text-align:center;color:var(--muted);">Cargando...</div>');
-  try { state.projects = await apiFetch('/api/projects'); } catch { state.projects = []; }
+  try { 
+    const data = await apiFetch('/api/projects');
+    state.projects = normalizeArrayResponse(data);
+  } catch { 
+    state.projects = []; 
+  }
   if (!state.selectedProject && state.projects.length > 0) state.selectedProject = state.projects[0];
   if (state.selectedProject) {
-    try { state.testCases = await apiFetch('/api/projects/'+state.selectedProject.id_project+'/test-cases'); }
-    catch { state.testCases = []; }
+    try { 
+      const data = await apiFetch('/api/projects/'+state.selectedProject.id_project+'/test-cases');
+      state.testCases = normalizeArrayResponse(data);
+    } catch { 
+      state.testCases = []; 
+    }
   } else { state.testCases = []; }
 
   const tc = state.testCases;
@@ -24,25 +33,51 @@ async function labPruebas() {
     REGRESSION:     '<span class="badge badge-fail">Regresión</span>',
   })[t] || '<span class="badge badge-muted">'+t+'</span>';
 
+  // Pre-calcular HTML para evitar backticks anidados
+  var projectsHtml = state.projects.map(function(p) {
+    var activeClass = (state.selectedProject?.id_project === p.id_project) ? 'active' : '';
+    return '<div class="mod-item ' + activeClass + '" style="margin-bottom:4px;cursor:pointer;" onclick="selectProject(\'' + p.id_project + '\')">'
+         + '<p style="font-size:12px;font-weight:700;color:var(--navy)">' + p.name + '</p>'
+         + '<p style="font-size:11px;color:var(--muted)">' + p.status + '</p>'
+         + '</div>';
+  }).join('') || '<p style="font-size:12px;color:var(--muted)">Sin proyectos</p>';
+
+  var newCaseBtn = state.selectedProject
+    ? '<button class="btn btn-primary" style="font-size:12px;" onclick="showNewCaseModal()">+ Nuevo caso</button>'
+    : '';
+
+  var tableBodyHtml = tc.map(function(t) {
+    return '<tr>'
+         + '<td style="font-weight:600;color:var(--navy)">' + (t.title || '—') + '</td>'
+         + '<td>' + typeBadge(t.type) + '</td>'
+         + '<td>' + statusBadge(t.status) + '</td>'
+         + '<td style="white-space:nowrap;">'
+         + '<button onclick="showCaseDetails(' + t.id_test_case + ')" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;font-size:11px;font-weight:700;color:var(--navy);margin-right:4px;">📋 Ver/Pasos</button>'
+         + '<button onclick="viewExecutionHistory(' + t.id_test_case + ')" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;font-size:11px;font-weight:700;color:var(--bright);">📊 Historial</button>'
+         + '</td></tr>';
+  }).join('');
+
+  var tableContentHtml = (tc.length === 0 && state.selectedProject)
+    ? '<div style="padding:40px;text-align:center;"><div style="font-size:28px;margin-bottom:10px">📋</div><p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Sin casos de prueba</p><p style="font-size:12px;color:var(--muted)">Crea tu primer caso — el admin lo revisará para aprobarlo al repositorio.</p></div>'
+    : '<table class="tbl"><thead><tr><th>Título</th><th>Tipo</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>' + tableBodyHtml + '</tbody></table>';
+
+  var draftCount = tc.filter(t => t.status === 'DRAFT').length;
+  var draftNoticeHtml = (draftCount > 0)
+    ? '<div style="padding:10px 16px;background:#FFFBEB;border-top:1px solid var(--border);font-size:12px;color:#92400E;">⏳ Tienes ' + draftCount + ' caso(s) pendiente(s) de revisión por el administrador.</div>'
+    : '';
+
   setHTML('content', `
     <div style="display:flex;gap:16px;height:100%;">
-
       <!-- Sidebar proyectos -->
       <div style="width:180px;flex-shrink:0;">
         <p class="section-title">Proyectos</p>
-        ${state.projects.map(p=>`
-          <div class="mod-item ${state.selectedProject?.id_project===p.id_project?'active':''}"
-               style="margin-bottom:4px;cursor:pointer;" onclick="selectProject('${p.id_project}')">
-            <p style="font-size:12px;font-weight:700;color:var(--navy)">${p.name}</p>
-            <p style="font-size:11px;color:var(--muted)">${p.status}</p>
-          </div>`).join('') || '<p style="font-size:12px;color:var(--muted)">Sin proyectos</p>'}
+        ${projectsHtml}
         <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:12px;font-size:12px;"
                 onclick="showNewProjectModal()">+ Nuevo proyecto</button>
       </div>
 
       <!-- Contenido -->
       <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px;">
-
         <!-- Stats -->
         <div class="grid-4">
           <div class="stat-card" style="padding:16px;">
@@ -55,11 +90,11 @@ async function labPruebas() {
           </div>
           <div class="stat-card" style="padding:16px;">
             <div class="stat-val" style="font-size:22px;color:#D97706">${tc.filter(t=>t.status==='DRAFT').length}</div>
-            <div class="stat-label">⏳ En revisión</div>
+            <div class="stat-label">En revisión</div>
           </div>
           <div class="stat-card" style="padding:16px;">
             <div class="stat-val" style="font-size:22px;color:var(--fail)">${tc.filter(t=>t.status==='DEPRECATED').length}</div>
-            <div class="stat-label">✕ Rechazados</div>
+            <div class="stat-label">Rechazados</div>
           </div>
         </div>
 
@@ -69,33 +104,10 @@ async function labPruebas() {
             <span style="font-size:13px;font-weight:700;color:var(--navy)">
               ${state.selectedProject?.name || 'Sin proyecto seleccionado'}
             </span>
-            ${state.selectedProject
-              ? `<button class="btn btn-primary" style="font-size:12px;" onclick="showNewCaseModal()">+ Nuevo caso</button>`
-              : ''}
+            ${newCaseBtn}
           </div>
-
-          ${tc.length === 0 && state.selectedProject
-            ? `<div style="padding:40px;text-align:center;">
-                <div style="font-size:28px;margin-bottom:10px">📋</div>
-                <p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Sin casos de prueba</p>
-                <p style="font-size:12px;color:var(--muted)">Crea tu primer caso — el admin lo revisará para aprobarlo al repositorio.</p>
-              </div>`
-            : `<table class="tbl">
-                <thead><tr><th>Título</th><th>Tipo</th><th>Estado</th></tr></thead>
-                <tbody>
-                  ${tc.map(t=>`
-                  <tr>
-                    <td style="font-weight:600;color:var(--navy)">${t.title||'—'}</td>
-                    <td>${typeBadge(t.type)}</td>
-                    <td>${statusBadge(t.status)}</td>
-                  </tr>`).join('')}
-                </tbody>
-              </table>`}
-
-          ${tc.filter(t=>t.status==='DRAFT').length > 0 ? `
-          <div style="padding:10px 16px;background:#FFFBEB;border-top:1px solid var(--border);font-size:12px;color:#92400E;">
-            ⏳ Tienes ${tc.filter(t=>t.status==='DRAFT').length} caso(s) pendiente(s) de revisión por el administrador.
-          </div>` : ''}
+          ${tableContentHtml}
+          ${draftNoticeHtml}
         </div>
       </div>
     </div>
@@ -109,8 +121,7 @@ async function labPruebas() {
           <div>
             <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Título *</label>
             <input id="caseTitle" placeholder="Ej: Verificar login con credenciales válidas"
-              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;"
-              onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'">
+              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;">
           </div>
           <div>
             <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Tipo *</label>
@@ -123,14 +134,12 @@ async function labPruebas() {
           <div>
             <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Descripción</label>
             <textarea id="caseDesc" rows="2" placeholder="Descripción del caso..."
-              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"
-              onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"></textarea>
           </div>
           <div>
             <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Precondiciones</label>
             <textarea id="casePre" rows="2" placeholder="Estado del sistema antes de ejecutar..."
-              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"
-              onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+              style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"></textarea>
           </div>
           <div id="caseReqContainer"></div>
         </div>
@@ -149,14 +158,20 @@ async function showNewCaseModal() {
     catch { reqs = []; }
   }
   const reqEl = document.getElementById('caseReqContainer');
-  if (reqEl) reqEl.innerHTML = reqs.length > 0 ? `
+  if (reqEl) {
+    var reqOptionsHtml = reqs.map(function(r) {
+      return '<option value="' + r.id_requirement + '">' + r.code + ' — ' + (r.description||'').slice(0,50) + '</option>';
+    }).join('');
+
+    reqEl.innerHTML = reqs.length > 0 ? `
     <div>
       <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Requerimiento</label>
       <select id="caseReq" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;background:white;">
         <option value="">Sin requerimiento</option>
-        ${reqs.map(r=>`<option value="${r.id_requirement}">${r.code} — ${(r.description||'').slice(0,50)}</option>`).join('')}
+        ${reqOptionsHtml}
       </select>
     </div>` : '';
+  }
   document.getElementById('caseModal')?.classList.remove('hidden');
 }
 
@@ -188,7 +203,6 @@ async function selectProject(id) {
   await labPruebas();
 }
 
-// ── NUEVO PROYECTO CON REQUERIMIENTOS ─────────────────────────────────────
 function showNewProjectModal() {
   document.body.insertAdjacentHTML('beforeend', `
     <div id="projectModal" style="position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100;">
@@ -197,14 +211,12 @@ function showNewProjectModal() {
         <div style="margin-bottom:14px;">
           <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Nombre *</label>
           <input id="projName" placeholder="Ej: App E-commerce v2"
-            style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;"
-            onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'">
+            style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;">
         </div>
         <div style="margin-bottom:14px;">
           <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Descripción</label>
           <textarea id="projDesc" rows="2"
-            style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"
-            onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+            style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"></textarea>
         </div>
         <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -229,11 +241,9 @@ function addReqRow() {
   row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;align-items:center;';
   row.innerHTML = `
     <input placeholder="Código (REQ-001)" data-req="code"
-      style="width:120px;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:inherit;outline:none;"
-      onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'">
+      style="width:120px;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:inherit;outline:none;">
     <input placeholder="Descripción del requerimiento" data-req="desc"
-      style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:inherit;outline:none;"
-      onfocus="this.style.borderColor='var(--bright)'" onblur="this.style.borderColor='var(--border)'">
+      style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:inherit;outline:none;">
     <select data-req="priority" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:inherit;outline:none;background:white;">
       <option value="MEDIUM">Media</option>
       <option value="HIGH">Alta</option>
@@ -270,29 +280,31 @@ async function submitNewProject() {
   } catch { alert('Error de conexión'); }
 }
 
-// ── LAB DASHBOARD ──────────────────────────────────────────────────────────
 function labDashboard() {
+  var statsHtml = [[state.projects.length,'Proyectos'],[state.testCases.length,'Casos'],
+         [state.testCases.filter(t=>t.status==='ACTIVE').length,'Aprobados'],
+         [state.testCases.filter(t=>t.status==='DRAFT').length,'En revisión']].map(function(item) {
+    return '<div class="stat-card"><div class="stat-val">' + item[0] + '</div><div class="stat-label">' + item[1] + '</div></div>';
+  }).join('');
+
+  var projectsTableBody = state.projects.map(function(p) {
+    return '<tr><td style="font-weight:600;color:var(--navy)">' + p.name + '</td><td><span class="badge badge-blue">' + p.status + '</span></td></tr>';
+  }).join('');
+
+  var dashboardContent = state.projects.length === 0
+    ? '<p style="color:var(--muted);font-size:13px;">Sin proyectos. Ve al Laboratorio para crear uno.</p>'
+    : '<table class="tbl"><thead><tr><th>Nombre</th><th>Estado</th></tr></thead><tbody>' + projectsTableBody + '</tbody></table>';
+
   setHTML('content', `
     <div class="grid-4" style="margin-bottom:20px;">
-      ${[[state.projects.length,'Proyectos'],[state.testCases.length,'Casos'],
-         [state.testCases.filter(t=>t.status==='ACTIVE').length,'Aprobados'],
-         [state.testCases.filter(t=>t.status==='DRAFT').length,'En revisión']].map(([v,l])=>`
-      <div class="stat-card"><div class="stat-val">${v}</div><div class="stat-label">${l}</div></div>`).join('')}
+      ${statsHtml}
     </div>
     <div class="card">
       <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Mis proyectos</h3>
-      ${state.projects.length===0
-        ? '<p style="color:var(--muted);font-size:13px;">Sin proyectos. Ve al Laboratorio para crear uno.</p>'
-        : `<table class="tbl"><thead><tr><th>Nombre</th><th>Estado</th></tr></thead><tbody>
-            ${state.projects.map(p=>`<tr>
-              <td style="font-weight:600;color:var(--navy)">${p.name}</td>
-              <td><span class="badge badge-blue">${p.status}</span></td>
-            </tr>`).join('')}
-           </tbody></table>`}
+      ${dashboardContent}
     </div>`);
 }
 
-// ── REPOSITORIO — casos validados, visibles para todos ────────────────────
 async function labRepo() {
   setHTML('content', '<div style="padding:40px;text-align:center;color:var(--muted);">Cargando repositorio...</div>');
 
@@ -305,6 +317,41 @@ async function labRepo() {
   const typeColor = t => ({FUNCTIONAL:'badge-blue',NON_FUNCTIONAL:'badge-warn',REGRESSION:'badge-fail'})[t]||'badge-muted';
   const categories = [...new Set(items.map(i => i.category).filter(Boolean))];
 
+  var filterButtonsHtml = categories.map(function(c) {
+    return '<button class="pill" onclick="filterRepo(\'' + c + '\',this)">' + c + '</button>';
+  }).join('');
+
+  var repoGridHtml = items.map(function(item) {
+    var tagsHtml = (item.tags?.length) ? '<div style="display:flex;gap:4px;flex-wrap:wrap;">' + item.tags.map(function(t) {
+      return '<span style="padding:2px 8px;background:var(--sky);border-radius:999px;font-size:11px;color:var(--muted)">' + t + '</span>';
+    }).join('') + '</div>' : '';
+
+    var preHtml = item.preconditions ? '<p style="font-size:11px;color:var(--muted)"><strong>Pre:</strong> ' + item.preconditions.slice(0,80) + '...</p>' : '';
+    var catHtml = item.category ? '<span style="font-size:11px;color:var(--bright);font-weight:600">📁 ' + item.category + '</span>' : '';
+
+    return '<div class="card repo-item" data-category="' + (item.category||'') + '" style="display:flex;flex-direction:column;gap:10px;">'
+         + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+         + '<span class="badge ' + typeColor(item.type) + '">' + (item.type||'—') + '</span>'
+         + '<span class="badge badge-pass">✓ Validado</span>'
+         + '</div>'
+         + '<h3 style="font-size:13px;font-weight:700;color:var(--navy)">' + (item.title||'Sin título') + '</h3>'
+         + '<p style="font-size:12px;color:var(--muted);line-height:1.5;flex:1">' + (item.description||'Sin descripción') + '</p>'
+         + preHtml + catHtml + tagsHtml
+         + '<button class="btn btn-primary" style="justify-content:center;font-size:12px;margin-top:4px;"'
+         + ' onclick=\'exportCase(' + JSON.stringify(item).replace(/'/g,"&#39;") + ')\'>↓ Exportar</button>'
+         + '</div>';
+  }).join('');
+
+  var categoriesHtml = categories.length > 0 ? `
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+    <button class="pill active" onclick="filterRepo(null,this)">Todos</button>
+    ${filterButtonsHtml}
+  </div>` : '';
+
+  var mainRepoHtml = items.length === 0
+    ? '<div class="card" style="text-align:center;padding:40px;"><div style="font-size:32px;margin-bottom:12px;">📭</div><p style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;">Sin casos en el repositorio</p><p style="font-size:13px;color:var(--muted);">El administrador debe aprobar casos para que aparezcan aquí.</p></div>'
+    : '<div class="grid-3" id="repoGrid">' + repoGridHtml + '</div>';
+
   setHTML('content', `
     <div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
@@ -314,35 +361,8 @@ async function labRepo() {
         </div>
         <span class="badge badge-blue">${items.length} casos</span>
       </div>
-
-      ${categories.length > 0 ? `
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-        <button class="pill active" onclick="filterRepo(null,this)">Todos</button>
-        ${categories.map(c=>`<button class="pill" onclick="filterRepo('${c}',this)">${c}</button>`).join('')}
-      </div>` : ''}
-
-      ${items.length === 0
-        ? `<div class="card" style="text-align:center;padding:40px;">
-            <div style="font-size:32px;margin-bottom:12px;">📭</div>
-            <p style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;">Sin casos en el repositorio</p>
-            <p style="font-size:13px;color:var(--muted);">El administrador debe aprobar casos para que aparezcan aquí.</p>
-          </div>`
-        : `<div class="grid-3" id="repoGrid">
-            ${items.map(item=>`
-            <div class="card repo-item" data-category="${item.category||''}" style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <span class="badge ${typeColor(item.type)}">${item.type||'—'}</span>
-                <span class="badge badge-pass">✓ Validado</span>
-              </div>
-              <h3 style="font-size:13px;font-weight:700;color:var(--navy)">${item.title||'Sin título'}</h3>
-              <p style="font-size:12px;color:var(--muted);line-height:1.5;flex:1">${item.description||'Sin descripción'}</p>
-              ${item.preconditions ? `<p style="font-size:11px;color:var(--muted)"><strong>Pre:</strong> ${item.preconditions.slice(0,80)}...</p>` : ''}
-              ${item.category ? `<span style="font-size:11px;color:var(--bright);font-weight:600">📁 ${item.category}</span>` : ''}
-              ${item.tags?.length ? `<div style="display:flex;gap:4px;flex-wrap:wrap;">${item.tags.map(t=>`<span style="padding:2px 8px;background:var(--sky);border-radius:999px;font-size:11px;color:var(--muted)">${t}</span>`).join('')}</div>` : ''}
-              <button class="btn btn-primary" style="justify-content:center;font-size:12px;margin-top:4px;"
-                      onclick='exportCase(${JSON.stringify(item).replace(/'/g,"&#39;")})'>↓ Exportar</button>
-            </div>`).join('')}
-          </div>`}
+      ${categoriesHtml}
+      ${mainRepoHtml}
     </div>`);
 }
 
