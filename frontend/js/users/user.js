@@ -47,7 +47,10 @@ async function init() {
     state.nivelKey   = state.porcentaje <= 39 ? 'basico' : state.porcentaje <= 69 ? 'intermedio' : 'avanzado';
   }
 
-  try { state.courses = await apiFetch('/api/courses'); } catch { state.courses = []; }
+  try { 
+    const data = await apiFetch('/api/courses'); state.courses = data.courses || data || []; 
+  } 
+  catch { state.courses = []; }
 
   const nivel = LEVELS[state.nivelKey];
   const p     = state.porcentaje;

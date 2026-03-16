@@ -62,5 +62,8 @@ if (loginForm) {
 
 function showError(id, msg) {
   const el = document.getElementById(id);
-  if (el) el.textContent = msg;
+  if (el) {
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
 }

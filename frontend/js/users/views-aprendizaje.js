@@ -21,7 +21,10 @@ async function ruta() {
     </div>`);
 
   if (state.courses.length === 0) {
-    try { state.courses = await apiFetch('/api/courses'); } catch { state.courses = []; }
+    try { 
+      const data = await apiFetch('/api/courses'); state.courses = data.courses || data || []; 
+    } 
+    catch { state.courses = []; }
   }
 
   if (state.courses.length === 0) {
@@ -58,7 +61,9 @@ async function selectCourse(id) {
 async function loadModules(id_course) {
   setHTML('module-pills', '<span style="font-size:12px;color:var(--muted)">Cargando módulos...</span>');
   setHTML('module-content', '');
-  try { state.modules = await apiFetch('/api/courses/'+id_course+'/modules'); }
+  try { 
+    const data = await apiFetch('/api/courses/'+id_course+'/modules'); state.modules = data.modules || data || []; 
+  }
   catch { state.modules = []; }
 
   if (state.modules.length === 0) {
@@ -71,10 +76,12 @@ async function loadModules(id_course) {
   renderModuleContent();
 }
 
-function renderModulePills() {
+  function renderModulePills() {
   setHTML('module-pills', state.modules.map(m => `
     <button class="pill ${state.selectedModule?.id_module===m.id_module?'active':''}"
-            onclick="selectModule('${m.id_module}')">${m.title}</button>`).join(''));
+            onclick="selectModule('${m.id_module}')">
+      ${isCompleted(m.id_module) ? '✓ ' : ''}${m.title}
+    </button>`).join(''));
 }
 
 function selectModule(id) {
@@ -96,19 +103,27 @@ function renderModuleContent() {
     .replace(/^\d+\. (.+)$/gm,'<li style="font-size:13px;color:var(--muted);line-height:1.7;margin-left:16px">$1</li>')
     .replace(/\n\n/g,'<br>');
 
-  const idx = state.modules.findIndex(m2 => m2.id_module === m.id_module);
-  setHTML('module-content', `
-    <div style="padding:4px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--bright)">${state.selectedCourse?.title||''}</span>
-        <span class="badge badge-muted">Módulo ${m.orders||idx+1} de ${state.modules.length}</span>
-      </div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.8;">${html}</div>
-      <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
-        <button class="btn btn-outline" onclick="prevModule()" ${idx>0?'':'disabled style="opacity:.4;cursor:default"'}>← Anterior</button>
-        <button class="btn btn-primary" onclick="nextModule()" ${idx<state.modules.length-1?'':'disabled style="opacity:.4;cursor:default"'}>Siguiente →</button>
-      </div>
-    </div>`);
+const idx = state.modules.findIndex(m2 => m2.id_module === m.id_module);
+setHTML('module-content', `
+  <div style="padding:4px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--bright)">${state.selectedCourse?.title||''}</span>
+      <span class="badge badge-muted">Módulo ${m.orders||idx+1} de ${state.modules.length}</span>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8;">${html}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn btn-outline" onclick="prevModule()" ${idx>0?'':'disabled style="opacity:.4;cursor:default"'}> Anterior</button>
+      <button onclick="completeModule('${m.id_module}')" 
+        style="font-size:12px;padding:8px 20px;border-radius:8px;cursor:pointer;font-weight:700;
+          background:${isCompleted(m.id_module)?'#ECFDF5':'#3B5BDB'};
+          color:${isCompleted(m.id_module)?'#059669':'white'};
+          border:${isCompleted(m.id_module)?'1.5px solid #059669':'none'}">
+        ${isCompleted(m.id_module) ? ' Completado' : 'Marcar como completado'}
+      </button>
+      <button class="btn btn-primary" onclick="nextModule()" ${idx<state.modules.length-1?'':'disabled style="opacity:.4;cursor:default"'}> Siguiente </button>
+    </div>
+  </div>`);
+
 }
 
 function prevModule() {
@@ -118,6 +133,24 @@ function prevModule() {
 function nextModule() {
   const idx = state.modules.findIndex(m => m.id_module === state.selectedModule?.id_module);
   if (idx < state.modules.length-1) selectModule(state.modules[idx+1].id_module);
+}
+
+function getCompletedModules() {
+  return JSON.parse(localStorage.getItem('completedModules') || '[]');
+}
+
+function isCompleted(id_module) {
+  return getCompletedModules().includes(id_module);
+}
+
+function completeModule(id_module) {
+  const completed = getCompletedModules();
+  if (!completed.includes(id_module)) {
+    completed.push(id_module);
+    localStorage.setItem('completedModules', JSON.stringify(completed));
+  }
+  renderModuleContent();
+  renderModulePills();
 }
 
 function dashboard() {
