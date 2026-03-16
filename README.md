@@ -197,12 +197,12 @@ Login → Panel Admin
 
 ## Equipo
 
-Juan Jose Peña 
-Luisa Higuita
-Samuel
-Sebastian Mejia
-Juan Manuel Narvaez
-Juan Loaiza
+> Juan Jose Peña  
+> Luisa Higuita
+> Samuel
+> Sebastian Mejia
+> Juan Manuel Narvaez
+> Juan Loaiza
 
 
 **Proyecto integrador — QA Learn · RIWI**
