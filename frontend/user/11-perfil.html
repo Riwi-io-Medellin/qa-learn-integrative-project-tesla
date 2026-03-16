@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil — QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",card:"#F7F9FF",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["DM Mono","monospace"]}}}};</script>
+  <style>
+    .content-area{height:calc(100vh - 64px);overflow-y:auto}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#D0D9F0;border-radius:4px}
+  </style>
+</head>
+<body class="font-sans antialiased bg-sky">
+<div class="flex h-screen overflow-hidden">
+
+<aside class="w-60 flex-shrink-0 bg-white border-r border-border flex flex-col">
+  <div class="h-16 flex items-center px-5 border-b border-border flex-shrink-0">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#3B5BDB">
+        <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <span class="font-extrabold text-navy text-sm">QA <span style="color:#3B5BDB">Learn</span></span>
+    </div>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+    <div data-active="false">
+      <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky">
+        <svg class="w-4 h-4 flex-shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="text-sm font-semibold text-muted flex-1">Aprendizaje</span>
+        <svg class="w-3.5 h-3.5 text-muted transition-transform" style="transform:rotate(-90deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Dashboard</a>
+        <a href="07-ruta.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Ruta de Aprendizaje</a>
+      </div>
+    </div>
+    <div data-active="false">
+      <a href="08-dashboard-laboratorio.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky">
+        <svg class="w-4 h-4 flex-shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        <span class="text-sm font-semibold text-muted flex-1">Laboratorio</span>
+        <svg class="w-3.5 h-3.5 text-muted transition-transform" style="transform:rotate(-90deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="08-dashboard-laboratorio.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Dashboard</a>
+        <a href="09-pruebas.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Pruebas</a>
+        <a href="10-biblioteca.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Repositorio</a>
+      </div>
+    </div>
+    <div>
+      <a href="11-perfil.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl" style="background:rgba(59,91,219,0.08)">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-sm font-bold" style="color:#1E3A5F">Perfil</span>
+      </a>
+    </div>
+    <div>
+      <a href="12-configuraciones.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky">
+        <svg class="w-4 h-4 flex-shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-semibold text-muted">Configuraciones</span>
+      </a>
+    </div>
+  </nav>
+  <div class="px-4 py-3 border-t border-border flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <div id="sb-avatar" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#3B5BDB">U</div>
+      <div class="min-w-0 flex-1">
+        <p id="sb-name" class="text-xs font-bold text-navy truncate">Usuario</p>
+        <p id="sb-level" class="text-xs text-muted truncate">Estudiante</p>
+      </div>
+      <button id="logout-btn" title="Cerrar sesion" class="text-muted hover:text-fail transition-colors flex-shrink-0">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+  <header class="h-16 bg-white border-b border-border flex items-center px-6 flex-shrink-0">
+    <div>
+      <h1 class="text-base font-bold text-navy">Mi Perfil</h1>
+      <p class="text-xs text-muted">Información personal y progreso</p>
+    </div>
+  </header>
+
+  <div class="content-area p-6">
+    <div class="max-w-4xl mx-auto grid grid-cols-3 gap-5">
+
+      <!-- COL IZQ: Avatar + info básica -->
+      <div class="col-span-1 space-y-4">
+
+        <!-- Card avatar -->
+        <div class="bg-white rounded-2xl border border-border p-6 text-center">
+          <div id="p-avatar" class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-3xl font-extrabold" style="background:#3B5BDB">U</div>
+          <h2 id="p-name" class="text-base font-extrabold text-navy mb-0.5">—</h2>
+          <p id="p-email" class="text-xs text-muted mb-3">—</p>
+          <div class="flex items-center justify-center gap-2 flex-wrap">
+            <span id="p-role" class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:#EEF2FB;color:#3B5BDB">—</span>
+            <span id="p-status" class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:#F0FDF4;color:#2D9B6F">Activo</span>
+          </div>
+          <div class="border-t border-border mt-4 pt-4 text-left space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-muted">Miembro desde</span>
+              <span id="p-joined" class="text-xs font-semibold text-navy">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="bg-white rounded-2xl border border-border p-4">
+          <p class="text-xs font-bold text-navy uppercase tracking-wider mb-3">Accesos rápidos</p>
+          <div class="space-y-1">
+            <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky transition-all">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#EEF2FB">
+                <svg class="w-3.5 h-3.5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              </div>
+              <span class="text-xs font-semibold text-navy">Dashboard Aprendizaje →</span>
+            </a>
+            <a href="07-ruta.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky transition-all">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#EEF2FB">
+                <svg class="w-3.5 h-3.5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+              </div>
+              <span class="text-xs font-semibold text-navy">Continuar ruta →</span>
+            </a>
+            <a href="08-dashboard-laboratorio.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky transition-all">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#EEF2FB">
+                <svg class="w-3.5 h-3.5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              </div>
+              <span class="text-xs font-semibold text-navy">Laboratorio →</span>
+            </a>
+            <a href="12-configuraciones.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sky transition-all">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#EEF2FB">
+                <svg class="w-3.5 h-3.5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <span class="text-xs font-semibold text-navy">Configuraciones →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COL DER: Estadísticas y progreso -->
+      <div class="col-span-2 space-y-4">
+
+        <!-- Resumen estadísticas -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl border border-border p-4 text-center">
+            <p id="stat-progress" class="text-2xl font-extrabold" style="color:#3B5BDB">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Progreso ruta</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-4 text-center">
+            <p id="stat-modules" class="text-2xl font-extrabold text-navy">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Módulos completados</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-4 text-center">
+            <p id="stat-projects" class="text-2xl font-extrabold" style="color:#2D9B6F">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Proyectos creados</p>
+          </div>
+        </div>
+
+        <!-- Progreso de la ruta -->
+        <div class="bg-white rounded-2xl border border-border p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-extrabold text-navy">Progreso en la ruta</h3>
+            <a href="07-ruta.html" class="text-xs font-bold transition-colors hover:opacity-75" style="color:#3B5BDB">Continuar →</a>
+          </div>
+          <div id="ruta-progress">
+            <div class="h-8 bg-sky rounded-xl animate-pulse"></div>
+          </div>
+        </div>
+
+        <!-- Nivel actual -->
+        <div class="bg-white rounded-2xl border border-border p-5">
+          <h3 class="text-sm font-extrabold text-navy mb-3">Nivel actual</h3>
+          <div id="nivel-card" class="flex items-center gap-4 p-4 rounded-xl" style="background:#EEF2FB">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#3B5BDB">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div class="flex-1">
+              <p id="nivel-name" class="text-sm font-extrabold text-navy">—</p>
+              <p id="nivel-ruta" class="text-xs text-muted mt-0.5">—</p>
+            </div>
+            <a href="06-dashboard-aprendizaje.html" class="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:opacity-75" style="background:#3B5BDB;color:white">Ver ruta</a>
+          </div>
+        </div>
+
+        <!-- Resumen laboratorio -->
+        <div class="bg-white rounded-2xl border border-border p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-extrabold text-navy">Laboratorio de pruebas</h3>
+            <a href="08-dashboard-laboratorio.html" class="text-xs font-bold transition-colors hover:opacity-75" style="color:#3B5BDB">Ver todos →</a>
+          </div>
+          <div id="lab-summary">
+            <div class="h-8 bg-sky rounded-xl animate-pulse"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const BASE_URL='http://localhost:3000/api';
+const _TOKEN=localStorage.getItem('qa_token');
+if(!_TOKEN) window.location.href='../public/02-login.html';
+const _U=JSON.parse(localStorage.getItem('qa_user')||'{}');
+const _diag=JSON.parse(localStorage.getItem('qa_last_diagnostic')||'null');
+const _dn=_U.first_name?(_U.first_name+' '+(_U.last_name||'')).trim():(_U.name||'Usuario');
+const _ini=(_U.first_name?_U.first_name[0]:(_U.name||'U')[0]).toUpperCase()+(_U.last_name?_U.last_name[0].toUpperCase():'');
+document.getElementById('sb-avatar').textContent=_ini;
+document.getElementById('sb-name').textContent=_dn;
+if(document.getElementById('sb-level')&&_diag?.level) document.getElementById('sb-level').textContent=_diag.level.label;
+document.getElementById('logout-btn').onclick=async()=>{try{await fetch(BASE_URL+'/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+_TOKEN}});}catch{}localStorage.clear();window.location.href='../public/02-login.html';};
+
+async function apiFetch(p,o={}){const h={'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN,...(o.headers||{})};const r=await fetch(BASE_URL+p,{...o,headers:h});const d=await r.json().catch(()=>({}));if(r.status===401){localStorage.clear();window.location.href='../public/02-login.html';return null;}if(!r.ok)throw new Error(d.error||d.message||'Error '+r.status);return d;}
+
+function badge(s){const M={ACTIVE:['#2D9B6F','Activo'],INACTIVE:['#4A5073','Inactivo'],ADMIN:['#2E4FBA','Admin'],STUDENT:['#3B5BDB','Estudiante']};const[c,l]=M[s]||['#4A5073',s];return `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;background:${c}20;color:${c}">${l}</span>`;}
+function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}
+
+async function loadProfile(){
+  // Datos del usuario
+  try{
+    const data=await apiFetch('/auth/me');
+    const me=data?.user||data;
+    const ini=(me.first_name?me.first_name[0]:'U').toUpperCase()+(me.last_name?me.last_name[0].toUpperCase():'');
+    const full=((me.first_name||'')+' '+(me.last_name||'')).trim();
+    document.getElementById('p-avatar').textContent=ini;
+    document.getElementById('p-name').textContent=full||'—';
+    document.getElementById('p-email').textContent=me.email||'—';
+    document.getElementById('p-role').textContent=me.role_name||'STUDENT';
+    document.getElementById('p-status').innerHTML=badge(me.status||'ACTIVE');
+    document.getElementById('p-joined').textContent=fmtDate(me.created_at);
+    localStorage.setItem('qa_user',JSON.stringify({..._U,first_name:me.first_name,last_name:me.last_name,email:me.email,role_name:me.role_name}));
+  }catch(e){document.getElementById('p-name').textContent='Error al cargar';}
+
+  // Progreso desde localStorage (qa_progress) — SIN diagnóstico
+  const diagLocal=JSON.parse(localStorage.getItem('qa_last_diagnostic')||'null');
+  const progress=JSON.parse(localStorage.getItem('qa_progress')||'{}');
+
+  if(diagLocal?.level){
+    document.getElementById('nivel-name').textContent=diagLocal.level.label||'—';
+    document.getElementById('nivel-ruta').textContent='Ruta: '+(diagLocal.route?.name||'—');
+    if(document.getElementById('sb-level')) document.getElementById('sb-level').textContent=diagLocal.level.label;
+  }else{
+    document.getElementById('nivel-card').innerHTML='<p class="text-sm text-muted">Sin nivel asignado. <a href="04-diagnostico.html" style="color:#3B5BDB;font-weight:700">Hacer diagnóstico →</a></p>';
+  }
+
+  // Progreso de la ruta
+  if(diagLocal?.route?.id){
+    const rp=progress[diagLocal.route.id]||{completedModules:[],completedCourses:[]};
+    const done=rp.completedModules.length;
+    // Obtener total de módulos de la ruta
+    try{
+      const routeData=await apiFetch('/routes/'+diagLocal.route.id);
+      const rObj=routeData?.route||routeData;
+      const courses=(rObj.courses||[]).filter(c=>c&&c.id_course);
+      let totalMods=0;
+      for(const c of courses){
+        try{const md=await apiFetch('/courses/'+c.id_course+'/modules');totalMods+=(md.modules||[]).length;}catch{}
+      }
+      const pct=totalMods>0?Math.round((done/totalMods)*100):0;
+      document.getElementById('stat-progress').textContent=pct+'%';
+      document.getElementById('stat-modules').textContent=done;
+      document.getElementById('ruta-progress').innerHTML=`
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-navy">${rObj.route_name||diagLocal.route.name||'—'}</span>
+          <span class="text-xs font-bold" style="color:#3B5BDB">${pct}%</span>
+        </div>
+        <div class="h-2.5 rounded-full overflow-hidden" style="background:#EEF2FB">
+          <div class="h-full rounded-full transition-all" style="width:${pct}%;background:#3B5BDB"></div>
+        </div>
+        <p class="text-xs text-muted mt-2">${done} módulo${done!==1?'s':''} completado${done!==1?'s':''} de ${totalMods}</p>`;
+    }catch{
+      document.getElementById('ruta-progress').innerHTML='<p class="text-sm text-muted">Error al cargar el progreso.</p>';
+    }
+  }else{
+    document.getElementById('ruta-progress').innerHTML='<p class="text-sm text-muted">Completa el diagnóstico para ver tu progreso de ruta. <a href="04-diagnostico.html" style="color:#3B5BDB;font-weight:700">Ir al diagnóstico →</a></p>';
+    document.getElementById('stat-progress').textContent='0%';
+    document.getElementById('stat-modules').textContent='0';
+  }
+
+  // Resumen laboratorio
+  try{
+    const pd=await apiFetch('/projects');
+    const pls=Array.isArray(pd)?pd:(pd.projects||[]);
+    document.getElementById('stat-projects').textContent=pls.length;
+    document.getElementById('lab-summary').innerHTML=`
+      <div class="grid grid-cols-3 gap-3">
+        <div class="p-3 rounded-xl text-center" style="background:#EEF2FB"><p class="text-xl font-extrabold text-navy">${pls.length}</p><p class="text-xs text-muted mt-0.5">Proyectos</p></div>
+        <div class="p-3 rounded-xl text-center" style="background:#F0FDF4"><p class="text-xl font-extrabold" style="color:#2D9B6F">${pls.filter(p=>p.status==='ACTIVE').length}</p><p class="text-xs text-muted mt-0.5">Activos</p></div>
+        <div class="p-3 rounded-xl text-center" style="background:#FFF7E6"><p class="text-xl font-extrabold" style="color:#D4A017">${pls.filter(p=>p.status==='ARCHIVED').length}</p><p class="text-xs text-muted mt-0.5">Archivados</p></div>
+      </div>`;
+  }catch{
+    document.getElementById('lab-summary').innerHTML='<p class="text-sm text-muted">Error al cargar proyectos.</p>';
+    document.getElementById('stat-projects').textContent='—';
+  }
+}
+
+// Sidebar nav collapse
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('nav > div').forEach(function(item){
+    const link=item.querySelector(':scope > a');const sub=item.querySelector(':scope > div');const chev=link?link.querySelector('svg:last-child'):null;
+    if(!link)return;
+    if(sub){sub.style.overflow='hidden';sub.style.transition='max-height .25s ease';const ia=item.dataset.active==='true';if(ia){sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}else{sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}}
+    if(!sub)return;
+    link.addEventListener('click',function(e){e.preventDefault();const io=sub.style.maxHeight!=='0px'&&sub.style.maxHeight!=='';document.querySelectorAll('nav > div').forEach(function(o){if(o===item)return;const s=o.querySelector(':scope > div');const c=o.querySelector(':scope > a svg:last-child');if(s)s.style.maxHeight='0';if(c)c.style.transform='rotate(-90deg)';});if(io){sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}else{sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}});
+  });
+});
+
+loadProfile();
+</script>
+</body>
+</html>

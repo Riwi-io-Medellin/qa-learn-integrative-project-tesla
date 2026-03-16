@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ruta de Aprendizaje — QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",card:"#F7F9FF",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["DM Mono","monospace"]}}}}</script>
+  <style>
+    ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#D0D9F0;border-radius:4px}
+    .fade-in{animation:fadeIn .25s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body class="font-sans antialiased bg-sky flex h-screen overflow-hidden">
+
+<aside class="w-60 flex-shrink-0 bg-white border-r border-border flex flex-col" style="min-height:100vh;">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-5 border-b border-border flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#3B5BDB;">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <span class="font-extrabold text-navy text-sm">QA Learn</span>
+      </div>
+    </div>
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+    <div data-active="true">
+      <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="background:rgba(59,91,219,0.08);">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#3B5BDB"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="text-sm font-bold" style="color:#1E3A5F;">Aprendizaje</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#3B5BDB;transform:rotate(0deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Dashboard</a>
+        <a href="07-ruta.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-bold" style="color:#3B5BDB;background:rgba(59,91,219,0.08);"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#3B5BDB"></div>Ruta de Aprendizaje</a>
+      </div>
+    </div>
+    <div data-active="false">
+      <a href="08-dashboard-laboratorio.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Laboratorio</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#4A5073;transform:rotate(-90deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="08-dashboard-laboratorio.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Dashboard</a>
+        <a href="09-pruebas.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Pruebas</a>
+        <a href="10-biblioteca.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Repositorio</a>
+      </div>
+    </div>
+    <div>
+      <a href="11-perfil.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Perfil</span>
+      </a>
+    </div>
+    <div>
+      <a href="12-configuraciones.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Configuraciones</span>
+      </a>
+    </div>
+    </nav>
+    <!-- Footer: usuario + logout -->
+    <div class="px-4 py-3 border-t border-border flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <div id="sb-avatar" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#3B5BDB;">U</div>
+        <div class="min-w-0 flex-1">
+          <p id="sb-name" class="text-xs font-bold text-navy truncate">Usuario</p>
+          <p id="sb-level" class="text-xs text-muted truncate">Estudiante</p>
+        </div>
+        <button id="logout-btn" title="Cerrar sesion" class="text-muted hover:text-fail transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+<!-- MAIN -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+  <header class="h-16 bg-white border-b border-border flex items-center justify-between px-6 flex-shrink-0">
+    <div>
+      <h1 class="text-base font-bold text-navy">Ruta de Aprendizaje</h1>
+      <p class="text-xs text-muted" id="breadcrumb">Selecciona un curso para ver sus modulos</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 bg-sky rounded-xl px-4 py-2 border border-border">
+        <div class="relative w-8 h-8">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="12" fill="none" stroke="#D0D9F0" stroke-width="3"/>
+            <circle id="progress-arc" cx="16" cy="16" r="12" fill="none" stroke="#3B5BDB" stroke-width="3" stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="75.4"/>
+          </svg>
+          <span id="progress-pct" class="absolute inset-0 flex items-center justify-center text-xs font-bold" style="color:#3B5BDB">—</span>
+        </div>
+        <span class="text-xs font-semibold text-navy">Ruta completada</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- PANEL IZQUIERDO: Ruta y sus cursos -->
+    <div class="w-72 flex-shrink-0 bg-white border-r border-border overflow-y-auto">
+      <div class="p-4">
+        <p class="text-xs font-bold text-muted uppercase tracking-wider mb-3 px-1">Mi Ruta</p>
+        <div class="space-y-3" id="routes-panel"></div>
+      </div>
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="flex-1 overflow-y-auto" id="right-panel">
+
+      <!-- Estado vacío -->
+      <div id="empty-state" class="flex flex-col items-center justify-center h-full text-center p-10">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background:#EEF2FB">
+          <svg class="w-8 h-8" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <h3 class="text-base font-bold text-navy mb-2">Selecciona un curso</h3>
+        <p class="text-sm text-muted max-w-xs">Elige un curso en el panel izquierdo para ver sus modulos disponibles.</p>
+      </div>
+
+      <!-- Lista de módulos del curso -->
+      <div id="modules-panel" class="hidden fade-in p-6">
+        <div class="mb-5">
+          <div class="flex items-center gap-2 mb-1" id="modules-breadcrumb"></div>
+          <h2 class="text-lg font-extrabold text-navy" id="modules-title"></h2>
+          <p class="text-sm text-muted" id="modules-subtitle"></p>
+        </div>
+        <div class="grid gap-3" id="modules-list"></div>
+      </div>
+
+      <!-- Visor de módulo (contenido Markdown) -->
+      <div id="module-viewer" class="hidden fade-in">
+        <div class="sticky top-0 z-10 bg-white border-b border-border px-6 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-2 text-xs text-muted flex-wrap">
+            <span id="cv-ruta" class="font-semibold text-navy"></span>
+            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <button onclick="backToModules()" class="hover:text-bright transition-colors" id="cv-curso"></button>
+            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <span class="font-bold" style="color:#3B5BDB" id="cv-modulo"></span>
+          </div>
+          <button onclick="backToModules()" class="flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-navy transition-colors px-3 py-1.5 rounded-lg hover:bg-sky">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Volver al curso
+          </button>
+        </div>
+        <div class="p-6 max-w-3xl mx-auto" id="cv-content"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+const BASE_URL = 'http://localhost:3000/api';
+const _TOKEN = localStorage.getItem('qa_token');
+if (!_TOKEN) window.location.href = '../public/02-login.html';
+const _U = JSON.parse(localStorage.getItem('qa_user') || '{}');
+const _diag = JSON.parse(localStorage.getItem('qa_last_diagnostic') || 'null');
+const _displayName = _U.first_name ? (_U.first_name+' '+(_U.last_name||'')).trim() : (_U.name||'Usuario');
+const _initials = (_U.first_name ? _U.first_name[0] : (_U.name||'U')[0]).toUpperCase() + (_U.last_name ? _U.last_name[0].toUpperCase() : '');
+if(document.getElementById('sb-avatar')) document.getElementById('sb-avatar').textContent = _initials;
+if(document.getElementById('sb-name')) document.getElementById('sb-name').textContent = _displayName;
+if(document.getElementById('sb-level') && _diag?.level) document.getElementById('sb-level').textContent = _diag.level.label;
+if(document.getElementById('logout-btn')) document.getElementById('logout-btn').onclick = async () => {
+  try { await fetch(BASE_URL+'/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+_TOKEN}}); } catch {}
+  localStorage.clear(); window.location.href='../public/02-login.html';
+};
+async function apiFetch(path, opts={}) {
+  const h = {'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN,...(opts.headers||{})};
+  const r = await fetch(BASE_URL+path,{...opts,headers:h});
+  const d = await r.json().catch(()=>({}));
+  if(r.status===401){localStorage.clear();window.location.href='../public/02-login.html';return null;}
+  if(!r.ok) throw new Error(d.error||d.message||'Error '+r.status);
+  return d;
+}
+function badge(s){const M={PASSED:['#2D9B6F','Pasado'],FAILED:['#C0392B','Fallido'],BLOCKED:['#D4A017','Bloqueado'],DRAFT:['#4A5073','Borrador'],ACTIVE:['#3B5BDB','Activo'],COMPLETED:['#2D9B6F','Completado'],ARCHIVED:['#4A5073','Archivado'],PENDING:['#D4A017','Pendiente']};const[c,l]=M[s]||['#4A5073',s];return `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;background:${c}20;color:${c}">${l}</span>`;}
+function fmtDate(iso){if(!iso)return '—';return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}
+document.addEventListener('DOMContentLoaded',function(){
+  const navItems=document.querySelectorAll('nav > div');
+  navItems.forEach(function(item){
+    const link=item.querySelector(':scope > a');const submenu=item.querySelector(':scope > div');const chevron=link?link.querySelector('svg:last-child'):null;
+    if(!link)return;const isActive=item.dataset.active==='true';
+    if(submenu){submenu.style.overflow='hidden';submenu.style.transition='max-height 0.25s ease';if(isActive){submenu.style.maxHeight=submenu.scrollHeight+'px';if(chevron)chevron.style.transform='rotate(0deg)';}else{submenu.style.maxHeight='0';if(chevron)chevron.style.transform='rotate(-90deg)';}}
+    if(!submenu)return;
+    link.addEventListener('click',function(e){e.preventDefault();const isOpen=submenu.style.maxHeight!=='0px'&&submenu.style.maxHeight!=='';navItems.forEach(function(other){if(other===item)return;const s=other.querySelector(':scope > div');const c=other.querySelector(':scope > a svg:last-child');if(s)s.style.maxHeight='0';if(c)c.style.transform='rotate(-90deg)';});if(isOpen){submenu.style.maxHeight='0';if(chevron)chevron.style.transform='rotate(-90deg)';}else{submenu.style.maxHeight=submenu.scrollHeight+'px';if(chevron)chevron.style.transform='rotate(0deg)';}});
+  });
+});
+
+
+// Lógica: Ruta → Cursos (en panel izq) → click curso → Módulos (en panel der) → click módulo → Contenido
+let currentRuta = null, currentCourse = null;
+
+function renderMd(text) {
+  if (!text) return '<p class="text-sm text-muted">Sin contenido disponible.</p>';
+  return text
+    .replace(/```([\s\S]*?)```/g,'<pre style="background:#1A1A2E;color:#a8d8a8;padding:14px;border-radius:8px;overflow-x:auto;font-size:12px;font-family:"DM Mono",monospace;margin:10px 0"><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code style="background:#EEF2FB;border:1px solid #D0D9F0;border-radius:4px;padding:1px 6px;font-family:"DM Mono",monospace;font-size:12px;color:#3B5BDB">$1</code>')
+    .replace(/^### (.+)$/gm,'<h3 style="font-size:15px;font-weight:700;color:#1E3A5F;margin:14px 0 6px">$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2 style="font-size:17px;font-weight:700;color:#1E3A5F;margin:18px 0 8px">$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1 style="font-size:20px;font-weight:800;color:#1E3A5F;margin:20px 0 10px">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong style="color:#1E3A5F;font-weight:700">$1</strong>')
+    .replace(/^- (.+)$/gm,'<li style="font-size:14px;line-height:1.7;color:#1A1A2E;margin-bottom:3px">$1</li>')
+    .replace(/(<li[^>]*>[\s\S]+?<\/li>)/g, m => `<ul style="padding-left:18px;margin:8px 0">${m}</ul>`)
+    .replace(/\n/g,'</p><p style="font-size:14px;line-height:1.75;color:#1A1A2E;margin-bottom:8px">')
+    .replace(/^([^<].+)/gm, m => m.trim().startsWith('<') ? m : `<p style="font-size:14px;line-height:1.75;color:#1A1A2E;margin-bottom:8px">${m}</p>`)
+    .trim();
+}
+
+async function init() {
+  const diag = _diag;
+  if (!diag || !diag.route) {
+    document.getElementById('routes-panel').innerHTML =
+      `<div style="padding:16px;text-align:center">
+         <p class="text-sm text-muted mb-3">No tienes ruta asignada.</p>
+         <a href="04-diagnostico.html" style="font-size:12px;font-weight:700;color:#3B5BDB">Ir al diagnostico →</a>
+       </div>`;
+    return;
+  }
+
+  // GET /api/routes/:id → { route: { id_route, route_name, level_name, courses:[{id_course,title,orders}] } }
+  let data, rObj, courses = [];
+  try {
+    data    = await apiFetch('/routes/' + diag.route.id);
+    rObj    = data?.route || data || {};
+    courses = (rObj.courses || []).filter(c => c && c.id_course).sort((a,b) => (a.orders||0)-(b.orders||0));
+  } catch(fetchErr) {
+    document.getElementById('routes-panel').innerHTML =
+      `<div style="padding:16px;text-align:center;color:#C0392B;font-size:12px">
+         Error cargando la ruta: ${fetchErr.message}<br>
+         <a href="04-diagnostico.html" style="color:#3B5BDB;font-weight:700;font-size:12px">Repetir diagnóstico</a>
+       </div>`;
+    return;
+  }
+  currentRuta = { ...rObj, courses };
+  
+  if (!courses.length) {
+    document.getElementById('routes-panel').innerHTML =
+      `<div style="padding:16px;text-align:center">
+         <p style="font-size:12px;color:#1E3A5F;font-weight:700;margin-bottom:6px">${rObj.route_name || 'Tu ruta'}</p>
+         <p style="font-size:11px;color:#4A5073;margin-bottom:10px">Esta ruta aún no tiene cursos asignados.<br>El administrador debe configurarlos.</p>
+         <a href="06-dashboard-aprendizaje.html" style="font-size:12px;font-weight:700;color:#3B5BDB">← Volver al dashboard</a>
+       </div>`;
+    return;
+  }
+
+  // Progreso real desde qa_progress (NO usar diag.score)
+  const arc = document.getElementById('progress-arc');
+  arc.style.strokeDashoffset = '75.4'; // se actualiza en updateProgressDisplay()
+  document.getElementById('progress-pct').textContent = '0%';
+
+  // Renderizar ruta en panel izquierdo
+  const panel = document.getElementById('routes-panel');
+  panel.innerHTML = '';
+
+  // Card de la ruta
+  const rutaCard = document.createElement('div');
+  rutaCard.innerHTML = `<div class="p-3 rounded-xl mb-2" style="border:2px solid #3B5BDB;background:white;">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-xs font-bold px-2 py-0.5 rounded-full text-white" style="background:#3B5BDB">${(diag.level?.label||'').slice(0,5)}</span>
+      <span class="text-xs font-bold text-navy flex-1 leading-snug">${rObj.route_name}</span>
+    </div>
+    <div class="h-1.5 rounded-full overflow-hidden mb-1" style="background:#EEF2FB">
+      <div class="route-progress-bar h-full rounded-full" style="width:0%;background:#3B5BDB;transition:width .6s ease"></div>
+    </div>
+    <p class="route-progress-pct text-xs text-muted">Calculando progreso...</p>
+  </div>`;
+  panel.appendChild(rutaCard);
+
+  // Lista de cursos
+  const coursesDiv = document.createElement('div');
+  coursesDiv.className = 'space-y-1 ml-1';
+  courses.forEach((c, idx) => {
+    const btn = document.createElement('div');
+    btn.id = `course-btn-${c.id_course}`;
+    btn.className = 'flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all hover:bg-sky ml-1';
+    btn.onclick = () => selectCourse(c, btn);
+    btn.innerHTML = `
+      <div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#3B5BDB;color:white;font-size:11px;font-weight:700">${idx+1}</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold truncate text-navy">${c.title}</p>
+      </div>
+      <svg class="w-3.5 h-3.5 flex-shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>`;
+    coursesDiv.appendChild(btn);
+  });
+  panel.appendChild(coursesDiv);
+
+  // Pre-cargar TODOS los módulos de todos los cursos para calcular el progreso total
+  // Esto permite que el % sea coherente desde el primer render, sin depender de qué curso esté abierto
+  let _preloadDone = false;
+  (async () => {
+    for (const c of courses) {
+      try {
+        const md   = await apiFetch('/courses/' + c.id_course + '/modules');
+        const mods = md.modules || [];
+        // Agregar módulos que no estén ya en _allModules
+        for (const m of mods) {
+          if (!_allModules.find(x => x.id_module === m.id_module)) {
+            _allModules.push(m);
+          }
+        }
+      } catch(e) {}
+    }
+    // Ahora que tenemos todos los módulos, actualizar el % real
+    updateProgressDisplay();
+  })();
+
+  // Abrir automáticamente el primer curso
+  if (courses.length > 0) {
+    setTimeout(() => selectCourse(courses[0], document.getElementById(`course-btn-${courses[0].id_course}`)), 100);
+  }
+}
+
+async function selectCourse(course, btn) {
+  currentCourse = course;
+  // Highlight
+  document.querySelectorAll('[id^="course-btn-"]').forEach(el => { el.style.background=''; el.style.borderLeft=''; });
+  if (btn) { btn.style.background='rgba(59,91,219,0.08)'; btn.style.borderLeft='3px solid #3B5BDB'; }
+
+  document.getElementById('breadcrumb').textContent = (currentRuta?.route_name||'Ruta') + ' → ' + course.title;
+
+  // Cargar módulos del curso
+  // GET /api/courses/:id/modules → { modules: [{ id_module, title, content, orders }] }
+  document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('module-viewer').classList.add('hidden');
+  document.getElementById('modules-panel').classList.remove('hidden');
+  document.getElementById('modules-title').textContent = course.title;
+  document.getElementById('modules-subtitle').textContent = 'Cargando modulos...';
+  document.getElementById('modules-breadcrumb').innerHTML =
+    `<span class="text-xs font-semibold text-muted">${currentRuta?.route_name||'Ruta'}</span>
+     <svg class="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+     <span class="text-xs font-bold text-navy">${course.title}</span>`;
+  document.getElementById('modules-list').innerHTML = '<div class="text-sm text-muted py-4">Cargando...</div>';
+
+  try {
+    const md   = await apiFetch('/courses/' + course.id_course + '/modules');
+    const mods = (md.modules || []).sort((a,b) => a.orders - b.orders);
+    // Acumular módulos evitando duplicados (para calcular progreso total)
+    for (const m of mods) {
+      if (!_allModules.find(x => x.id_module === m.id_module)) _allModules.push(m);
+    }
+    // Actualizar % cada vez que cargamos un curso (puede que sea la primera carga)
+    updateProgressDisplay();
+    document.getElementById('modules-subtitle').textContent = mods.length + ' modulo' + (mods.length!==1?'s':'');
+
+    const list = document.getElementById('modules-list');
+    list.innerHTML = '';
+    mods.forEach((m, idx) => {
+      const routeId   = currentRuta?.id_route;
+      const completed = isModuleComplete(routeId, m.id_module);
+      // Módulo bloqueado si el anterior no está completado (secuencial)
+      const prevCompleted = idx === 0 || isModuleComplete(routeId, mods[idx-1].id_module);
+      const isLocked  = !completed && !prevCompleted;
+      const isCurrent = !completed && prevCompleted;
+
+      const div = document.createElement('div');
+      div.className = 'flex items-center gap-4 p-4 bg-white rounded-2xl border transition-all';
+      div.style.borderColor = completed ? '#2D9B6F' : isCurrent ? '#3B5BDB' : '#D0D9F0';
+      div.style.opacity     = isLocked ? '0.5' : '1';
+      div.style.cursor      = isLocked ? 'not-allowed' : 'pointer';
+      if (!isLocked) {
+        div.classList.add('hover:shadow-md');
+        div.onclick = () => openModule(course, m, idx, mods);
+      }
+
+      // Icono del estado
+      const iconBg    = completed ? '#2D9B6F' : isCurrent ? '#3B5BDB' : '#D0D9F0';
+      const iconInner = completed
+        ? `<svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
+        : isLocked
+          ? `<svg class="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>`
+          : `<span class="text-white text-xs font-bold">${idx+1}</span>`;
+
+      const statusLabel = completed ? 'Completado' : isCurrent ? 'En progreso' : 'Bloqueado';
+      const statusColor = completed ? '#2D9B6F'    : isCurrent ? '#3B5BDB'    : '#9CA3AF';
+      const statusBg    = completed ? '#F0FDF4'    : isCurrent ? '#EEF2FB'    : '#F1F5F9';
+
+      div.innerHTML = `
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${iconBg}">
+          ${iconInner}
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold" style="color:${isLocked?'#9CA3AF':'#1E3A5F'}">${m.title}</p>
+          <p class="text-xs text-muted mt-0.5">Módulo ${idx+1}</p>
+        </div>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:${statusBg};color:${statusColor}">${statusLabel}</span>
+        ${!isLocked ? '<svg class="w-4 h-4 text-muted flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>' : ''}`;
+      list.appendChild(div);
+    });
+    if (!mods.length) list.innerHTML = '<p class="text-sm text-muted py-4">Sin modulos en este curso.</p>';
+  } catch (err) {
+    document.getElementById('modules-list').innerHTML = `<p class="text-sm text-muted">Error: ${err.message}</p>`;
+  }
+}
+
+function openModule(course, mod, idx, mods) {
+  _currentModule = mod;
+  document.getElementById('modules-panel').classList.add('hidden');
+  document.getElementById('module-viewer').classList.remove('hidden');
+  document.getElementById('module-viewer').classList.add('fade-in');
+  document.getElementById('cv-ruta').textContent   = currentRuta?.route_name || 'Ruta';
+  document.getElementById('cv-curso').textContent  = course.title;
+  document.getElementById('cv-modulo').textContent = mod.title;
+  document.getElementById('breadcrumb').textContent = (currentRuta?.route_name||'Ruta') + ' → ' + course.title + ' → ' + mod.title;
+
+  // Calcular estado del módulo antes de construir el HTML
+  const _routeId    = currentRuta?.id_route;
+  const _completed  = isModuleComplete(_routeId, mod.id_module);
+  // Verificar si el módulo anterior está completado (para habilitar este)
+  const _prevMods   = mods || _allModules.filter(m => m.id_course === course.id_course);
+  const _prevIdx    = _prevMods.findIndex(m => m.id_module === mod.id_module) - 1;
+  const _prevDone   = _prevIdx < 0 || isModuleComplete(_routeId, _prevMods[_prevIdx]?.id_module);
+  const _canComplete = !_completed && _prevDone;
+
+  const _btnStyle   = _completed ? 'background:#1E3A5F' : (_canComplete ? 'background:#2D9B6F' : 'background:#D0D9F0;cursor:not-allowed');
+  const _btnLabel   = _completed ? '✓ Completado — clic para desmarcar' : 'Marcar módulo completado';
+  const _btnDisabled = (!_completed && !_canComplete) ? 'disabled' : '';
+
+  // Construir el contenido en dos pasos para evitar conflictos con backticks en Markdown
+  const _contentEl = document.getElementById('cv-content');
+  _contentEl.innerHTML = '';
+
+  // Header + título
+  const _header = document.createElement('div');
+  _header.innerHTML = '<div class="flex items-start justify-between mb-2"><span class="text-xs font-bold uppercase tracking-widest" style="color:#3B5BDB">' + course.title + ' · Módulo ' + (idx+1) + '</span></div><h2 class="text-2xl font-extrabold text-navy mb-5">' + mod.title + '</h2>';
+  _contentEl.appendChild(_header);
+
+  // Contenido Markdown (inserción segura)
+  const _mdDiv = document.createElement('div');
+  _mdDiv.innerHTML = renderMd(mod.content || '');
+  _contentEl.appendChild(_mdDiv);
+
+  // Botones
+  const _footer = document.createElement('div');
+  _footer.className = 'flex items-center justify-between mt-8 pt-5 border-t border-border';
+  _footer.innerHTML = '<button onclick="backToModules()" class="flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all hover:bg-sky" style="border:2px solid #D0D9F0;color:#4A5073"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg> Volver al curso</button>'
+    + '<button id="complete-module-btn" onclick="toggleModuleComplete()" ' + _btnDisabled + ' class="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90" style="' + _btnStyle + '"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ' + _btnLabel + '</button>';
+  _contentEl.appendChild(_footer);
+}
+
+function backToModules() {
+  if (currentCourse) selectCourse(currentCourse, document.getElementById(`course-btn-${currentCourse.id_course}`));
+}
+
+init();
+
+// ── Sistema de progreso ────────────────────────────────────────────────
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('qa_progress') || '{}'); } catch { return {}; }
+}
+function saveProgress(p) { localStorage.setItem('qa_progress', JSON.stringify(p)); }
+
+function getRouteProgress(routeId) {
+  const p = getProgress();
+  return p[routeId] || { completedModules: [], completedCourses: [] };
+}
+
+function isModuleComplete(routeId, moduleId) {
+  return getRouteProgress(routeId).completedModules.includes(moduleId);
+}
+
+function toggleModuleComplete() {
+  if (!currentRuta || !currentCourse || !_currentModule) return;
+  const routeId  = currentRuta.id_route;
+  const moduleId = _currentModule.id_module;
+  const wasCompleted = isModuleComplete(routeId, moduleId);
+
+  // Verificar que sea el módulo actual (secuencial)
+  // Solo puede togglearse el último completado o el siguiente pendiente
+  const courseMods = _allModules.filter(m => m.id_course === currentCourse.id_course)
+    .sort((a,b)=>a.orders-b.orders);
+  const idx = courseMods.findIndex(m => m.id_module === moduleId);
+  const prevDone = idx === 0 || isModuleComplete(routeId, courseMods[idx-1]?.id_module);
+  const nextCompleted = courseMods[idx+1] && isModuleComplete(routeId, courseMods[idx+1]?.id_module);
+
+  // No permitir desmarcar si hay módulos posteriores completados (rompería secuencia)
+  if (wasCompleted && nextCompleted) {
+    alert('No puedes desmarcar este módulo porque ya completaste módulos posteriores. Desmarca en orden inverso.');
+    return;
+  }
+  if (!wasCompleted && !prevDone) return; // bloqueado
+
+  const p = getProgress();
+  if (!p[routeId]) p[routeId] = { completedModules: [], completedCourses: [] };
+
+  if (wasCompleted) {
+    // Desmarcar
+    p[routeId].completedModules = p[routeId].completedModules.filter(id => id !== moduleId);
+    p[routeId].completedCourses = p[routeId].completedCourses.filter(id => id !== currentCourse.id_course);
+    p[routeId].routeCompleted   = false;
+  } else {
+    // Marcar como completado
+    if (!p[routeId].completedModules.includes(moduleId)) {
+      p[routeId].completedModules.push(moduleId);
+    }
+    // Verificar si todos los módulos del curso están completos
+    const allModsDone = courseMods.every(m => p[routeId].completedModules.includes(m.id_module));
+    if (allModsDone && !p[routeId].completedCourses.includes(currentCourse.id_course)) {
+      p[routeId].completedCourses.push(currentCourse.id_course);
+    }
+    // Verificar si todos los cursos de la ruta están completos
+    const routeCourses = currentRuta.courses || [];
+    const allCoursesDone = routeCourses.every(co => p[routeId].completedCourses.includes(co.id_course));
+    if (allCoursesDone) p[routeId].routeCompleted = true;
+  }
+
+  saveProgress(p);
+  updateProgressDisplay();
+
+  // Refrescar la lista para mostrar el estado actualizado
+  setTimeout(() => {
+    if (currentCourse) selectCourse(currentCourse, document.getElementById(`course-btn-${currentCourse.id_course}`));
+  }, 400);
+}
+
+function markModuleComplete() { toggleModuleComplete(); }
+
+function getModuleCompletionStatus(routeId, moduleId) {
+  return isModuleComplete(routeId, moduleId);
+}
+
+function updateProgressDisplay() {
+  if (!currentRuta) return;
+  const routeId = currentRuta.id_route;
+  const rp      = getRouteProgress(routeId);
+  const total   = _allModules.length;
+  const done    = rp.completedModules.length;
+  const pct     = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  // Círculo header
+  const pctEl = document.getElementById('progress-pct');
+  if (pctEl) pctEl.textContent = pct + '%';
+  const arc = document.getElementById('progress-arc');
+  if (arc) arc.style.strokeDashoffset = String(75.4 - (pct / 100) * 75.4);
+
+  // Barra en card de ruta (panel izquierdo)
+  const routeBar = document.querySelector('.route-progress-bar');
+  if (routeBar) routeBar.style.width = pct + '%';
+  const routePctText = document.querySelector('.route-progress-pct');
+  if (routePctText) routePctText.textContent = pct + '% completado · ' + done + '/' + total + ' módulos';
+
+  // Persistir estado para que sea coherente entre páginas
+  try {
+    const p = getProgress();
+    if (!p[routeId]) p[routeId] = { completedModules: [], completedCourses: [] };
+    p[routeId]._totalModules = total;
+    saveProgress(p);
+  } catch(e) {}
+}
+
+let _currentModule = null;
+let _allModules    = [];
+
+</script>
+</body></html>

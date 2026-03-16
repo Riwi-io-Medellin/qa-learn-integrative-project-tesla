@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evaluacion Diagnostica - QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"]}}}}</script>
+  <style>
+    @keyframes fade-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .fade-in{animation:fade-in 0.4s ease forwards}
+  </style>
+</head>
+<body class="font-sans bg-sky min-h-screen antialiased">
+<header class="bg-white border-b border-border sticky top-0 z-40">
+  <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#3B5BDB"><svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <div><p class="text-xs text-muted font-medium leading-none">QA Learn</p><p class="text-sm font-bold text-navy leading-none mt-0.5">Evaluacion Diagnostica</p></div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div id="user-initials" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background:#3B5BDB">U</div>
+      <span id="user-name" class="text-sm font-medium text-navy hidden md:block">Cargando...</span>
+    </div>
+  </div>
+  <div class="h-1.5 bg-border"><div id="progress-bar" class="h-full rounded-r-full transition-all duration-500" style="width:0%;background:linear-gradient(90deg,#3B5BDB,#2D9B6F)"></div></div>
+  <div class="max-w-6xl mx-auto px-6 py-1.5 flex justify-between">
+    <span class="text-xs text-muted">Pregunta <span id="q-current">1</span> de 20</span>
+    <span class="text-xs font-semibold" style="color:#3B5BDB" id="pct-label">0% completado</span>
+  </div>
+</header>
+<div class="max-w-6xl mx-auto px-4 py-8 flex gap-6">
+  <aside class="w-64 flex-shrink-0">
+    <div class="bg-white rounded-2xl border border-border p-5 sticky top-36">
+      <p class="text-xs font-bold text-navy uppercase tracking-wider mb-1">Navegador de preguntas</p>
+      <p class="text-xs text-muted mb-4">Ir a cualquier pregunta</p>
+      <div id="question-grid" class="grid grid-cols-5 gap-2 mb-5"></div>
+      <div class="space-y-2 pt-4 border-t border-border">
+        <div class="flex items-center gap-2"><div class="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold" style="background:#3B5BDB">V</div><span class="text-xs text-muted">Completado</span></div>
+        <div class="flex items-center gap-2"><div class="w-6 h-6 rounded-md bg-white flex items-center justify-center text-xs font-bold" style="border:2px solid #3B5BDB;color:#3B5BDB">1</div><span class="text-xs text-muted">Actual</span></div>
+        <div class="flex items-center gap-2"><div class="w-6 h-6 rounded-md flex items-center justify-center text-xs text-muted font-medium" style="background:#EEF2FB">2</div><span class="text-xs text-muted">No visitado</span></div>
+      </div>
+    </div>
+  </aside>
+  <main class="flex-1 min-w-0">
+    <div id="question-card" class="bg-white rounded-2xl border border-border p-8 fade-in"></div>
+    <div class="flex items-center justify-between mt-6 px-1">
+      <button onclick="prevQ()" class="flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all" style="border:2px solid #D0D9F0;color:#4A5073">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Pregunta anterior
+      </button>
+      <button onclick="skipQ()" class="text-sm text-muted hover:text-navy transition-colors font-medium">Omitir por ahora</button>
+      <button id="next-btn" onclick="nextQ()" disabled class="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all" style="background:#D0D9F0;color:#4A5073;cursor:not-allowed">
+        <span id="next-label">Siguiente pregunta</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </button>
+    </div>
+  </main>
+</div>
+<footer class="mt-8 py-4 border-t border-border">
+  <div class="max-w-6xl mx-auto px-6 flex justify-between">
+    <p class="text-xs text-muted">QA Learn. Evaluacion diagnostica.</p>
+    <div class="flex gap-4"><a href="#" class="text-xs text-muted hover:text-navy">Directrices</a><a href="#" class="text-xs text-muted hover:text-navy">Soporte tecnico</a></div>
+  </div>
+</footer>
+<div id="complete-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4" style="background:rgba(30,58,95,0.5)">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl fade-in">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background:#2D9B6F">
+      <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h3 class="text-2xl font-extrabold text-navy mb-2">Diagnostico completado!</h3>
+    <p class="text-muted text-sm mb-2">Procesando tu resultado...</p>
+    <p id="modal-score" class="text-3xl font-extrabold mb-4" style="color:#3B5BDB"></p>
+    <div id="modal-dots" class="flex justify-center gap-1.5 mb-6">
+      <div class="w-2 h-2 rounded-full bg-bright animate-bounce"></div>
+      <div class="w-2 h-2 rounded-full bg-bright animate-bounce" style="animation-delay:0.15s"></div>
+      <div class="w-2 h-2 rounded-full bg-bright animate-bounce" style="animation-delay:0.3s"></div>
+    </div>
+    <button onclick="goResult()" class="w-full py-3.5 rounded-xl text-white font-bold" style="background:#3B5BDB">Ver mi resultado</button>
+  </div>
+</div>
+<script>
+const BASE_URL='http://localhost:3000/api';
+const TOKEN=localStorage.getItem('qa_token');
+if(!TOKEN) window.location.href='../public/02-login.html';
+const U=JSON.parse(localStorage.getItem('qa_user')||'{}');
+document.getElementById('user-initials').textContent=(U.first_name?U.first_name[0]:(U.name||'U')[0]).toUpperCase()+(U.last_name?U.last_name[0]:'');
+document.getElementById('user-name').textContent=U.first_name?(U.first_name+' '+(U.last_name||'')).trim():(U.name||'Usuario');
+
+const LV={BASIC:{id:'33070531-22ae-4bd6-af5e-e6d1beb1657f',label:'BASICO'},INTERMEDIATE:{id:'94e3c1e1-ef45-4e29-b846-020403648162',label:'INTERMEDIO'},ADVANCED:{id:'169f5154-b152-4e7c-877c-e93fb9e56540',label:'AVANZADO'}};
+const RT={BASIC:{id:'b5228685-766f-4cdb-ab6f-6229561b4618',name:'Ruta Basica de QA Testing'},INTERMEDIATE:{id:'b0bb6a45-1320-46e5-af50-89e8d87b4ad3',name:'Ruta Intermedia de QA Testing'},ADVANCED:{id:'c51d7c28-471c-484b-9874-fe6f2512fc0e',name:'Ruta Avanzada de QA Testing'}};
+function getResult(s){if(s<=40)return{level:LV.BASIC,route:RT.BASIC};if(s<=70)return{level:LV.INTERMEDIATE,route:RT.INTERMEDIATE};return{level:LV.ADVANCED,route:RT.ADVANCED};}
+
+const QS=[
+  {id:1,topic:'Principios de Testing',text:'Cual es el objetivo principal de las pruebas de regresion?',opts:[{id:'A',text:'Verificar requisitos funcionales iniciales'},{id:'B',text:'Asegurar que cambios recientes no introdujeron defectos en funcionalidades previas',c:true},{id:'C',text:'Evaluar rendimiento bajo alta carga'},{id:'D',text:'Documentar errores para el backlog'}]},
+  {id:2,topic:'Ciclo del Defecto',text:'Estado de un bug corregido por desarrollo pero no verificado por QA todavia:',opts:[{id:'A',text:'Cerrado (Closed)'},{id:'B',text:'Reabierto (Reopened)'},{id:'C',text:'Resuelto / Pendiente de verificacion (Resolved/Fixed)',c:true},{id:'D',text:'Diferido (Deferred)'}]},
+  {id:3,topic:'Tecnicas de Diseno',text:'Tecnica que reduce el numero de casos agrupando entradas con comportamiento similar:',opts:[{id:'A',text:'Analisis de valores limite (BVA)'},{id:'B',text:'Transicion de estados'},{id:'C',text:'Particion de equivalencia',c:true},{id:'D',text:'Prueba exploratoria'}]},
+  {id:4,topic:'Tipos de Testing',text:'Que tipo de prueba evalua el sistema bajo condiciones de carga extrema, superiores a las esperadas?',opts:[{id:'A',text:'Prueba de rendimiento (Performance Testing)'},{id:'B',text:'Prueba de estres (Stress Testing)',c:true},{id:'C',text:'Prueba de usabilidad'},{id:'D',text:'Prueba de seguridad'}]},
+  {id:5,topic:'Casos de Prueba',text:'Componente OBLIGATORIO en un caso de prueba formalmente documentado:',opts:[{id:'A',text:'Nombre del tester responsable'},{id:'B',text:'Tiempo estimado de ejecucion en milisegundos'},{id:'C',text:'Resultado esperado para cada paso',c:true},{id:'D',text:'Lenguaje de programacion del sistema'}]},
+  {id:6,topic:'Fundamentos QA',text:'Diferencia entre verificacion y validacion en QA:',opts:[{id:'A',text:'Verificacion al codigo, validacion a requisitos'},{id:'B',text:'Verificacion = expectativas cliente; validacion = proceso desarrollo'},{id:'C',text:'Verificacion = producto construido correctamente; validacion = producto correcto segun usuario',c:true},{id:'D',text:'Son terminos sinonimos'}]},
+  {id:7,topic:'Severidad y Prioridad',text:'Defecto que hace fallar el flujo de pago completamente sin solucion alternativa. Clasificacion:',opts:[{id:'A',text:'Severidad Alta, Prioridad Baja'},{id:'B',text:'Severidad Alta, Prioridad Alta',c:true},{id:'C',text:'Severidad Baja, Prioridad Alta'},{id:'D',text:'Severidad Media, Prioridad Media'}]},
+  {id:8,topic:'Ciclo de Vida SDLC',text:'En que fase del SDLC es mas economico encontrar y corregir un defecto?',opts:[{id:'A',text:'Durante UAT (User Acceptance Testing)'},{id:'B',text:'En produccion'},{id:'C',text:'Durante integracion y pruebas del sistema'},{id:'D',text:'Durante analisis y diseno de requisitos',c:true}]},
+  {id:9,topic:'Testing Manual',text:'Prueba que no requiere casos predefinidos y se basa en la experiencia del tester:',opts:[{id:'A',text:'Prueba de regresion'},{id:'B',text:'Prueba exploratoria',c:true},{id:'C',text:'Prueba de humo (Smoke Testing)'},{id:'D',text:'Prueba de aceptacion (UAT)'}]},
+  {id:10,topic:'Requisitos',text:'Que significa que un requisito sea "testeable"?',opts:[{id:'A',text:'Que puede implementarse en un sprint'},{id:'B',text:'Que esta en lenguaje tecnico'},{id:'C',text:'Que es posible definir criterios objetivos para verificar si se cumple',c:true},{id:'D',text:'Que fue aprobado por el cliente'}]},
+  {id:11,topic:'API Testing',text:'Codigo HTTP que indica que un POST creo exitosamente un recurso:',opts:[{id:'A',text:'200 OK'},{id:'B',text:'201 Created',c:true},{id:'C',text:'204 No Content'},{id:'D',text:'202 Accepted'}]},
+  {id:12,topic:'Automatizacion',text:'Tipo de caso de prueba NO recomendable para automatizar:',opts:[{id:'A',text:'Casos de alta frecuencia de ejecucion'},{id:'B',text:'Casos tediosos o propensos a error humano'},{id:'C',text:'Casos exploratorios donde la intuicion del tester es fundamental',c:true},{id:'D',text:'Casos con datos predecibles y resultados claros'}]},
+  {id:13,topic:'Analisis de Valores Limite',text:'Para un campo entre 1 y 100 inclusive, valores correctos para BVA:',opts:[{id:'A',text:'50 y 75'},{id:'B',text:'1 y 100 solamente'},{id:'C',text:'0, 1, 100 y 101',c:true},{id:'D',text:'Todos los valores de 1 a 100'}]},
+  {id:14,topic:'Agile QA',text:'Rol del QA Engineer en Agile/Scrum:',opts:[{id:'A',text:'Escribir todas las user stories antes del sprint'},{id:'B',text:'Ejecutar pruebas solo al final del sprint'},{id:'C',text:'Colaborar continuamente para asegurar calidad desde la definicion hasta la entrega',c:true},{id:'D',text:'Generar reportes finales al terminar el proyecto'}]},
+  {id:15,topic:'Metricas de Calidad',text:'Metrica que indica defectos que escaparon de testing y se encontraron en produccion:',opts:[{id:'A',text:'Cobertura de codigo'},{id:'B',text:'Tasa de escape de defectos (Defect Escape Rate)',c:true},{id:'C',text:'Densidad de defectos por KLOC'},{id:'D',text:'Tiempo medio entre fallos (MTBF)'}]},
+  {id:16,topic:'Tablas de Decision',text:'La tecnica de Tablas de Decision es mas apropiada para:',opts:[{id:'A',text:'Sistemas con transiciones de estado complejas'},{id:'B',text:'Navegacion entre paginas web'},{id:'C',text:'Combinaciones complejas de condiciones y acciones resultantes',c:true},{id:'D',text:'Pruebas de rendimiento bajo multiples usuarios'}]},
+  {id:17,topic:'Reporte de Defectos',text:'Informacion MAS importante en un reporte de defecto para ser accionable:',opts:[{id:'A',text:'Nombre del tester y fecha exacta'},{id:'B',text:'Pasos para reproducir, resultado actual y resultado esperado',c:true},{id:'C',text:'Sistema operativo y navegador del tester'},{id:'D',text:'Estimacion de horas para corregir'}]},
+  {id:18,topic:'Pruebas de Usabilidad',text:'Caracteristica fundamental para que una prueba de usabilidad sea valida:',opts:[{id:'A',text:'Que la ejecute exclusivamente el equipo de QA tecnico'},{id:'B',text:'Que use herramientas de automatizacion'},{id:'C',text:'Que participen usuarios representativos del publico objetivo real',c:true},{id:'D',text:'Que se realice en produccion con datos reales'}]},
+  {id:19,topic:'Gestion de Testing',text:'Estrategia de priorizacion mas efectiva con tiempo limitado:',opts:[{id:'A',text:'Ejecutar en orden alfabetico'},{id:'B',text:'Ejecutar primero los mas largos y complejos'},{id:'C',text:'Ejecutar primero los de mayor riesgo e impacto de negocio',c:true},{id:'D',text:'Ejecutar primero los mas recientes'}]},
+  {id:20,topic:'Integracion Continua',text:'Principal beneficio de integrar pruebas automatizadas en CI/CD:',opts:[{id:'A',text:'Eliminar completamente el testing manual'},{id:'B',text:'Detectar defectos rapidamente en cada commit, reduciendo el costo de correccion',c:true},{id:'C',text:'Garantizar 100% de cobertura de codigo'},{id:'D',text:'Reemplazar gradualmente al equipo de QA'}]}
+];
+
+const TOTAL=QS.length;
+let cur=1, ans={}, selectedOpt=null;
+
+function buildGrid(){
+  const g=document.getElementById('question-grid');g.innerHTML='';
+  for(let i=1;i<=TOTAL;i++){
+    const b=document.createElement('button');
+    b.onclick=()=>goQ(i);
+    b.style.cssText='width:32px;height:32px;border-radius:6px;font-size:11px;font-weight:700;transition:all 0.2s;border:none;cursor:pointer;';
+    if(ans[i]){b.innerHTML='V';b.style.background='#3B5BDB';b.style.color='white';}
+    else if(i===cur){b.textContent=i;b.style.background='white';b.style.border='2px solid #3B5BDB';b.style.color='#3B5BDB';}
+    else{b.textContent=i;b.style.background='#EEF2FB';b.style.color='#4A5073';}
+    g.appendChild(b);
+  }
+  document.getElementById('q-current').textContent=cur;
+  const pct=Math.round((Object.keys(ans).length/TOTAL)*100);
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('pct-label').textContent=pct+'% completado';
+}
+
+function renderQ(){
+  const q=QS[cur-1];const sel=ans[cur]||null;
+  const card=document.getElementById('question-card');
+  card.className='bg-white rounded-2xl border border-border p-8 fade-in';
+  card.innerHTML=`<div class="flex items-center justify-between mb-6"><span class="text-xs font-bold uppercase tracking-widest" style="color:#3B5BDB">Pregunta ${String(q.id).padStart(2,'0')}</span><span class="text-xs text-muted bg-sky px-3 py-1 rounded-full border border-border">QA - ${q.topic}</span></div><h2 class="text-xl font-bold text-navy leading-snug mb-8">${q.text}</h2><div id="opts" class="space-y-3">${q.opts.map(o=>`<button onclick="selectOption(this,'${o.id}')" data-opt="${o.id}" class="opt-btn w-full flex items-start gap-4 p-4 rounded-xl text-left transition-all" style="border:2px solid ${sel===o.id?'#3B5BDB':'#D0D9F0'};background:${sel===o.id?'#EEF2FB':'white'}"><div class="opt-b w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0" style="border:2px solid ${sel===o.id?'#3B5BDB':'#D0D9F0'};color:${sel===o.id?'white':'#4A5073'};background:${sel===o.id?'#3B5BDB':'white'}">${o.id}</div><p class="text-sm text-ink leading-relaxed pt-0.5">${o.text}</p></button>`).join('')}</div>`;
+  const isLast=cur===TOTAL;
+  document.getElementById('next-label').textContent=isLast?'Finalizar diagnostico':'Siguiente pregunta';
+  const nb=document.getElementById('next-btn');
+  if(sel){selectedOpt=sel;nb.disabled=false;nb.style.cssText=`background:${isLast?'#2D9B6F':'#3B5BDB'};color:white;cursor:pointer;`;}
+  else{selectedOpt=null;nb.disabled=true;nb.style.cssText='background:#D0D9F0;color:#4A5073;cursor:not-allowed;';}
+}
+
+function selectOption(btn,opt){
+  document.querySelectorAll('.opt-btn').forEach(b=>{b.style.borderColor='#D0D9F0';b.style.background='white';const d=b.querySelector('.opt-b');d.style.background='white';d.style.borderColor='#D0D9F0';d.style.color='#4A5073';});
+  btn.style.borderColor='#3B5BDB';btn.style.background='#EEF2FB';
+  const d=btn.querySelector('.opt-b');d.style.background='#3B5BDB';d.style.borderColor='#3B5BDB';d.style.color='white';
+  selectedOpt=opt;ans[cur]=opt;
+  const isLast=cur===TOTAL;const nb=document.getElementById('next-btn');
+  nb.disabled=false;nb.style.cssText=`background:${isLast?'#2D9B6F':'#3B5BDB'};color:white;cursor:pointer;`;
+  document.getElementById('next-label').textContent=isLast?'Finalizar diagnostico':'Siguiente pregunta';
+}
+
+function nextQ(){if(!ans[cur])return;if(cur<TOTAL){cur++;buildGrid();renderQ();}else{finalize();}}
+function prevQ(){if(cur>1){cur--;buildGrid();renderQ();}}
+function skipQ(){if(cur<TOTAL){cur++;buildGrid();renderQ();}}
+function goQ(n){cur=n;buildGrid();renderQ();}
+
+async function finalize(){
+  let correct=0;
+  QS.forEach(q=>{const co=q.opts.find(o=>o.c);if(ans[q.id]===co?.id)correct++;});
+  const score=parseFloat(((correct/TOTAL)*100).toFixed(2));
+  const {level,route}=getResult(score);
+  document.getElementById('modal-score').textContent=Math.round(score)+'% - '+level.label;
+  const modal=document.getElementById('complete-modal');modal.classList.remove('hidden');modal.style.display='flex';
+  try{
+    const r=await fetch(BASE_URL+'/diagnostic',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},body:JSON.stringify({score,id_level:level.id,id_route:route.id})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'Error');
+    localStorage.setItem('qa_last_diagnostic',JSON.stringify({...d,score,level,route}));
+  }catch(e){
+    console.warn('Error saving diagnostic:',e.message);
+    localStorage.setItem('qa_last_diagnostic',JSON.stringify({score,level,route}));
+  }
+  document.getElementById('modal-dots').classList.add('hidden');
+}
+
+function goResult(){window.location.href='05-recomendacion.html';}
+
+buildGrid();renderQ();
+</script>
+</body>
+</html>

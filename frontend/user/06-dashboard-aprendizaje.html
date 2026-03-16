@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Aprendizaje — QA Learn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",card:"#F7F9FF",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["DM Mono","monospace"]}}}}</script>
+  <style>
+    .content-area { height: calc(100vh - 64px); overflow-y: auto; }
+    .sidebar-scroll { height: calc(100vh - 64px); overflow-y: auto; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #D0D9F0; border-radius: 4px; }
+    @keyframes bar-grow { from{height:0} to{height:var(--h)} }
+    .bar-anim { animation: bar-grow 0.8s ease forwards; }
+    @keyframes fade-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .card-fade { animation: fade-in 0.4s ease forwards; }
+  </style>
+</head>
+<body class="font-sans antialiased bg-sky">
+<div class="flex h-screen overflow-hidden">
+
+<aside class="w-60 flex-shrink-0 bg-white border-r border-border flex flex-col" style="min-height:100vh;">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-5 border-b border-border flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#3B5BDB;">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <span class="font-extrabold text-navy text-sm">QA Learn</span>
+      </div>
+    </div>
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+    <div data-active="true">
+      <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="background:rgba(59,91,219,0.08);">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#3B5BDB"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="text-sm font-bold" style="color:#1E3A5F;">Aprendizaje</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#3B5BDB;transform:rotate(0deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="06-dashboard-aprendizaje.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-bold" style="color:#3B5BDB;background:rgba(59,91,219,0.08);"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#3B5BDB"></div>Dashboard</a>
+        <a href="07-ruta.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Ruta de Aprendizaje</a>
+      </div>
+    </div>
+    <div data-active="false">
+      <a href="08-dashboard-laboratorio.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Laboratorio</span>
+        <svg class="w-3.5 h-3.5 ml-auto transition-transform" style="color:#4A5073;transform:rotate(-90deg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="ml-4 mt-0.5 space-y-0.5 pb-1">
+        <a href="08-dashboard-laboratorio.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Dashboard</a>
+        <a href="09-pruebas.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Pruebas</a>
+        <a href="10-biblioteca.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all font-medium text-muted hover:text-navy hover:bg-sky" style=""><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#D0D9F0"></div>Repositorio</a>
+      </div>
+    </div>
+    <div>
+      <a href="11-perfil.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Perfil</span>
+      </a>
+    </div>
+    <div>
+      <a href="12-configuraciones.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all hover:bg-sky" style="">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:#4A5073"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-semibold text-muted" style="">Configuraciones</span>
+      </a>
+    </div>
+    </nav>
+    <!-- Footer: usuario + logout -->
+    <div class="px-4 py-3 border-t border-border flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <div id="sb-avatar" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#3B5BDB;">U</div>
+        <div class="min-w-0 flex-1">
+          <p id="sb-name" class="text-xs font-bold text-navy truncate">Usuario</p>
+          <p id="sb-level" class="text-xs text-muted truncate">Estudiante</p>
+        </div>
+        <button id="logout-btn" title="Cerrar sesion" class="text-muted hover:text-fail transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <header class="h-16 bg-white border-b border-border flex items-center justify-between px-6 flex-shrink-0">
+      <div>
+        <h1 class="text-base font-bold text-navy">Dashboard de Aprendizaje</h1>
+        <p class="text-xs text-muted">Tu progreso en tiempo real</p>
+      </div>
+      <button class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:bg-sky" style="border:1.5px solid #D0D9F0;color:#4A5073">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Descargar reporte PDF
+      </button>
+    </header>
+
+    <div class="content-area">
+      <div class="p-6 space-y-6">
+
+        <!-- KPIs dinámicos desde la ruta asignada -->
+        <div class="grid grid-cols-4 gap-4" id="kpi-area">
+          <div class="bg-white rounded-2xl border border-border p-5 card-fade">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:#EEF2FB">
+              <svg class="w-5 h-5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <p id="kpi-pct" class="text-3xl font-extrabold text-navy">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Ruta completada</p>
+            <div class="mt-3 h-1.5 bg-sky rounded-full overflow-hidden"><div id="kpi-bar" class="h-full rounded-full" style="width:0%;background:#3B5BDB"></div></div>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-5 card-fade">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:#EEF2FB">
+              <svg class="w-5 h-5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <p id="kpi-cursos" class="text-3xl font-extrabold text-navy">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Cursos disponibles</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-5 card-fade">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:#EEF2FB">
+              <svg class="w-5 h-5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13"/></svg>
+            </div>
+            <p id="kpi-modulos" class="text-3xl font-extrabold text-navy">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Modulos en la ruta</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-5 card-fade">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:#EEF2FB">
+              <svg class="w-5 h-5" style="color:#3B5BDB" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <p id="kpi-nivel" class="text-3xl font-extrabold text-navy">—</p>
+            <p class="text-xs text-muted mt-1 font-medium">Nivel diagnosticado</p>
+          </div>
+        </div>
+
+        <!-- Sin diagnóstico banner -->
+        <div id="no-diag-banner" class="hidden rounded-2xl p-5 flex items-center gap-4" style="background:linear-gradient(135deg,#1E3A5F,#2E4FBA)">
+          <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <div class="flex-1">
+            <p class="text-white font-bold text-sm">Completa tu diagnostico inicial</p>
+            <p class="text-white/60 text-xs mt-0.5">Detectaremos tu nivel y asignaremos tu ruta de aprendizaje personalizada.</p>
+          </div>
+          <a href="04-diagnostico.html" class="flex-shrink-0 bg-white text-bright font-bold text-xs px-4 py-2 rounded-lg hover:bg-sky transition-all">Ir al diagnostico</a>
+        </div>
+
+        <!-- Graficos -->
+        <div class="grid grid-cols-5 gap-4">
+          <!-- Barras de progreso por curso -->
+          <div class="col-span-3 bg-white rounded-2xl border border-border p-6">
+            <h3 class="text-sm font-bold text-navy mb-5">Cursos de mi ruta</h3>
+            <div id="courses-bars" class="space-y-4">
+              <div class="h-4 bg-sky rounded-full animate-pulse"></div>
+              <div class="h-4 bg-sky rounded-full animate-pulse"></div>
+              <div class="h-4 bg-sky rounded-full animate-pulse w-3/4"></div>
+            </div>
+          </div>
+          <!-- Card motivacional -->
+          <div class="col-span-2 flex flex-col gap-4">
+            <div class="rounded-2xl p-5 flex-1" style="background:linear-gradient(135deg,#1E3A5F,#2E4FBA)">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(255,255,255,0.15)">
+                <span class="text-2xl">🎯</span>
+              </div>
+              <p class="text-white font-bold text-sm mb-1">Tu ruta asignada</p>
+              <p id="ruta-nombre" class="text-white/90 font-extrabold text-base mb-3">Cargando...</p>
+              <p class="text-sm mb-4" style="color:rgba(255,255,255,0.6)">Sigue el orden de los cursos para avanzar por la ruta.</p>
+              <a href="07-ruta.html" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:opacity-90" style="background:white;color:#1E3A5F">
+                Continuar aprendizaje →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla últimos módulos -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="col-span-2 bg-white rounded-2xl border border-border overflow-hidden">
+            <div class="px-6 py-4 border-b border-border">
+              <h3 class="text-sm font-bold text-navy">Modulos disponibles para estudiar</h3>
+            </div>
+            <table class="w-full">
+              <thead><tr style="background:#EEF2FB">
+                <th class="text-left text-xs font-bold text-muted px-6 py-3 uppercase tracking-wider">Modulo</th>
+                <th class="text-left text-xs font-bold text-muted px-4 py-3 uppercase tracking-wider">Curso</th>
+              </tr></thead>
+              <tbody id="modules-table" class="divide-y divide-border">
+                <tr><td class="px-6 py-3.5" colspan="2"><div class="h-4 bg-sky rounded-full animate-pulse"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-white rounded-2xl border border-border p-5">
+            <h3 class="text-sm font-bold text-navy mb-4">Informacion del diagnostico</h3>
+            <div id="diag-info" class="space-y-3">
+              <div class="h-4 bg-sky rounded-full animate-pulse"></div>
+              <div class="h-4 bg-sky rounded-full animate-pulse w-2/3"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const BASE_URL = 'http://localhost:3000/api';
+const _TOKEN   = localStorage.getItem('qa_token');
+if (!_TOKEN) window.location.href = '../public/02-login.html';
+const _U = JSON.parse(localStorage.getItem('qa_user') || '{}');
+const _displayName = _U.first_name ? (_U.first_name+' '+(_U.last_name||'')).trim() : (_U.name||'Usuario');
+const _initials    = (_U.first_name ? _U.first_name[0] : (_U.name||'U')[0]).toUpperCase() + (_U.last_name ? _U.last_name[0].toUpperCase() : '');
+document.getElementById('sb-avatar').textContent = _initials;
+document.getElementById('sb-name').textContent   = _displayName;
+const _diag = JSON.parse(localStorage.getItem('qa_last_diagnostic') || 'null');
+if (_diag && _diag.level) document.getElementById('sb-level').textContent = _diag.level.label;
+
+document.getElementById('logout-btn').onclick = async () => {
+  try { await fetch(BASE_URL+'/auth/logout', {method:'POST', headers:{'Authorization':'Bearer '+_TOKEN}}); } catch {}
+  localStorage.clear(); window.location.href = '../public/02-login.html';
+};
+
+async function apiFetch(path, opts={}) {
+  const headers = {'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN, ...(opts.headers||{})};
+  const r = await fetch(BASE_URL+path, {...opts, headers});
+  const d = await r.json().catch(()=>({}));
+  if (r.status===401) { localStorage.clear(); window.location.href='../public/02-login.html'; return null; }
+  if (!r.ok) throw new Error(d.error||d.message||'Error '+r.status);
+  return d;
+}
+
+function badge(status) {
+  const M = {PASSED:['#2D9B6F','Pasado'],FAILED:['#C0392B','Fallido'],BLOCKED:['#D4A017','Bloqueado'],
+             DRAFT:['#4A5073','Borrador'],ACTIVE:['#3B5BDB','Activo'],COMPLETED:['#2D9B6F','Completado'],
+             ARCHIVED:['#4A5073','Archivado'],PENDING:['#D4A017','Pendiente'],PASSED:['#2D9B6F','Pasado']};
+  const [c,l] = M[status] || ['#4A5073', status];
+  return `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;background:${c}20;color:${c}">${l}</span>`;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+// Nav collapse sidebar (igual que en plantillas)
+document.addEventListener('DOMContentLoaded', function(){
+  const navItems = document.querySelectorAll('nav > div');
+  navItems.forEach(function(item){
+    const link = item.querySelector(':scope > a');
+    const submenu = item.querySelector(':scope > div');
+    const chevron = link ? link.querySelector('svg:last-child') : null;
+    if(!link) return;
+    const isActive = item.dataset.active === 'true';
+    if(submenu){
+      submenu.style.overflow='hidden'; submenu.style.transition='max-height 0.25s ease';
+      if(isActive){ submenu.style.maxHeight=submenu.scrollHeight+'px'; if(chevron) chevron.style.transform='rotate(0deg)'; }
+      else { submenu.style.maxHeight='0'; if(chevron) chevron.style.transform='rotate(-90deg)'; }
+    }
+    if(!submenu) return;
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      const isOpen = submenu.style.maxHeight !== '0px' && submenu.style.maxHeight !== '';
+      navItems.forEach(function(other){
+        if(other===item) return;
+        const s=other.querySelector(':scope > div'); const c=other.querySelector(':scope > a svg:last-child');
+        if(s){ s.style.maxHeight='0'; } if(c) c.style.transform='rotate(-90deg)';
+      });
+      if(isOpen){ submenu.style.maxHeight='0'; if(chevron) chevron.style.transform='rotate(-90deg)'; }
+      else { submenu.style.maxHeight=submenu.scrollHeight+'px'; if(chevron) chevron.style.transform='rotate(0deg)'; }
+    });
+  });
+});
+
+
+async function loadDashboard() {
+  const diag = _diag;
+  if (!diag || !diag.route) {
+    document.getElementById('no-diag-banner').classList.remove('hidden');
+    document.getElementById('kpi-pct').textContent   = '—';
+    document.getElementById('kpi-nivel').textContent = '—';
+    return;
+  }
+
+  // KPIs del diagnóstico
+  document.getElementById('kpi-nivel').textContent  = diag.level?.label || '—';
+  document.getElementById('ruta-nombre').textContent = diag.route?.name || '—';
+
+  // Calcular progreso real desde localStorage
+  function getRouteProgress(routeId) {
+    try {
+      const p = JSON.parse(localStorage.getItem('qa_progress') || '{}');
+      return p[routeId] || { completedModules: [], completedCourses: [] };
+    } catch { return { completedModules: [], completedCourses: [] }; }
+  }
+
+  // Cargar ruta asignada → cursos → módulos
+  // GET /api/routes/:id → { route: { courses: [{id_course, title, orders}] } }
+  try {
+    const data   = await apiFetch('/routes/' + diag.route.id);
+    const rObj   = data.route || data;
+    const courses = (rObj.courses || []).filter(c => c && c.id_course).sort((a,b) => (a.orders||0)-(b.orders||0));
+
+    document.getElementById('kpi-cursos').textContent = courses.length;
+    
+    // Calcular progreso real desde modules completados en localStorage
+    const rp       = getRouteProgress(diag.route.id);
+    const doneMods = rp.completedModules.length;
+
+    // Barras de cursos
+    const barsEl = document.getElementById('courses-bars');
+    barsEl.innerHTML = courses.length
+      ? courses.map(c => `<div>
+          <div class="flex justify-between text-xs mb-1.5">
+            <span class="text-muted font-medium">${c.title}</span>
+            <span class="font-bold" style="color:#3B5BDB">—</span>
+          </div>
+          <div class="h-2.5 bg-sky rounded-full overflow-hidden">
+            <div class="h-full rounded-full" style="width:0%;background:#3B5BDB;transition:width 1s ease"></div>
+          </div>
+        </div>`).join('')
+      : '<p class="text-sm text-muted">Sin cursos en esta ruta.</p>';
+
+    // Cargar módulos del primer curso para la tabla
+    let totalMods = 0;
+    const tableRows = [];
+    for (const c of courses) {
+      try {
+        const md = await apiFetch('/courses/' + c.id_course + '/modules');
+        const mods = (md.modules || []).sort((a,b) => a.orders-b.orders);
+        totalMods += mods.length;
+        mods.slice(0,3).forEach(m => {
+          tableRows.push(`<tr class="hover:bg-sky transition-colors">
+            <td class="px-6 py-3.5 text-sm font-semibold text-navy">${m.title}</td>
+            <td class="px-4 py-3.5 text-xs text-muted">${c.title}</td>
+          </tr>`);
+        });
+      } catch {}
+    }
+    document.getElementById('kpi-modulos').textContent = totalMods || '—';
+    
+    // Actualizar KPI de progreso real
+    const pct = totalMods > 0 ? Math.round((doneMods / totalMods) * 100) : 0;
+    document.getElementById('kpi-pct').textContent  = pct + '%';
+    document.getElementById('kpi-bar').style.width  = pct + '%';
+    
+    document.getElementById('modules-table').innerHTML = tableRows.length
+      ? tableRows.join('')
+      : '<tr><td class="px-6 py-3.5 text-sm text-muted" colspan="2">Sin modulos disponibles.</td></tr>';
+
+  } catch (err) {
+    document.getElementById('courses-bars').innerHTML = '<p class="text-sm text-muted">Error al cargar la ruta.</p>';
+  }
+
+  // Info diagnóstico
+  document.getElementById('diag-info').innerHTML = `
+    <div class="flex justify-between items-center py-2 border-b border-border">
+      <span class="text-xs text-muted font-medium">Nivel</span>
+      <span class="text-xs font-bold" style="color:#3B5BDB">${diag.level?.label||'—'}</span>
+    </div>
+    <div class="flex justify-between items-center py-2 border-b border-border">
+      <span class="text-xs text-muted font-medium">Puntaje</span>
+      <span class="text-xs font-bold text-navy">${Math.round(diag.score||0)}%</span>
+    </div>
+    <div class="pt-2">
+      <span class="text-xs text-muted font-medium block mb-1">Ruta asignada</span>
+      <span class="text-xs font-semibold text-navy">${diag.route?.name||'—'}</span>
+    </div>
+    <a href="04-diagnostico.html" class="block text-center text-xs font-bold mt-4 py-2 rounded-lg" style="color:#3B5BDB;border:1.5px solid #D0D9F0">Repetir diagnostico</a>
+  `;
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
