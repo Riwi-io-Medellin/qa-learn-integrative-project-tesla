@@ -48,7 +48,7 @@ qa-learn/
     │       ├── user.html    # Dashboard del estudiante
     │       └── admin.html   # Panel de administración
     ├── js/
-    │   ├── login.js · register.js · survey.js
+    │   ├── login.js · register.js · survey.js · results.js · index.js · auth.js
     │   └── users/
     │       ├── user.js               # Init, navegación, helpers
     │       ├── views-aprendizaje.js  # Ruta de aprendizaje + dashboard
