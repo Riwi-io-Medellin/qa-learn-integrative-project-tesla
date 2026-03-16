@@ -71,19 +71,21 @@ async function dashboard() {
   try { const d = await apiFetch('/api/users');   userList     = d.users || d || []; } catch {}
   try { const d = await apiFetch('/api/library'); libItems     = d.libraryTests || d || []; } catch {}
   try { pendingCases = await apiFetch('/api/admin/test-cases'); } catch {}
-  try { courseList   = await apiFetch('/api/courses'); } catch {}
+  try { const d = await apiFetch('/api/courses'); courseList = d.courses || d || []; } catch {}
 
   setHTML('content', `
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
-      ${[['👥',userList.length,'Usuarios','#3B5BDB'],['📋',libItems.length,'En repositorio','#059669'],
-         ['⏳',pendingCases.length,'Pendientes revisión','#D97706'],['🎓',courseList.length,'Cursos','#7C3AED']]
-        .map(([ic,v,l,c])=>`
-        <div style="background:white;border:1px solid #E5E7EB;border-radius:14px;padding:20px;cursor:pointer;"
-             onclick="navigate('${v===pendingCases.length?'library':v===userList.length?'users':'dashboard'}')">
-          <div style="font-size:24px;margin-bottom:8px">${ic}</div>
-          <div style="font-size:26px;font-weight:800;color:${c}">${v}</div>
-          <div style="font-size:12px;color:#6B7280;margin-top:4px">${l}</div>
-        </div>`).join('')}
+      ${[['👥',userList.length,'Usuarios','#3B5BDB','users'],
+       ['📋',libItems.length,'En repositorio','#059669','library'],
+       ['⏳',pendingCases.length,'Pendientes revisión','#D97706','library'],
+       ['🎓',courseList.length,'Cursos','#7C3AED','courses']]
+      .map(([ic,v,l,c,view])=>`
+  <div style="background:white;border:1px solid #E5E7EB;border-radius:14px;padding:20px;cursor:pointer;"
+       onclick="navigate('${view}')">
+    <div style="font-size:24px;margin-bottom:8px">${ic}</div>
+    <div style="font-size:26px;font-weight:800;color:${c}">${v}</div>
+    <div style="font-size:12px;color:#6B7280;margin-top:4px">${l}</div>
+  </div>`).join('')}
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <div style="background:white;border:1px solid #E5E7EB;border-radius:14px;padding:20px;">
@@ -342,19 +344,34 @@ async function removeFromLibrary(id_library) {
 async function courses() {
   setHTML('content', '<div style="padding:40px;text-align:center;color:#6B7280">Cargando cursos...</div>');
   let courseList = [];
-  try { courseList = await apiFetch('/api/courses'); } catch {}
+  try { const d = await apiFetch('/api/courses'); courseList = d.courses || d || []; } catch {}
 
   setHTML('content', `
     <div style="background:white;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
       <div style="padding:16px 20px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center;">
-        <h3 style="font-size:14px;font-weight:700;color:#1E3A5F;">Cursos disponibles</h3>
-        <span style="font-size:12px;color:#6B7280">${courseList.length} cursos</span>
+        <h3 style="font-size:14px;font-weight:700;color:#1E3A5F;">Gestión de cursos</h3>
+        <button onclick="showCreateCourseForm()"
+          style="font-size:12px;padding:8px 16px;background:#3B5BDB;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+          + Nuevo curso
+        </button>
       </div>
+
+      <div id="course-form" style="display:none;padding:20px;border-bottom:1px solid #E5E7EB;background:#F9FAFB;">
+        <h4 style="font-size:13px;font-weight:700;color:#1E3A5F;margin-bottom:12px;" id="course-form-title">Nuevo curso</h4>
+        <input id="course-title-input" placeholder="Título del curso" style="width:100%;padding:8px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+        <textarea id="course-desc-input" placeholder="Descripción (opcional)" rows="2" style="width:100%;padding:8px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;resize:vertical;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="saveCourse()" style="font-size:12px;padding:8px 16px;background:#059669;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;">Guardar</button>
+          <button onclick="hideCourseForm()" style="font-size:12px;padding:8px 16px;background:white;color:#6B7280;border:1px solid #E5E7EB;border-radius:8px;cursor:pointer;">Cancelar</button>
+        </div>
+      </div>
+
       <table style="width:100%;border-collapse:collapse;font-size:13px;">
         <thead><tr style="background:#F9FAFB;">
           <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Título</th>
           <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Descripción</th>
           <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Estado</th>
+          <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Acciones</th>
         </tr></thead>
         <tbody>
           ${courseList.map(c=>`
@@ -362,12 +379,193 @@ async function courses() {
             <td style="padding:14px 20px;font-weight:600;color:#1E3A5F">${c.title}</td>
             <td style="padding:14px 20px;color:#6B7280;max-width:300px">${(c.description||'—').slice(0,60)}${(c.description||'').length>60?'...':''}</td>
             <td style="padding:14px 20px">
-              <span style="padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;background:#ECFDF5;color:#059669">${c.status}</span>
+              <span style="padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;
+                background:${c.status==='ACTIVE'?'#ECFDF5':'#FEF2F2'};
+                color:${c.status==='ACTIVE'?'#059669':'#DC2626'}">${c.status}</span>
             </td>
-          </tr>`).join('') || '<tr><td colspan="3" style="padding:24px;text-align:center;color:#6B7280">Sin cursos</td></tr>'}
+            <td style="padding:14px 20px;display:flex;gap:6px;">
+              <button onclick="viewModules('${c.id_course}','${c.title.replace(/'/g,"\\'")}' )"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:1.5px solid #7C3AED;background:white;cursor:pointer;color:#7C3AED;font-weight:700;">
+                MODULOS
+              </button>
+              <button onclick="showEditCourseForm('${c.id_course}','${c.title.replace(/'/g,"\\'")}','${(c.description||'').replace(/'/g,"\\'")}','${c.status}')"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:none;background:#3B5BDB;cursor:pointer;color:white;font-weight:700;">
+                EDITAR
+              </button>
+              <button onclick="deleteCourse('${c.id_course}')"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:none;background:#DC2626;color:white;cursor:pointer;font-weight:700;">
+                ELIMINAR
+              </button>
+            </td>
+          </tr>`).join('') || '<tr><td colspan="4" style="padding:24px;text-align:center;color:#6B7280">Sin cursos</td></tr>'}
         </tbody>
       </table>
     </div>`);
+}
+let _editingCourseId = null;
+
+let _editingModuleData = {};
+
+function showCreateCourseForm() {
+  _editingCourseId = null;
+  document.getElementById('course-form-title').textContent = 'Nuevo curso';
+  document.getElementById('course-title-input').value = '';
+  document.getElementById('course-desc-input').value = '';
+  document.getElementById('course-form').style.display = 'block';
+}
+
+function showEditCourseForm(id, title, description, status) {
+  _editingCourseId = id;
+  document.getElementById('course-form-title').textContent = 'Editar curso';
+  document.getElementById('course-title-input').value = title;
+  document.getElementById('course-desc-input').value = description;
+  document.getElementById('course-form').style.display = 'block';
+}
+
+function hideCourseForm() {
+  document.getElementById('course-form').style.display = 'none';
+  _editingCourseId = null;
+}
+
+async function saveCourse() {
+  const title = document.getElementById('course-title-input').value.trim();
+  const description = document.getElementById('course-desc-input').value.trim();
+  if (!title) { alert('El título es requerido'); return; }
+
+  try {
+    if (_editingCourseId) {
+      await apiFetch('/api/courses/' + _editingCourseId, {
+        method: 'PUT',
+        body: JSON.stringify({ title, description })
+      });
+    } else {
+      await apiFetch('/api/courses', {
+        method: 'POST',
+        body: JSON.stringify({ title, description, status: 'ACTIVE' })
+      });
+    }
+    await courses();
+  } catch(e) { alert('Error al guardar: ' + e.message); }
+}
+
+async function deleteCourse(id) {
+  if (!confirm('¿Eliminar este curso? Se eliminarán también sus módulos.')) return;
+  try {
+    await apiFetch('/api/courses/' + id, { method: 'DELETE' });
+    await courses();
+  } catch(e) { alert('Error al eliminar: ' + e.message); }
+}
+
+async function viewModules(id_course, courseTitle) {
+  setHTML('content', '<div style="padding:40px;text-align:center;color:#6B7280">Cargando módulos...</div>');
+  let moduleList = [];
+  try { const d = await apiFetch('/api/courses/'+id_course+'/modules'); moduleList = d.modules || d || []; } catch {}
+
+  _editingModuleData = {};
+  moduleList.forEach(m => { _editingModuleData[m.id_module] = m; });
+
+  setHTML('content', `
+    <div style="background:white;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button onclick="navigate('courses')" style="font-size:12px;padding:6px 12px;border-radius:8px;border:1.5px solid #E5E7EB;background:white;cursor:pointer;color:#6B7280;">Volver</button>
+          <h3 style="font-size:14px;font-weight:700;color:#1E3A5F;"> ${courseTitle}</h3>
+        </div>
+        <button onclick="showCreateModuleForm('${id_course}')"
+          style="font-size:12px;padding:8px 16px;background:#3B5BDB;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+          + Nuevo módulo
+        </button>
+      </div>
+
+      <div id="module-form" style="display:none;padding:20px;border-bottom:1px solid #E5E7EB;background:#F9FAFB;">
+        <h4 style="font-size:13px;font-weight:700;color:#1E3A5F;margin-bottom:12px;" id="module-form-title">Nuevo módulo</h4>
+        <input id="module-title-input" placeholder="Título del módulo" style="width:100%;padding:8px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+        <textarea id="module-content-input" placeholder="Contenido del módulo" rows="4" style="width:100%;padding:8px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;resize:vertical;"></textarea>
+        <input id="module-order-input" type="number" placeholder="Orden (ej: 1)" min="1" style="width:100%;padding:8px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+        <div style="display:flex;gap:8px;">
+          <button onclick="saveModule('${id_course}')" style="font-size:12px;padding:8px 16px;background:#059669;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;">Guardar</button>
+          <button onclick="document.getElementById('module-form').style.display='none'" style="font-size:12px;padding:8px 16px;background:white;color:#6B7280;border:1px solid #E5E7EB;border-radius:8px;cursor:pointer;">Cancelar</button>
+        </div>
+      </div>
+
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="background:#F9FAFB;">
+          <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Orden</th>
+          <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Título</th>
+          <th style="text-align:left;padding:12px 20px;color:#6B7280;font-size:11px;text-transform:uppercase">Acciones</th>
+        </tr></thead>
+        <tbody>
+          ${moduleList.map(m=>`
+          <tr style="border-bottom:1px solid #F3F4F6;">
+            <td style="padding:14px 20px;font-weight:700;color:#3B5BDB">${m.orders}</td>
+            <td style="padding:14px 20px;font-weight:600;color:#1E3A5F">${m.title}</td>
+            <td style="padding:14px 20px;display:flex;gap:6px;">
+              <button onclick="showEditModuleForm('${id_course}','${m.id_module}',${m.orders})"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:1.5px solid #E5E7EB;background:white;cursor:pointer;color:#3B5BDB;">
+                 Editar
+              </button>
+              <button onclick="deleteModule('${m.id_module}','${id_course}')"
+                style="font-size:11px;padding:5px 12px;border-radius:8px;border:none;background:#DC2626;color:white;cursor:pointer;font-weight:700;">
+                Eliminar
+              </button>
+            </td>
+          </tr>`).join('') || '<tr><td colspan="3" style="padding:24px;text-align:center;color:#6B7280">Sin módulos</td></tr>'}
+        </tbody>
+      </table>
+    </div>`);
+}
+
+let _editingModuleId = null;
+
+function showCreateModuleForm(id_course) {
+  _editingModuleId = null;
+  document.getElementById('module-form-title').textContent = 'Nuevo módulo';
+  document.getElementById('module-title-input').value = '';
+  document.getElementById('module-content-input').value = '';
+  document.getElementById('module-order-input').value = '';
+  document.getElementById('module-form').style.display = 'block';
+}
+
+function showEditModuleForm(id_course, id_module, orders) {
+  _editingModuleId = id_module;
+  const m = _editingModuleData[id_module];
+  document.getElementById('module-form-title').textContent = 'Editar modulo';
+  document.getElementById('module-title-input').value = m.title || '';
+  document.getElementById('module-content-input').value = m.content || '';
+  document.getElementById('module-order-input').value = orders;
+  document.getElementById('module-form').style.display = 'block';
+}
+
+async function saveModule(id_course) {
+  const title = document.getElementById('module-title-input').value.trim();
+  const content = document.getElementById('module-content-input').value.trim();
+  const orders = parseInt(document.getElementById('module-order-input').value);
+
+  if (!title) { alert('El título es requerido'); return; }
+  if (!orders) { alert('El orden es requerido'); return; }
+
+  try {
+    if (_editingModuleId) {
+      await apiFetch('/api/courses/'+id_course+'/modules/'+_editingModuleId, {
+        method: 'PUT',
+        body: JSON.stringify({ title, content, orders })
+      });
+    } else {
+      await apiFetch('/api/courses/'+id_course+'/modules', {
+        method: 'POST',
+        body: JSON.stringify({ title, content, orders })
+      });
+    }
+    await viewModules(id_course, document.querySelector('h3')?.textContent?.replace('📚 ','') || '');
+  } catch(e) { alert('Error al guardar: ' + e.message); }
+}
+
+async function deleteModule(id_module, id_course) {
+  if (!confirm('¿Eliminar este módulo?')) return;
+  try {
+    await apiFetch('/api/courses/'+id_course+'/modules/'+id_module, { method: 'DELETE' });
+    await viewModules(id_course, '');
+  } catch(e) { alert('Error al eliminar: ' + e.message); }
 }
 
 document.addEventListener('DOMContentLoaded', init);
