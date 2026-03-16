@@ -1,20 +1,19 @@
-// modules/library/library.service.js
 import * as libraryRepository from './library.repository.js';
 
 export const createLibraryTest = async (data, id_admin) => {
+    // Verificar que el test case existe y no está borrado
+    const testCase = await libraryRepository.findActiveTestCase(data.id_test_case);
+    if (!testCase) throw new Error('Test case not found or has been deleted');
+
+    // Verificar que no está ya en la librería
     const existing = await libraryRepository.findLibraryTestByTestCase(data.id_test_case);
     if (existing) throw new Error('Este test case ya está en la librería');
 
-    const libraryTest = await libraryRepository.createLibraryTest({
-        ...data,
-        id_admin
-    });
-    return libraryTest;
+    return libraryRepository.createLibraryTest({ ...data, id_admin });
 };
 
 export const getAllLibraryTests = async () => {
-    const libraryTests = await libraryRepository.findAllLibraryTests();
-    return libraryTests;
+    return libraryRepository.findAllLibraryTests();
 };
 
 export const getLibraryTestById = async (id) => {
@@ -26,15 +25,12 @@ export const getLibraryTestById = async (id) => {
 export const updateLibraryTest = async (id, data) => {
     const libraryTest = await libraryRepository.findLibraryTestById(id);
     if (!libraryTest) throw new Error('Test case no encontrado en la librería');
-
-    const updated = await libraryRepository.updateLibraryTest(id, data);
-    return updated;
+    return libraryRepository.updateLibraryTest(id, data);
 };
 
 export const deleteLibraryTest = async (id) => {
     const libraryTest = await libraryRepository.findLibraryTestById(id);
     if (!libraryTest) throw new Error('Test case no encontrado en la librería');
-
     await libraryRepository.deleteLibraryTest(id);
     return { message: 'Test case eliminado de la librería correctamente' };
 };
