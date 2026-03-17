@@ -45,7 +45,7 @@ form.addEventListener('submit', async (e) => {
 
     setTimeout(() => {
       window.location.href = isAdmin
-        ? '../user/06-dashboard-aprendizaje.html'
+        ? '../user/13-admin.html'
         : hasDiag
           ? '../user/06-dashboard-aprendizaje.html'
           : '../user/04-diagnostico.html';
