@@ -47,6 +47,7 @@ export const findTestCaseById = async (id_test_case, id_project) => {
              tc.title,
              tc.type,
              tc.status,
+             tc.library_status,
              tc.description,
              tc.preconditions,
              tc.id_requirement,
@@ -123,6 +124,34 @@ export const updateTestCaseStatus = async (id_test_case, id_project, status) => 
            AND deleted_at   IS NULL
          RETURNING id_test_case, status`,
         [status, id_test_case, id_project]
+    );
+    return result.rows[0];
+};
+
+export const findPendingLibraryCases = async () => {
+    const result = await pool.query(
+        `SELECT tc.id_test_case, tc.id_project, tc.title,
+                p.name AS project_name,
+                u.first_name || ' ' || u.last_name AS user_name
+         FROM test_cases tc
+         JOIN projects p ON p.id_project = tc.id_project
+         JOIN users u    ON u.id_user    = p.id_user
+         WHERE tc.library_status = 'PENDING'
+           AND tc.deleted_at IS NULL
+         ORDER BY tc.updated_at DESC`
+    );
+    return result.rows;
+};
+
+export const updateLibraryStatus = async (id_test_case, library_status) => {
+    const result = await pool.query(
+        `UPDATE test_cases
+         SET library_status = $1,
+             updated_at     = NOW()
+         WHERE id_test_case = $2
+           AND deleted_at   IS NULL
+         RETURNING id_test_case, library_status`,
+        [library_status, id_test_case]
     );
     return result.rows[0];
 };

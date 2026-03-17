@@ -6,7 +6,7 @@ import { authRoutes }         from './modules/auth/auth.routes.js';
 import { diagnosticRoutes }   from './modules/diagnostic/diagnostic.routes.js';
 import { projectsRoutes }     from './modules/projects/projects.routes.js';
 import { requirementsRoutes } from './modules/requirements/requirements.routes.js';
-import { testCasesRoutes }    from './modules/testCases/testCases.routes.js';
+import { testCasesRoutes, testCasesPendingRoute } from './modules/testCases/testCases.routes.js';
 import { stepsRoutes }        from './modules/steps/step.routes.js';
 import { usersRoutes }        from './modules/users/users.routes.js';
 import { coursesRoutes }      from './modules/courses/courses.routes.js';
@@ -58,6 +58,7 @@ app.use('/api/diagnostic', diagnosticRoutes);
 app.use('/api/projects',                                        projectsRoutes);
 app.use('/api/projects/:id/requirements',                       requirementsRoutes);
 app.use('/api/projects/:id/test-cases',                         testCasesRoutes);
+app.use('/api/test-cases',                                      testCasesPendingRoute);
 app.use('/api/projects/:id/test-cases/:case_id/steps',          stepsRoutes);
 
 // ── Courses → Modules ─────────────────────────────────────────────────────

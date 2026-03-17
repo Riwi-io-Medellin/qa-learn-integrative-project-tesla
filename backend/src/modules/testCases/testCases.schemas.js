@@ -8,6 +8,7 @@ export const createTestCaseSchema = z.object({
         errorMap: () => ({ message: 'Type must be FUNCTIONAL, NON_FUNCTIONAL or REGRESSION' }),
     }),
     id_requirement: z.string().uuid('id_requirement must be a valid UUID').optional(),
+    status:         z.string().optional(),
 });
 
 export const updateTestCaseSchema = z.object({
@@ -23,4 +24,9 @@ export const updateTestCaseStatusSchema = z.object({
     status: z.enum(['DRAFT', 'ACTIVE', 'DEPRECATED'], {
         errorMap: () => ({ message: 'Status must be DRAFT, ACTIVE or DEPRECATED' }),
     }),
+});
+
+export const approveLibrarySchema = z.object({
+    category: z.string().min(1, 'La categoría es requerida').max(100),
+    tags:     z.array(z.string()).optional(),
 });

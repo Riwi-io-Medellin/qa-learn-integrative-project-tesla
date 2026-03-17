@@ -66,6 +66,48 @@ export const updateTestCaseStatus = async (req, res) => {
     }
 };
 
+export const getPendingLibrary = async (req, res) => {
+    try {
+        const cases = await testCasesService.getPendingLibrary();
+        res.status(200).json({ cases });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const rejectLibrary = async (req, res) => {
+    try {
+        const { id, caseId } = req.params;
+        await testCasesService.rejectLibrary(id, caseId);
+        res.status(200).json({ message: 'Solicitud rechazada.' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const requestLibrary = async (req, res) => {
+    try {
+        const { id, caseId } = req.params;
+        const id_user = req.user.id;
+        const result = await testCasesService.requestLibrary(id, caseId, id_user);
+        res.status(200).json({ message: 'Solicitud enviada. Pendiente de aprobación.', result });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const approveLibrary = async (req, res) => {
+    try {
+        const { id, caseId } = req.params;
+        const id_admin = req.user.id;
+        const { category, tags } = req.body;
+        const result = await testCasesService.approveLibrary(id, caseId, id_admin, { category, tags });
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 export const deleteTestCase = async (req, res) => {
     try {
         const { id, caseId } = req.params;
