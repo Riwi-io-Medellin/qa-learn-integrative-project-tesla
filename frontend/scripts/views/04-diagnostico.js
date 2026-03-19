@@ -1,12 +1,24 @@
 const BASE_URL='http://localhost:3000/api';
-const TOKEN=localStorage.getItem('qa_token');
-if(!TOKEN) window.location.href='../public/02-login.html';
+
+// Auth: verifica que el token exista Y no haya expirado
+function isTokenValid() {
+  const t = localStorage.getItem('qa_token');
+  if (!t) return false;
+  try { const p = JSON.parse(atob(t.split('.')[1])); return p.exp * 1000 > Date.now(); } catch { return false; }
+}
+if (!isTokenValid()) {
+  localStorage.removeItem('qa_token'); localStorage.removeItem('qa_user'); localStorage.removeItem('qa_last_diagnostic');
+  window.location.href = '../public/02-login.html';
+}
+const TOKEN = localStorage.getItem('qa_token');
 const U=JSON.parse(localStorage.getItem('qa_user')||'{}');
+
 document.getElementById('user-initials').textContent=(U.first_name?U.first_name[0]:(U.name||'U')[0]).toUpperCase()+(U.last_name?U.last_name[0]:'');
 document.getElementById('user-name').textContent=U.first_name?(U.first_name+' '+(U.last_name||'')).trim():(U.name||'Usuario');
 const LV={BASIC:{id:'33070531-22ae-4bd6-af5e-e6d1beb1657f',label:'BASICO'},INTERMEDIATE:{id:'94e3c1e1-ef45-4e29-b846-020403648162',label:'INTERMEDIO'},ADVANCED:{id:'169f5154-b152-4e7c-877c-e93fb9e56540',label:'AVANZADO'}};
 const RT={BASIC:{id:'b5228685-766f-4cdb-ab6f-6229561b4618',name:'Ruta Basica de QA Testing'},INTERMEDIATE:{id:'b0bb6a45-1320-46e5-af50-89e8d87b4ad3',name:'Ruta Intermedia de QA Testing'},ADVANCED:{id:'c51d7c28-471c-484b-9874-fe6f2512fc0e',name:'Ruta Avanzada de QA Testing'}};
 function getResult(s){if(s<=40)return{level:LV.BASIC,route:RT.BASIC};if(s<=70)return{level:LV.INTERMEDIATE,route:RT.INTERMEDIATE};return{level:LV.ADVANCED,route:RT.ADVANCED};}
+
 const B1=[
   {topic:'Principios de Testing',text:'Cual es el objetivo principal de las pruebas de regresion?',opts:[{id:'A',text:'Verificar requisitos funcionales iniciales'},{id:'B',text:'Asegurar que cambios recientes no introdujeron defectos en funcionalidades previas',c:true},{id:'C',text:'Evaluar rendimiento bajo alta carga'},{id:'D',text:'Documentar errores para el backlog'}]},
   {topic:'Ciclo del Defecto',text:'Estado de un bug corregido por desarrollo pero no verificado por QA todavia:',opts:[{id:'A',text:'Cerrado'},{id:'B',text:'Reabierto'},{id:'C',text:'Resuelto / Pendiente de verificacion',c:true},{id:'D',text:'Diferido'}]},
@@ -29,6 +41,7 @@ const B1=[
   {topic:'Integracion Continua',text:'Principal beneficio de integrar pruebas automatizadas en CI/CD:',opts:[{id:'A',text:'Eliminar el testing manual'},{id:'B',text:'Detectar defectos rapidamente en cada commit',c:true},{id:'C',text:'Garantizar 100% de cobertura'},{id:'D',text:'Reemplazar al equipo de QA'}]},
   {topic:'Pruebas de Usabilidad',text:'Caracteristica fundamental para que una prueba de usabilidad sea valida:',opts:[{id:'A',text:'Que la ejecute el equipo de QA tecnico'},{id:'B',text:'Que use herramientas de automatizacion'},{id:'C',text:'Que participen usuarios representativos del publico objetivo',c:true},{id:'D',text:'Que se realice en produccion'}]},
 ];
+
 const B2=[
   {topic:'Fundamentos QA',text:'Que es una prueba de humo (smoke test)?',opts:[{id:'A',text:'Una prueba exhaustiva de todas las funcionalidades'},{id:'B',text:'Una verificacion rapida de las funciones criticas del sistema',c:true},{id:'C',text:'Una prueba de rendimiento bajo carga'},{id:'D',text:'Una prueba de seguridad'}]},
   {topic:'Gestion Defectos',text:'Que informacion es esencial en un reporte de bug?',opts:[{id:'A',text:'El nombre del desarrollador responsable'},{id:'B',text:'Pasos para reproducir, resultado esperado y resultado actual',c:true},{id:'C',text:'El costo estimado de correccion'},{id:'D',text:'La opinion del tester sobre el equipo'}]},
@@ -51,6 +64,7 @@ const B2=[
   {topic:'Metricas QA',text:'Que es el MTTR en el contexto de QA?',opts:[{id:'A',text:'Mean Time To Release'},{id:'B',text:'Mean Time To Repair — tiempo promedio para corregir un defecto',c:true},{id:'C',text:'Maximum Test To Release'},{id:'D',text:'Minimum Test Time Required'}]},
   {topic:'Tecnicas de Diseno',text:'Que es la prueba de transicion de estados?',opts:[{id:'A',text:'Probar cuanto tiempo tarda el sistema en cambiar de estado'},{id:'B',text:'Tecnica que disena casos basados en los estados posibles del sistema y sus transiciones',c:true},{id:'C',text:'Una prueba de rendimiento para cambios de version'},{id:'D',text:'Verificar la transicion entre entornos de prueba y produccion'}]},
 ];
+
 const B3=[
   {topic:'Testing de Integracion',text:'Que validan las pruebas de integracion?',opts:[{id:'A',text:'Que cada funcion individual funcione correctamente'},{id:'B',text:'Que los modulos del sistema interactuan correctamente entre si',c:true},{id:'C',text:'Que la interfaz sea visualmente atractiva'},{id:'D',text:'Que el sistema soporte alta carga'}]},
   {topic:'Automatizacion',text:'Que es un framework de automatizacion?',opts:[{id:'A',text:'Un lenguaje de programacion para pruebas'},{id:'B',text:'Un conjunto de estandares, herramientas y practicas que guian la creacion de pruebas automatizadas',c:true},{id:'C',text:'Un tipo de prueba manual estructurada'},{id:'D',text:'Una herramienta para reportar bugs'}]},
@@ -73,13 +87,16 @@ const B3=[
   {topic:'Requisitos',text:'Que significa INVEST en el contexto de historias de usuario?',opts:[{id:'A',text:'Una metodologia de gestion de proyectos agiles'},{id:'B',text:'Acronimo que define: Independiente, Negociable, Valiosa, Estimable, Small, Testeable',c:true},{id:'C',text:'Un framework de automatizacion de pruebas'},{id:'D',text:'Un estandar de documentacion de requisitos'}]},
   {topic:'Fundamentos QA',text:'Que es la verificacion en el proceso de calidad?',opts:[{id:'A',text:'Confirmar que el producto cumple las expectativas del usuario final'},{id:'B',text:'Revisar que el producto fue construido correctamente segun los documentos de diseno',c:true},{id:'C',text:'Ejecutar pruebas en el ambiente de produccion'},{id:'D',text:'Aprobar el software para su lanzamiento'}]},
 ];
+
 function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
 function selectQS(){const bl=shuffle([B1,B2,B3]);return shuffle([...shuffle(bl[0]).slice(0,10),...shuffle(bl[1]).slice(0,10)]).map((q,i)=>({...q,id:i+1}));}
 const QS=selectQS();
 const TOTAL=QS.length;
 let cur=1, ans={}, selectedOpt=null;
 function buildGrid(){
+
   const g=document.getElementById('question-grid');g.innerHTML='';
+
   for(let i=1;i<=TOTAL;i++){
     const b=document.createElement('button');
     b.onclick=()=>goQ(i);
@@ -89,11 +106,13 @@ function buildGrid(){
     else{b.textContent=i;b.style.background='#EEF2FB';b.style.color='#4A5073';}
     g.appendChild(b);
   }
+
   document.getElementById('q-current').textContent=cur;
   const pct=Math.round((Object.keys(ans).length/TOTAL)*100);
   document.getElementById('progress-bar').style.width=pct+'%';
   document.getElementById('pct-label').textContent=pct+'% completado';
 }
+
 function renderQ(){
   const q=QS[cur-1];const sel=ans[cur]||null;
   const card=document.getElementById('question-card');
@@ -105,6 +124,7 @@ function renderQ(){
   if(sel){selectedOpt=sel;nb.disabled=false;nb.style.cssText=`background:${isLast?'#2D9B6F':'#3B5BDB'};color:white;cursor:pointer;`;}
   else{selectedOpt=null;nb.disabled=true;nb.style.cssText='background:#D0D9F0;color:#4A5073;cursor:not-allowed;';}
 }
+
 function selectOption(btn,opt){
   document.querySelectorAll('.opt-btn').forEach(b=>{b.style.borderColor='#D0D9F0';b.style.background='white';const d=b.querySelector('.opt-b');d.style.background='white';d.style.borderColor='#D0D9F0';d.style.color='#4A5073';});
   btn.style.borderColor='#3B5BDB';btn.style.background='#EEF2FB';
@@ -114,10 +134,12 @@ function selectOption(btn,opt){
   nb.disabled=false;nb.style.cssText=`background:${isLast?'#2D9B6F':'#3B5BDB'};color:white;cursor:pointer;`;
   document.getElementById('next-label').textContent=isLast?'Finalizar diagnostico':'Siguiente pregunta';
 }
+
 function nextQ(){if(!ans[cur])return;if(cur<TOTAL){cur++;buildGrid();renderQ();}else{finalize();}}
 function prevQ(){if(cur>1){cur--;buildGrid();renderQ();}}
 function skipQ(){if(cur<TOTAL){cur++;buildGrid();renderQ();}}
 function goQ(n){cur=n;buildGrid();renderQ();}
+
 async function finalize(){
   let correct=0;
   QS.forEach(q=>{const co=q.opts.find(o=>o.c);if(ans[q.id]===co?.id)correct++;});
@@ -136,5 +158,6 @@ async function finalize(){
   }
   document.getElementById('modal-dots').classList.add('hidden');
 }
+
 function goResult(){window.location.href='05-recomendacion.html';}
 buildGrid();renderQ();

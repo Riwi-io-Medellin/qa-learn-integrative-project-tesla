@@ -33,6 +33,7 @@ export const createDiagnostic = async ({ id_user, score, id_level, id_route }) =
 export const getDiagnosticsByUser = async (id_user) => {
     const result = await pool.query(
         `SELECT d.id_diagnostic, d.score, d.performed_at,
+                d.id_level, d.id_route,
                 l.level_name, r.route_name
          FROM diagnostic d
          JOIN levels l          ON d.id_level = l.id_level

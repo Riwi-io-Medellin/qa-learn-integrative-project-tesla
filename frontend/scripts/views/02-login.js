@@ -1,6 +1,6 @@
 /* ── 02-login.js ──────────────────────────────────────────────────────── */
-import { auth }              from '../../services/api.js';
-import { QAStore }           from '../state/store.js';
+import { auth, diagnostic }         from '../../services/api.js';
+import { QAStore }                  from '../state/store.js';
 import { showToast, setBtnLoading } from '../ui/ui-shared.js';
 import { redirectIfLoggedIn }       from '../../components/auth-guard.js';
 
@@ -26,6 +26,19 @@ document.getElementById('toggle-pass')?.addEventListener('click', () => {
   inp.type  = inp.type === 'password' ? 'text' : 'password';
 });
 
+// Traduce level_name del backend al label que muestra el dashboard
+const LEVEL_LABEL = { BASIC: 'BASICO', INTERMEDIATE: 'INTERMEDIO', ADVANCED: 'AVANZADO' };
+
+function normalizeDiag(d) {
+  return {
+    id_diagnostic: d.id_diagnostic,
+    score:         d.score,
+    performed_at:  d.performed_at,
+    level: { id: d.id_level, label: LEVEL_LABEL[d.level_name] || d.level_name },
+    route: { id: d.id_route, name:  d.route_name },
+  };
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   hideErr();
@@ -36,20 +49,32 @@ form.addEventListener('submit', async (e) => {
 
   setBtnLoading(btnEl, true);
   try {
-    // { message, user: { user:{id,name,email,role}, token } }
     const data = await auth.login({ email, password });
     QAStore.login(data);
 
     const isAdmin = QAStore.isAdmin();
-    const hasDiag = !!QAStore.getDiag();
 
-    setTimeout(() => {
-      window.location.href = isAdmin
-        ? '../user/13-admin.html'
-        : hasDiag
-          ? '../user/06-dashboard-aprendizaje.html'
-          : '../user/04-diagnostico.html';
-    }, 400);
+    if (isAdmin) {
+      window.location.href = '../user/13-admin.html';
+      return;
+    }
+
+    // Estudiante: recuperar diagnóstico del backend para no depender de localStorage
+    try {
+      const diagData = await diagnostic.getAll();
+      const list = Array.isArray(diagData) ? diagData : (diagData?.diagnostics ?? []);
+      if (list.length > 0) {
+        QAStore.setDiag(normalizeDiag(list[0]));
+      }
+    } catch {
+      // Si falla la consulta continuamos con lo que haya en localStorage
+    }
+
+    const hasDiag = !!QAStore.getDiag();
+    window.location.href = hasDiag
+      ? '../user/06-dashboard-aprendizaje.html'
+      : '../user/04-diagnostico.html';
+
   } catch (err) {
     const msg = err.message.includes('credentials') || err.message.includes('Invalid')
       ? 'Correo o contraseña incorrectos.'
