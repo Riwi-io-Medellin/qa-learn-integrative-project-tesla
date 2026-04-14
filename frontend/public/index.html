@@ -439,5 +439,69 @@
     </div>
   </footer>
 
+
+  <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#2E4FBA"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g1)"/>
+
+  <!-- Núcleo -->
+  <circle cx="32" cy="32" r="6" fill="white"/>
+
+  <!-- Órbita -->
+  <ellipse cx="32" cy="32" rx="18" ry="10"
+           stroke="white" stroke-opacity="0.5"
+           stroke-width="2"/>
+
+  <!-- Nodo -->
+  <circle cx="46" cy="32" r="3" fill="white"/>
+</svg>
+
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#3B5BDB"/>
+
+  <!-- Grid -->
+  <g stroke="white" stroke-opacity="0.25" stroke-width="1">
+    <path d="M20 16V48"/>
+    <path d="M32 16V48"/>
+    <path d="M44 16V48"/>
+    <path d="M16 20H48"/>
+    <path d="M16 32H48"/>
+    <path d="M16 44H48"/>
+  </g>
+
+  <!-- Nodo activo -->
+  <circle cx="32" cy="32" r="5" fill="white"/>
+
+  <!-- Nodo bug -->
+  <circle cx="44" cy="20" r="2.5" fill="white"/>
+</svg>
+
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#1E3A5F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g2)"/>
+
+  <!-- Línea pulse -->
+  <path d="M16 34H24L28 26L34 42L38 30H48"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Punto señal -->
+  <circle cx="48" cy="30" r="3" fill="white"/>
+</svg>
+
 </body>
 </html>

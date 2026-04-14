@@ -1,0 +1,15 @@
+body.dark {
+  background: #283553a0;
+}
+
+body.dark .bg-white {
+  background: #2f3c52ac !important;
+}
+
+body.dark .text-navy {
+  color: #f1f5f9 !important;
+}
+
+body.dark .text-muted {
+  color: #94a3b8 !important;
+}

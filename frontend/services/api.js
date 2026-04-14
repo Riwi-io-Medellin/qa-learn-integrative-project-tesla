@@ -1,6 +1,6 @@
 /* ── QA Learn · services/api.js ────────────────────────────────────────── */
 
-export const BASE_URL = 'http://localhost:3000/api';
+export const BASE_URL = 'http://localhost:5000/api';
 
 // ── Fetch autenticado ───────────────────────────────────────────────────
 async function req(path, opts = {}) {
