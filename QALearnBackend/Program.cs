@@ -36,6 +36,9 @@ builder.Services.AddControllers()
         opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
+
+builder.WebHost.ConfigureKestrel(o => o.AllowSynchronousIO = true);
+
 // ── JWT ───────────────────────────────────────────────────────────────────
 var jwtSecret = builder.Configuration["Jwt:Secret"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

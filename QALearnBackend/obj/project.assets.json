@@ -1115,25 +1115,24 @@
     ]
   },
   "packageFolders": {
-    "/home/csharp/.nuget/packages/": {}
+    "/home/cohorte8/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/csharp/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/QALearnAPI.csproj",
+      "projectUniqueName": "/home/cohorte8/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/QALearnAPI.csproj",
       "projectName": "QALearnAPIApp",
-      "projectPath": "/home/csharp/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/QALearnAPI.csproj",
-      "packagesPath": "/home/csharp/.nuget/packages/",
-      "outputPath": "/home/csharp/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/obj/",
+      "projectPath": "/home/cohorte8/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/QALearnAPI.csproj",
+      "packagesPath": "/home/cohorte8/.nuget/packages/",
+      "outputPath": "/home/cohorte8/Escritorio/qa-learn-integrative-project-tesla/QALearnBackend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/csharp/.nuget/NuGet/NuGet.Config"
+        "/home/cohorte8/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1151,8 +1150,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "10.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -1194,12 +1192,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[8.0.25, 8.0.25]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1208,7 +1200,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.104/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

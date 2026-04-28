@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QALearnAPIApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24cf2f124aa5bcb60031e085ed88f475b03e834a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+470f6b149f034a8a0e44eb26b85c5866b30ecaf7")]
 [assembly: System.Reflection.AssemblyProductAttribute("QALearnAPIApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QALearnAPIApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
