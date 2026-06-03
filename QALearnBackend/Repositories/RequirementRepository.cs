@@ -45,7 +45,7 @@ public class RequirementRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstAsync<RequirementEntity>(
             @"INSERT INTO requirements (id_project, code, description, priority, status)
               VALUES (@P, @Code, @Desc, @Priority, 'DRAFT')
-              RETURNING id_requirement, code",
+              RETURNING id_requirement, code, description, priority, status",
             new { P = projectId, Code = code, Desc = description, Priority = priority });
     }
 
@@ -55,7 +55,7 @@ public class RequirementRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstOrDefaultAsync<RequirementEntity>(
             @"UPDATE requirements SET code = @Code, description = @Desc, priority = @Priority, updated_at = NOW()
               WHERE id_requirement = @R AND id_project = @P
-              RETURNING id_requirement, code",
+              RETURNING id_requirement, code, description, priority, status",
             new { R = reqId, P = projectId, Code = code, Desc = description, Priority = priority });
     }
 

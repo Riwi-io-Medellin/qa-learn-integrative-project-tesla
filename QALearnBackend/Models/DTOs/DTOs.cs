@@ -1,13 +1,25 @@
 using System.ComponentModel.DataAnnotations;
-
+using System.Text.Json.Serialization; 
 namespace QALearnAPI.Models.DTOs;
 
 // ── Auth ──────────────────────────────────────────────────────────────────
-public record RegisterDto(
-    [Required, MinLength(2), MaxLength(50)] string FirstName,
-    [Required, MinLength(2), MaxLength(50)] string LastName,
-    [Required, EmailAddress]               string Email,
-    [Required] string Password);
+
+public class RegisterDto
+{
+    [JsonPropertyName("first_name")]
+    [Required, MinLength(2), MaxLength(50)]
+    public string FirstName { get; set; } = "";
+
+    [JsonPropertyName("last_name")]
+    [Required, MinLength(2), MaxLength(50)]
+    public string LastName { get; set; } = "";
+
+    [Required, EmailAddress]
+    public string Email { get; set; } = "";
+
+    [Required]
+    public string Password { get; set; } = "";
+}
 
 public record LoginDto(
     [Required, EmailAddress] string Email,

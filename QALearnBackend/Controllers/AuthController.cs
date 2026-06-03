@@ -26,10 +26,10 @@ public class AuthController(AuthRepository repo, JwtService jwt) : ControllerBas
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var user = await repo.FindFullByEmailAsync(dto.Email);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, (string)user.password_hash))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             return BadRequest(new { error = "Invalid credentials" });
-        var token = jwt.GenerateToken((Guid)user.id_user, (string)user.role_name);
-        return Ok(new { message = "Ingreso correctamente", user = new { user = new { id = user.id_user, name = user.first_name, email = user.email, role = user.role_name }, token } });
+        var token = jwt.GenerateToken(user.IdUser, user.RoleName);
+        return Ok(new { message = "Ingreso correctamente", user = new { user = new { id = user.IdUser, name = user.FirstName, email = user.Email, role = user.RoleName }, token } });
     }
 
     [HttpPost("logout"), Authorize]

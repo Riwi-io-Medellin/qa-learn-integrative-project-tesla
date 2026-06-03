@@ -11,14 +11,14 @@ public class ProjectRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstAsync<ProjectEntity>(
             @"INSERT INTO projects (id_user, name, description, status)
               VALUES (@UserId, @Name, @Desc, 'ACTIVE')
-              RETURNING id_project, name, status, created_at",
+              RETURNING id_project, name, description, status, created_at, 0::bigint AS total_requirements, 0::bigint AS total_test_cases",
             new { UserId = userId, Name = name, Desc = description });
     }
 
     public async Task<IEnumerable<ProjectEntity>> GetByUserAsync(Guid userId, string? status, int page, int limit)
     {
         using var c = Conn();
-        var sql = "SELECT id_project, name, status, created_at FROM projects WHERE id_user = @UserId AND deleted_at IS NULL";
+        var sql = "SELECT id_project, name, description, status, created_at, 0::bigint AS total_requirements, 0::bigint AS total_test_cases FROM projects WHERE id_user = @UserId AND deleted_at IS NULL";
         if (status != null) sql += " AND status = @Status";
         sql += " ORDER BY created_at DESC LIMIT @Limit OFFSET @Offset";
         return await c.QueryAsync<ProjectEntity>(sql, new { UserId = userId, Status = status, Limit = limit, Offset = (page - 1) * limit });
@@ -45,7 +45,7 @@ public class ProjectRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstOrDefaultAsync<ProjectEntity>(
             @"UPDATE projects SET name = @Name, description = @Desc, updated_at = NOW()
               WHERE id_project = @ProjectId AND id_user = @UserId AND deleted_at IS NULL
-              RETURNING id_project, name",
+              RETURNING id_project, name, description, status, created_at, 0::bigint AS total_requirements, 0::bigint AS total_test_cases",
             new { Name = name, Desc = description, ProjectId = projectId, UserId = userId });
     }
 

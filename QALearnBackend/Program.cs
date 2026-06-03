@@ -19,6 +19,7 @@ builder.Services.AddScoped<ExecutionRepository>();
 builder.Services.AddScoped<EvidenceRepository>();
 builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<ModuleRepository>();
+builder.Services.AddScoped<ModuleQuestionRepository>();
 builder.Services.AddScoped<DiagnosticRepository>();
 builder.Services.AddScoped<RouteRepository>();
 builder.Services.AddScoped<LibraryRepository>();
@@ -30,20 +31,16 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
-        // Acepta tanto camelCase como PascalCase del frontend
         opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        // Devuelve camelCase al frontend
-        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
     });
-
-
-builder.WebHost.ConfigureKestrel(o => o.AllowSynchronousIO = true);
-
+    
 // ── JWT ───────────────────────────────────────────────────────────────────
 var jwtSecret = builder.Configuration["Jwt:Secret"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
+        opt.MapInboundClaims = false;
         opt.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,

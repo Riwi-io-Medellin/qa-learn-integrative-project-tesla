@@ -10,7 +10,7 @@ public class AuthRepository(IConfiguration cfg) : DbRepository(cfg)
         using var c = Conn();
         return await c.QueryFirstOrDefaultAsync<UserEntity>(
             @"SELECT u.id_user, u.first_name, u.last_name, u.email,
-                     r.role_name, u.status, u.created_at, u.password_hash
+                     r.role_name, u.status, u.created_at
               FROM users u LEFT JOIN roles r ON u.id_role = r.id_role
               WHERE u.email = @Email", new { Email = email });
     }
@@ -38,15 +38,15 @@ public class AuthRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstAsync<UserEntity>(
             @"INSERT INTO users (id_role, first_name, last_name, email, password_hash)
               VALUES (@IdRole, @FirstName, @LastName, @Email, @Hash)
-              RETURNING id_user, first_name, last_name, email",
+              RETURNING id_user, first_name, last_name, email, NULL::text AS role_name, 'ACTIVE' AS status, NOW() AS created_at",
             new { IdRole = idRole, FirstName = firstName, LastName = lastName, Email = email, Hash = passwordHash });
     }
 
     // Se usa para leer password_hash al login
-    public async Task<dynamic?> FindFullByEmailAsync(string email)
+    public async Task<UserLoginEntity?> FindFullByEmailAsync(string email)
     {
         using var c = Conn();
-        return await c.QueryFirstOrDefaultAsync(
+        return await c.QueryFirstOrDefaultAsync<UserLoginEntity>(
             @"SELECT u.id_user, u.first_name, u.last_name, u.email,
                      u.password_hash, r.role_name
               FROM users u LEFT JOIN roles r ON u.id_role = r.id_role

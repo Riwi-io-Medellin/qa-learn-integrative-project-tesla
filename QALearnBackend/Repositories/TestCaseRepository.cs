@@ -16,7 +16,7 @@ public class TestCaseRepository(IConfiguration cfg) : DbRepository(cfg)
     public async Task<IEnumerable<TestCaseEntity>> GetByProjectAsync(Guid projectId, string? status, string? type, Guid? reqId)
     {
         using var c = Conn();
-        var sql = "SELECT tc.id_test_case, tc.title, tc.type, tc.status, tc.library_status, tc.id_requirement FROM test_cases tc WHERE tc.id_project = @P AND tc.deleted_at IS NULL";
+        var sql = "SELECT tc.id_test_case, tc.title, tc.type, tc.status, tc.library_status, tc.description, tc.preconditions, tc.id_requirement FROM test_cases tc WHERE tc.id_project = @P AND tc.deleted_at IS NULL";
         if (status != null) sql += " AND tc.status = @Status";
         if (type   != null) sql += " AND tc.type = @Type";
         if (reqId  != null) sql += " AND tc.id_requirement = @ReqId";
@@ -40,7 +40,8 @@ public class TestCaseRepository(IConfiguration cfg) : DbRepository(cfg)
             {
                 if (!lookup.TryGetValue(tc.IdTestCase, out var existing))
                 {
-                    existing = tc with { Steps = new List<StepEntity>() };
+                    existing = tc;
+                    existing.Steps = new List<StepEntity>();
                     lookup[tc.IdTestCase] = existing;
                 }
                 if (step != null && step.IdStep != Guid.Empty)
@@ -58,7 +59,7 @@ public class TestCaseRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstAsync<TestCaseEntity>(
             @"INSERT INTO test_cases (id_project, id_requirement, title, description, preconditions, type, status)
               VALUES (@P, @ReqId, @Title, @Desc, @Pre, @Type, 'DRAFT')
-              RETURNING id_test_case, title",
+              RETURNING id_test_case, title, type, status, library_status, description, preconditions, id_requirement",
             new { P = projectId, ReqId = reqId, Title = title, Desc = description, Pre = preconditions, Type = type });
     }
 
@@ -68,7 +69,7 @@ public class TestCaseRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstOrDefaultAsync<TestCaseEntity>(
             @"UPDATE test_cases SET title = @Title, description = @Desc, preconditions = @Pre, type = @Type, updated_at = NOW()
               WHERE id_test_case = @TcId AND id_project = @P AND deleted_at IS NULL
-              RETURNING id_test_case, title",
+              RETURNING id_test_case, title, type, status, library_status, description, preconditions, id_requirement",
             new { Title = title, Desc = description, Pre = preconditions, Type = type, TcId = tcId, P = projectId });
     }
 
@@ -90,6 +91,34 @@ public class TestCaseRepository(IConfiguration cfg) : DbRepository(cfg)
               WHERE id_test_case = @TcId AND deleted_at IS NULL
               RETURNING id_test_case, library_status",
             new { LibStatus = libraryStatus, TcId = tcId });
+    }
+
+    public async Task<TestCaseEntity?> GetByIdOnlyAsync(Guid testCaseId)
+    {
+        using var c = Conn();
+        var lookup = new Dictionary<Guid, TestCaseEntity>();
+        await c.QueryAsync<TestCaseEntity, StepEntity, TestCaseEntity>(
+            @"SELECT tc.id_test_case, tc.title, tc.type, tc.status, tc.library_status,
+                     tc.description, tc.preconditions, tc.id_requirement,
+                     ts.id_step, ts.step_number, ts.action, ts.expected_result
+              FROM test_cases tc
+              LEFT JOIN test_steps ts ON ts.id_test_case = tc.id_test_case
+              WHERE tc.id_test_case = @TcId AND tc.deleted_at IS NULL
+              ORDER BY ts.step_number",
+            (tc, step) =>
+            {
+                if (!lookup.TryGetValue(tc.IdTestCase, out var existing))
+                {
+                    existing = tc;
+                    existing.Steps = new List<StepEntity>();
+                    lookup[tc.IdTestCase] = existing;
+                }
+                if (step != null && step.IdStep != Guid.Empty)
+                    existing.Steps!.Add(step);
+                return existing;
+            },
+            new { TcId = testCaseId });
+        return lookup.Values.FirstOrDefault();
     }
 
     public async Task<IEnumerable<PendingCaseEntity>> GetPendingLibraryAsync()

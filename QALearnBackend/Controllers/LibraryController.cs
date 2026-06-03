@@ -6,7 +6,7 @@ using QALearnAPI.Repositories;
 namespace QALearnAPI.Controllers;
 
 [ApiController, Route("api/library"), Authorize]
-public class LibraryController(LibraryRepository repo) : ControllerBase
+public class LibraryController(LibraryRepository repo, TestCaseRepository tcRepo) : ControllerBase
 {
     Guid UserId  => Guid.Parse(User.FindFirst("id")!.Value);
     bool IsAdmin => User.HasClaim("role", "ADMIN");
@@ -20,6 +20,16 @@ public class LibraryController(LibraryRepository repo) : ControllerBase
         var lt = await repo.GetByIdAsync(id);
         if (lt == null) return NotFound(new { error = "Test case no encontrado en la librería" });
         return Ok(new { libraryTest = lt });
+    }
+
+    [HttpGet("{id:guid}/detail")]
+    public async Task<IActionResult> GetDetail(Guid id)
+    {
+        var lt = await repo.GetByIdAsync(id);
+        if (lt == null) return NotFound(new { error = "Test case no encontrado en la librería" });
+        var tc = await tcRepo.GetByIdOnlyAsync(lt.IdTestCase);
+        if (tc == null) return NotFound(new { error = "Test case original no encontrado" });
+        return Ok(new { libraryTest = lt, testCase = tc });
     }
 
     [HttpPost]

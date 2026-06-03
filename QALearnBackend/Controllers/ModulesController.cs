@@ -6,7 +6,7 @@ using QALearnAPI.Repositories;
 namespace QALearnAPI.Controllers;
 
 [ApiController, Route("api/courses/{courseId:guid}/modules"), Authorize]
-public class ModulesController(ModuleRepository moduleRepo, CourseRepository courseRepo) : ControllerBase
+public class ModulesController(ModuleRepository moduleRepo, CourseRepository courseRepo, ModuleQuestionRepository questionRepo) : ControllerBase
 {
     bool IsAdmin => User.HasClaim("role", "ADMIN");
 
@@ -23,6 +23,16 @@ public class ModulesController(ModuleRepository moduleRepo, CourseRepository cou
         var module = await moduleRepo.GetByIdAsync(id);
         if (module == null) return NotFound(new { error = "Módulo no encontrado" });
         return Ok(new { module });
+    }
+
+    [HttpGet("{id:guid}/questions")]
+    public async Task<IActionResult> GetQuestions(Guid courseId, Guid id)
+    {
+        var module = await moduleRepo.GetByIdAsync(id);
+        if (module == null) return NotFound(new { error = "Módulo no encontrado" });
+
+        var questions = await questionRepo.GetByModuleAsync(id);
+        return Ok(new { questions });
     }
 
     [HttpPost]

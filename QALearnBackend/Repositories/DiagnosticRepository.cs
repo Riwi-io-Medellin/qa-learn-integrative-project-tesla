@@ -14,7 +14,7 @@ public class DiagnosticRepository(IConfiguration cfg) : DbRepository(cfg)
         return await c.QueryFirstAsync<DiagnosticEntity>(
             @"INSERT INTO diagnostic (id_user, score, id_level, id_route, performed_at)
               VALUES (@UserId, @Score, @LevelId, @RouteId, NOW())
-              RETURNING id_diagnostic, score, performed_at",
+              RETURNING id_diagnostic, score, performed_at, NULL::text AS level_name, NULL::text AS route_name",
             new { UserId = userId, Score = score, LevelId = levelId, RouteId = routeId });
     }
 
@@ -34,7 +34,7 @@ public class DiagnosticRepository(IConfiguration cfg) : DbRepository(cfg)
     {
         using var c = Conn();
         return await c.QueryFirstOrDefaultAsync<DiagnosticEntity>(
-            "SELECT id_diagnostic, score, performed_at FROM diagnostic WHERE id_diagnostic = @DiagId AND id_user = @UserId",
+            "SELECT id_diagnostic, score, performed_at, NULL::text AS level_name, NULL::text AS route_name FROM diagnostic WHERE id_diagnostic = @DiagId AND id_user = @UserId",
             new { DiagId = diagId, UserId = userId });
     }
 }
