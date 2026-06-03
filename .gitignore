@@ -1,0 +1,63 @@
+# ----------------------------
+# Visual Studio / .NET Core
+# ----------------------------
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+bin/
+obj/
+*.db
+*.pdb
+*.dll
+*.exe
+*.log
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# ----------------------------
+# Node / frontend
+# ----------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+/dist/
+/build/
+/out/
+
+# ----------------------------
+# Environment / secrets
+# ----------------------------
+.env
+.env.local
+.env.*.local
+appsettings.*.json
+
+# ----------------------------
+# EF Core Migrations / SQLite (si aplica)
+# ----------------------------
+Migrations/
+*.sqlite
+*.db
+
+# ----------------------------
+# Mac / Linux / Temp
+# ----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+*.log
+
+# ----------------------------
+# JetBrains Rider / VS Code
+# ----------------------------
+.vscode/
+.idea/

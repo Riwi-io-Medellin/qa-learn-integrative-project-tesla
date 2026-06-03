@@ -21,7 +21,7 @@ window.navigate = (view) => {
   ({ dashboard, usersView, coursesView, libraryView })[view==='users'?'usersView':view==='courses'?'coursesView':view==='library'?'libraryView':view]?.();
 };
 
-const API = 'http://localhost:3000/api';
+const API = 'http://localhost:5000/api';
 const tok = () => localStorage.getItem('qa_token');
 const apiFetch = (path, opts={}) => fetch(`${API}${path}`, {
   ...opts, headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok()}`, ...(opts.headers||{}) }
@@ -227,9 +227,15 @@ async function libraryView() {
   } catch { showError('lib-body'); }
 }
 
-window.approveLibraryCase = (tcId, projId) => confirm('Aprobar caso','¿Aprobar y publicar en el repositorio?','Aprobar',false,async()=>{
-  try { await apiFetch(`/projects/${projId}/test-cases/${tcId}/library-approve`,{method:'PATCH',body:JSON.stringify({category:'General',tags:[]})}); showToast('Caso aprobado.','success'); libraryView(); } catch(e){showToast(e.message,'error');}
-});
+window.approveLibraryCase = (tcId, projId) => {
+  const cat = prompt('Categoría del caso (Funcional, Regresión, Humo, Seguridad, Rendimiento, General):', 'General');
+  if (cat === null) return;
+  const cats = ['Funcional','Regresión','Humo','Seguridad','Rendimiento','General'];
+  const category = cats.find(c => c.toLowerCase() === cat.trim().toLowerCase()) || cat.trim();
+  confirm('Aprobar caso','¿Aprobar y publicar en el repositorio como "'+category+'"?','Aprobar',false,async()=>{
+    try { await apiFetch(`/projects/${projId}/test-cases/${tcId}/library-approve`,{method:'PATCH',body:JSON.stringify({category,tags:[]})}); showToast('Caso aprobado como '+category+'.','success'); libraryView(); } catch(e){showToast(e.message,'error');}
+  });
+};
 window.rejectLibraryCase = (tcId, projId) => confirm('Rechazar solicitud','¿Rechazar? El caso volverá a estado sin solicitud.','Rechazar',true,async()=>{
   try { await apiFetch(`/projects/${projId}/test-cases/${tcId}/library-reject`,{method:'PATCH'}); showToast('Solicitud rechazada.','success'); libraryView(); } catch(e){showToast(e.message,'error');}
 });

@@ -1,12 +1,12 @@
-const BASE_URL='http://localhost:3000/api';
+const BASE_URL='http://localhost:5000/api';
 const TOKEN=localStorage.getItem('qa_token');
 if(!TOKEN) window.location.href='../public/login.html';
 const U=JSON.parse(localStorage.getItem('qa_user')||'{}');
 document.getElementById('user-initials').textContent=(U.first_name?U.first_name[0]:(U.name||'U')[0]).toUpperCase()+(U.last_name?U.last_name[0]:'');
 document.getElementById('user-name').textContent=U.first_name?(U.first_name+' '+(U.last_name||'')).trim():(U.name||'Usuario');
 
-const LV={BASIC:{id:'33070531-22ae-4bd6-af5e-e6d1beb1657f',label:'BASICO'},INTERMEDIATE:{id:'94e3c1e1-ef45-4e29-b846-020403648162',label:'INTERMEDIO'},ADVANCED:{id:'169f5154-b152-4e7c-877c-e93fb9e56540',label:'AVANZADO'}};
-const RT={BASIC:{id:'b5228685-766f-4cdb-ab6f-6229561b4618',name:'Ruta Basica de QA Testing'},INTERMEDIATE:{id:'b0bb6a45-1320-46e5-af50-89e8d87b4ad3',name:'Ruta Intermedia de QA Testing'},ADVANCED:{id:'c51d7c28-471c-484b-9874-fe6f2512fc0e',name:'Ruta Avanzada de QA Testing'}};
+const LV={BASIC:{id:'f92dae24-6cc1-49a7-b479-f0eef37462e1',label:'BASICO'},INTERMEDIATE:{id:'4dd53a6e-493e-4826-9e31-51401c216d47',label:'INTERMEDIO'},ADVANCED:{id:'00be0382-6fe9-4086-905e-871e018741c3',label:'AVANZADO'}};
+const RT={BASIC:{id:'53d7cbbc-4c78-40d0-a59a-e3b38e996a96',name:'Ruta Básica de QA Testing'},INTERMEDIATE:{id:'4b682e84-6853-4e44-8220-b5cea023cd9a',name:'Ruta Intermedia de QA Testing'},ADVANCED:{id:'5e1aa8bf-8d3e-47c1-9b7d-9743475e4829',name:'Ruta Avanzada de QA Testing'}};
 function getResult(s){if(s<=40)return{level:LV.BASIC,route:RT.BASIC};if(s<=70)return{level:LV.INTERMEDIATE,route:RT.INTERMEDIATE};return{level:LV.ADVANCED,route:RT.ADVANCED};}
 
 const B1=[

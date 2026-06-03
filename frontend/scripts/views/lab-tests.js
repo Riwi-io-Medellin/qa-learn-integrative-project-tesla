@@ -1,6 +1,6 @@
 /* ── 09-pruebas.js ────────────────────────────────────────────────────── */
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:5000/api';
 const _TOKEN   = localStorage.getItem('qa_token');
 if (!_TOKEN) window.location.href = '../public/login.html';
 
@@ -115,12 +115,246 @@ function goToReport() {
   if (_activeProjId) window.location.href = 'lab-report.html?id=' + _activeProjId;
 }
 
+async function downloadPDF() {
+  if (!_activeProjId) { showToast('Selecciona un proyecto.', 'error'); return; }
+  showToast('Generando PDF...', 'info');
+  try {
+    const projData = await apiFetch('/projects');
+    const projects = Array.isArray(projData) ? projData : (projData.projects || []);
+    const proj = projects.find(p => p.id_project === _activeProjId);
+    if (!proj) { showToast('Proyecto no encontrado.', 'error'); return; }
+
+    const reqData = await apiFetch('/projects/' + _activeProjId + '/requirements');
+    const reqs = Array.isArray(reqData) ? reqData : (reqData.requirements || []);
+
+    // Build report HTML in an off-screen container
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:1000px;padding:40px;font-family:"Plus Jakarta Sans",sans-serif;background:#fff;color:#1A1A2E;z-index:-1';
+    container.innerHTML = `
+      <div style="margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #1E3A5F">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#1E3A5F">
+            <span style="color:#fff;font-weight:800;font-size:14px">QL</span>
+          </div>
+          <div>
+            <h1 style="font-size:24px;font-weight:800;color:#1E3A5F;margin:0">QA Learn</h1>
+            <p style="font-size:13px;color:#4A5073;margin:0">Reporte de Pruebas de Software</p>
+          </div>
+        </div>
+        <table style="width:100%;font-size:13px;border-collapse:collapse">
+          <tr><td style="padding:4px 0;color:#4A5073;width:140px">Proyecto</td><td style="padding:4px 0;font-weight:700;color:#1E3A5F">${escHtml(proj.name)}</td></tr>
+          <tr><td style="padding:4px 0;color:#4A5073">Estado</td><td style="padding:4px 0;color:#1E3A5F">${proj.status || 'ACTIVE'}</td></tr>
+          <tr><td style="padding:4px 0;color:#4A5073">Descripción</td><td style="padding:4px 0">${escHtml(proj.description || 'Sin descripción')}</td></tr>
+          <tr><td style="padding:4px 0;color:#4A5073">Requerimientos</td><td style="padding:4px 0">${reqs.length} requerimientos</td></tr>
+          <tr><td style="padding:4px 0;color:#4A5073">Fecha del reporte</td><td style="padding:4px 0">${new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td></tr>
+        </table>
+      </div>`;
+
+    for (const req of reqs) {
+      const tcData = await apiFetch('/projects/' + _activeProjId + '/requirements/' + req.id_requirement + '/test-cases').catch(() => ({ testCases: [] }));
+      const tcs = tcData.testCases || [];
+
+      container.innerHTML += `<div style="margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #D0D9F0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-size:12px;font-family:monospace;font-weight:700;padding:2px 8px;border-radius:4px;background:#EEF2FB;color:#3B5BDB">${escHtml(req.code)}</span>
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:${req.priority === 'HIGH' ? '#C0392B' : req.priority === 'MEDIUM' ? '#D4A017' : '#2D9B6F'}20;color:${req.priority === 'HIGH' ? '#C0392B' : req.priority === 'MEDIUM' ? '#D4A017' : '#2D9B6F'}">${req.priority || 'MEDIUM'}</span>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#1E3A5F;margin:4px 0 8px">${escHtml(req.description)}</h3>
+        <p style="font-size:12px;color:#4A5073;margin:0 0 12px">${tcs.length} caso${tcs.length !== 1 ? 's' : ''} de prueba</p>`;
+
+      if (tcs.length) {
+        container.innerHTML += '<div style="margin-left:12px">';
+        for (const tc of tcs) {
+          const detail = await apiFetch('/projects/' + _activeProjId + '/test-cases/' + tc.id_test_case).catch(() => null);
+          const steps = detail?.steps || [];
+
+          container.innerHTML += `<div style="margin-bottom:16px;padding:16px;border-radius:12px;background:#F7F9FF;border:1px solid #D0D9F0">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <span style="font-size:14px;font-weight:700;color:#1E3A5F">${escHtml(tc.title || '—')}</span>
+              <span style="font-size:11px;font-family:monospace;padding:2px 8px;border-radius:4px;background:#EEF2FB;color:#4A5073">${tc.type || '—'}</span>
+              <span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:${tc.status === 'ACTIVE' ? '#3B5BDB' : '#4A5073'}20;color:${tc.status === 'ACTIVE' ? '#3B5BDB' : '#4A5073'}">${tc.status || 'DRAFT'}</span>
+            </div>`;
+
+          if (steps.length) {
+            container.innerHTML += `<table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
+              <thead><tr>
+                <th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">#</th>
+                <th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">Acción</th>
+                <th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">Resultado Esperado</th>
+              </tr></thead><tbody>`;
+            steps.forEach(s => {
+              container.innerHTML += `<tr><td style="padding:6px 8px;border:1px solid #D0D9F0;text-align:center">${s.step_number || '—'}</td>
+                <td style="padding:6px 8px;border:1px solid #D0D9F0">${escHtml(s.action || '—')}</td>
+                <td style="padding:6px 8px;border:1px solid #D0D9F0">${escHtml(s.expected_result || s.expectedResult || '—')}</td></tr>`;
+            });
+            container.innerHTML += '</tbody></table>';
+          }
+
+          container.innerHTML += '</div>';
+        }
+        container.innerHTML += '</div>';
+      }
+      container.innerHTML += '</div>';
+    }
+
+    container.innerHTML += `<div style="margin-top:32px;padding-top:16px;border-top:1px solid #D0D9F0;text-align:center;font-size:12px;color:#4A5073">
+      Reporte generado por QA Learn — ${new Date().toLocaleDateString('es-CO')}
+    </div>`;
+
+    document.body.appendChild(container);
+    await new Promise(r => setTimeout(r, 300)); // wait for render
+
+    const canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+    document.body.removeChild(container);
+
+    const { jsPDF } = window.jspdf;
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    let heightLeft = pdfH;
+    let position = 0;
+    const pageH = pdf.internal.pageSize.getHeight();
+
+    pdf.addImage(imgData, 'PNG', 0, position, pdfW, pdfH);
+    heightLeft -= pageH;
+    while (heightLeft > 0) {
+      position -= pageH;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfW, pdfH);
+      heightLeft -= pageH;
+    }
+
+    const fileName = 'reporte-' + proj.name.replace(/\s+/g, '_').toLowerCase() + '.pdf';
+    pdf.save(fileName);
+    showToast('PDF descargado.', 'success');
+  } catch(e) {
+    showToast('Error al generar PDF: ' + e.message, 'error');
+  }
+}
+
+function generatePDF() {
+  if (!_activeProjId) return;
+  downloadPDF();
+}
+
+async function showReportModal() {
+  try {
+    const projData = await apiFetch('/projects');
+    const projects = Array.isArray(projData) ? projData : (projData.projects || []);
+    const proj = projects.find(p => p.id_project === _activeProjId);
+    if (!proj) { showToast('Proyecto no encontrado.', 'error'); return; }
+
+    const reqData = await apiFetch('/projects/' + _activeProjId + '/requirements');
+    const reqs = Array.isArray(reqData) ? reqData : (reqData.requirements || []);
+
+    let html = `
+    <div id="report-modal" class="modal-backdrop" onclick="if(event.target===this)closeReportModal()">
+      <div class="bg-white rounded-2xl shadow-2xl" style="width:90%;max-width:1000px;max-height:90vh;overflow-y:auto">
+        <div class="sticky top-0 bg-white border-b border-border px-6 py-4 flex items-center justify-between z-10">
+          <h2 class="text-lg font-extrabold text-navy">Reporte de Pruebas</h2>
+          <div class="flex gap-2">
+            <button onclick="downloadPDF()" class="px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90" style="background:#2D9B6F">
+              <svg class="w-3.5 h-3.5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Descargar PDF
+            </button>
+            <button onclick="closeReportModal()" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-sky text-muted"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+          </div>
+        </div>
+        <div class="p-8" style="font-family:'Plus Jakarta Sans',sans-serif">
+          <!-- Header del reporte -->
+          <div class="mb-8 pb-6 border-b-2 border-navy">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#1E3A5F"><span class="text-white font-extrabold text-sm">QL</span></div>
+              <div><h1 class="text-2xl font-extrabold text-navy">QA Learn</h1><p class="text-sm text-muted">Reporte de Pruebas de Software</p></div>
+            </div>
+            <table style="width:100%;font-size:13px">
+              <tr><td style="padding:4px 0;color:#4A5073;width:140px">Proyecto</td><td style="padding:4px 0;font-weight:700;color:#1E3A5F">${escHtml(proj.name)}</td></tr>
+              <tr><td style="padding:4px 0;color:#4A5073">Estado</td><td style="padding:4px 0">${badge(proj.status || 'ACTIVE')}</td></tr>
+              <tr><td style="padding:4px 0;color:#4A5073">Descripción</td><td style="padding:4px 0;color:#1A1A2E">${escHtml(proj.description || 'Sin descripción')}</td></tr>
+              <tr><td style="padding:4px 0;color:#4A5073">Requerimientos</td><td style="padding:4px 0;color:#1A1A2E">${reqs.length} requerimientos</td></tr>
+              <tr><td style="padding:4px 0;color:#4A5073">Fecha del reporte</td><td style="padding:4px 0;color:#1A1A2E">${new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td></tr>
+            </table>
+          </div>`;
+
+    // Por cada requerimiento, listar sus casos
+    for (const req of reqs) {
+      const tcData = await apiFetch('/projects/' + _activeProjId + '/requirements/' + req.id_requirement + '/test-cases').catch(() => ({ testCases: [] }));
+      const tcs = tcData.testCases || [];
+
+      html += `<div class="mb-6 pb-4 border-b border-border">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-xs font-mono font-bold px-2 py-0.5 rounded" style="background:#EEF2FB;color:#3B5BDB">${escHtml(req.code)}</span>
+          ${badge(req.priority || 'MEDIUM')}
+        </div>
+        <h3 class="text-base font-bold text-navy mb-2">${escHtml(req.description)}</h3>
+        <p class="text-xs text-muted mb-3">${tcs.length} caso${tcs.length !== 1 ? 's' : ''} de prueba</p>`;
+
+      if (tcs.length) {
+        html += '<div style="margin-left:12px">';
+        for (const tc of tcs) {
+          // Get steps for this test case
+          const detail = await apiFetch('/projects/' + _activeProjId + '/test-cases/' + tc.id_test_case).catch(() => null);
+          const steps = detail?.steps || [];
+          const execs = detail?.executions || [];
+
+          html += `<div class="mb-4 p-4 rounded-xl" style="background:#F7F9FF;border:1px solid #D0D9F0">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm font-bold text-navy flex-1">${escHtml(tc.title || '—')}</span>
+              <span class="text-xs font-mono px-2 py-0.5 rounded" style="background:#EEF2FB;color:#4A5073">${tc.type || '—'}</span>
+              ${badge(tc.status || 'DRAFT')}
+            </div>`;
+
+          if (steps.length) {
+            html += `<table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
+              <thead><tr><th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">#</th>
+              <th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">Acción</th>
+              <th style="text-align:left;padding:6px 8px;background:#EEF2FB;color:#1E3A5F;font-weight:700;border:1px solid #D0D9F0">Resultado Esperado</th></tr></thead><tbody>`;
+            steps.forEach(s => {
+              html += `<tr><td style="padding:6px 8px;border:1px solid #D0D9F0;color:#1A1A2E;text-align:center">${s.step_number || s.stepNumber || '—'}</td>
+                <td style="padding:6px 8px;border:1px solid #D0D9F0;color:#1A1A2E">${escHtml(s.action || '—')}</td>
+                <td style="padding:6px 8px;border:1px solid #D0D9F0;color:#1A1A2E">${escHtml(s.expected_result || s.expectedResult || '—')}</td></tr>`;
+            });
+            html += '</tbody></table>';
+          }
+
+          if (execs.length) {
+            const last = execs[execs.length - 1];
+            html += `<div class="mt-2 flex items-center gap-2 text-xs"><span class="text-muted">Última ejecución:</span> ${badge(last.result || last.result_test || '—')} <span class="text-muted">${fmtDate(last.executed_at || last.date_execution)}</span></div>`;
+          }
+
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+
+    html += `<div class="mt-8 pt-4 border-t border-border text-center text-xs text-muted">
+      Reporte generado por QA Learn — ${new Date().toLocaleDateString('es-CO')}
+    </div>`;
+
+    html += '</div></div></div>';
+
+    const existing = document.getElementById('report-modal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+  } catch(e) {
+    showToast('Error al generar reporte: ' + e.message, 'error');
+  }
+}
+
+function closeReportModal() {
+  const el = document.getElementById('report-modal');
+  if (el) el.remove();
+}
+
 async function selectProj(id, name) {
   _activeProjId = id; _activeReqId = null; _activeTcId = null;
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
   document.getElementById('proj-' + id)?.classList.add('active');
   document.getElementById('btn-new-req').classList.remove('hidden');
-  document.getElementById('btn-report')?.classList.remove('hidden');
+  document.getElementById('btn-pdf')?.classList.remove('hidden');
   document.getElementById('hdr-breadcrumb').textContent = name + ' → Requerimientos → Casos de Prueba';
   document.getElementById('tc-list').innerHTML = '<div class="flex flex-col items-center justify-center h-64 text-center"><p class="text-sm text-muted">Selecciona un requerimiento</p></div>';
   document.getElementById('tc-label').textContent = 'Casos de Prueba';

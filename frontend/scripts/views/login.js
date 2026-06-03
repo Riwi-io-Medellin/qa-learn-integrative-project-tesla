@@ -24,15 +24,15 @@ document.getElementById('toggle-pass')?.addEventListener('click', () => {
 
 // Mapa para convertir respuesta del backend al formato que espera el dashboard
 const LEVEL_MAP = {
-  'BASIC':        { label: 'BASICO',     id: '33070531-22ae-4bd6-af5e-e6d1beb1657f' },
-  'INTERMEDIATE': { label: 'INTERMEDIO', id: '94e3c1e1-ef45-4e29-b846-020403648162' },
-  'ADVANCED':     { label: 'AVANZADO',   id: '169f5154-b152-4e7c-877c-e93fb9e56540' },
+  'BASIC':        { label: 'BASICO',     id: 'f92dae24-6cc1-49a7-b479-f0eef37462e1' },
+  'INTERMEDIATE': { label: 'INTERMEDIO', id: '4dd53a6e-493e-4826-9e31-51401c216d47' },
+  'ADVANCED':     { label: 'AVANZADO',   id: '00be0382-6fe9-4086-905e-871e018741c3' },
 };
 const ROUTE_IDS = {
-  'Ruta Básica de QA Testing':     'b5228685-766f-4cdb-ab6f-6229561b4618',
-  'Ruta Basica de QA Testing':     'b5228685-766f-4cdb-ab6f-6229561b4618',
-  'Ruta Intermedia de QA Testing': 'b0bb6a45-1320-46e5-af50-89e8d87b4ad3',
-  'Ruta Avanzada de QA Testing':   'c51d7c28-471c-484b-9874-fe6f2512fc0e',
+  'Ruta Básica de QA Testing':     '53d7cbbc-4c78-40d0-a59a-e3b38e996a96',
+  'Ruta Basica de QA Testing':     '53d7cbbc-4c78-40d0-a59a-e3b38e996a96',
+  'Ruta Intermedia de QA Testing': '4b682e84-6853-4e44-8220-b5cea023cd9a',
+  'Ruta Avanzada de QA Testing':   '5e1aa8bf-8d3e-47c1-9b7d-9743475e4829',
 };
 
 function normalizeDiag(raw) {

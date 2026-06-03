@@ -6,6 +6,8 @@
   <title>Laboratorio — Pruebas — QA Learn</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/frontend/styles/platform.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <script>tailwind.config={theme:{extend:{colors:{navy:"#1E3A5F",royal:"#2E4FBA",bright:"#3B5BDB",sky:"#EEF2FB",card:"#F7F9FF",ink:"#1A1A2E",muted:"#4A5073",border:"#D0D9F0",pass:"#2D9B6F",fail:"#C0392B",warn:"#D4A017"},fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["DM Mono","monospace"]}}}};</script>
   <style>
@@ -26,6 +28,18 @@
     .drawer.open{transform:translateX(0)}
     .modal-backdrop{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(30,58,95,.5);backdrop-filter:blur(4px)}
     @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    /* AI Chat Panel */
+    .ai-chat-panel{position:fixed;bottom:24px;right:24px;width:380px;max-width:calc(100vw - 32px);max-height:520px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(30,58,95,.2);z-index:70;display:none;flex-direction:column;overflow:hidden;border:1px solid #D0D9F0;transition:all .25s ease}
+    .ai-chat-panel.open{display:flex}
+    .ai-chat-header{background:#2D9B6F;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+    .ai-chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:200px;max-height:360px}
+    .ai-msg{max-width:85%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap}
+    .ai-msg.user{margin-left:auto;background:#3B5BDB;color:#fff;border-bottom-right-radius:4px}
+    .ai-msg.bot{margin-right:auto;background:#F0FDF4;color:#1A1A2E;border-bottom-left-radius:4px;border:1px solid #D0D9F0}
+    .ai-chat-input{display:flex;gap:8px;padding:8px 12px;border-top:1px solid #D0D9F0}
+    .ai-chat-input input{flex:1;border:1.5px solid #D0D9F0;border-radius:10px;padding:8px 12px;font-size:13px}
+    .ai-chat-input button{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;color:#fff;background:#2D9B6F;border:none;cursor:pointer;transition:opacity .2s}
+    .ai-chat-input button:hover{opacity:.85}
   </style>
 </head>
 <body class="font-sans antialiased bg-sky">
@@ -62,7 +76,6 @@
         <a href="lab-dashboard.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Dashboard</a>
         <a href="lab-tests.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold" style="color:#3B5BDB;background:rgba(59,91,219,0.08)"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#3B5BDB"></div>Pruebas</a>
         <a href="repository.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Repositorio</a>
-        <a href="lab-report.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-navy hover:bg-sky"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-border"></div>Reporte IA</a>
       </div>
     </div>
     <div>
@@ -99,9 +112,13 @@
       <h1 class="text-base font-bold text-navy">Laboratorio de Pruebas</h1>
       <p id="hdr-breadcrumb" class="text-xs text-muted">Proyectos → Requerimientos → Casos de Prueba</p>
     </div>
-    <button id="btn-report" onclick="goToReport()" class="hidden flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90" style="background:#2D9B6F">
+    <button id="btn-pdf" onclick="generatePDF()" class="hidden flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90" style="background:#C0392B">
       <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Reporte IA
+      PDF
+    </button>
+    <button id="btn-ai-help" onclick="toggleAIChat()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90" style="background:#2D9B6F">
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+      Ayuda con IA
     </button>
     <button onclick="openModal('modal-proyecto')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90" style="background:#3B5BDB">
       <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -288,7 +305,98 @@
   </div>
 </div>
 
+<!-- AI Chat Panel -->
+<div id="ai-chat-panel" class="ai-chat-panel">
+  <div class="ai-chat-header">
+    <span class="text-sm font-bold">🤖 Ayuda con IA</span>
+    <button onclick="toggleAIChat()" class="text-white hover:opacity-80"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div id="ai-chat-msgs" class="ai-chat-msgs">
+    <div class="ai-msg bot">¡Hola! Soy tu asistente de QA. Puedo ayudarte a crear casos de prueba, revisar requerimientos o resolver dudas técnicas. ¿En qué puedo ayudarte?</div>
+  </div>
+  <div class="ai-chat-input">
+    <input id="ai-chat-input" type="text" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')sendAIMessage()">
+    <button onclick="sendAIMessage()">Enviar</button>
+  </div>
+</div>
+
 <script src="../scripts/views/lab-tests.js"></script>
 <script src="/frontend/scripts/views/theme.js"></script>
+<script>
+// AI Chat — Gemini API (Google AI Studio)
+// Cargar variables de entorno
+require('dotenv').config();
+
+const AI_KEY = process.env.GCP_AI_KEY;
+const AI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_KEY}`;
+const AI_CONTEXT = 'Eres un asistente experto en QA testing, casos de prueba, y calidad de software. Responde en español de forma clara y concisa.';
+
+let _aiOpen = false;
+let _aiHistory = [];
+
+function toggleAIChat() {
+  _aiOpen = !_aiOpen;
+  document.getElementById('ai-chat-panel').classList.toggle('open', _aiOpen);
+}
+
+async function sendAIMessage() {
+  const input = document.getElementById('ai-chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const msgsEl = document.getElementById('ai-chat-msgs');
+  msgsEl.innerHTML += '<div class="ai-msg user">' + escapeHtml(msg) + '</div>';
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  const loadingId = 'ai-loading-' + Date.now();
+  msgsEl.innerHTML += '<div id="' + loadingId + '" class="ai-msg bot" style="color:#4A5073">Escribiendo...</div>';
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  try {
+    const contents = [];
+    if (AI_CONTEXT) {
+      contents.push({ role: 'user', parts: [{ text: AI_CONTEXT }] });
+      contents.push({ role: 'model', parts: [{ text: 'Entendido. Soy tu asistente de QA.' }] });
+    }
+    _aiHistory.forEach(h => contents.push(h));
+    contents.push({ role: 'user', parts: [{ text: msg }] });
+
+    const res = await fetch(AI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents,
+        generationConfig: { temperature: 0.7, maxOutputTokens: 500, topP: 0.9 }
+      })
+    });
+
+    const loadingEl = document.getElementById(loadingId);
+    if (!loadingEl) return;
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      loadingEl.textContent = 'Error: ' + (errData.error?.message || 'La IA no está disponible. Verifica la API key.');
+      return;
+    }
+
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No se pudo generar respuesta.';
+    loadingEl.textContent = text;
+    loadingEl.style.color = '#1A1A2E';
+
+    _aiHistory.push({ role: 'user', parts: [{ text: msg }] });
+    _aiHistory.push({ role: 'model', parts: [{ text }] });
+  } catch {
+    const loadingEl = document.getElementById(loadingId);
+    if (loadingEl) loadingEl.textContent = 'Error de conexión. Verifica tu internet e intenta de nuevo.';
+  }
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
 </body>
 </html>

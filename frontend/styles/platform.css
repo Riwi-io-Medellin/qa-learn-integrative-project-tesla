@@ -13,3 +13,68 @@ body.dark .text-navy {
 body.dark .text-muted {
   color: #94a3b8 !important;
 }
+
+/* ── Style Improvements ──────────────────────────────────────────────── */
+.hover-lift {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(59,91,219,.1);
+}
+
+.glass {
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.gradient-header {
+  background: linear-gradient(135deg, #1E3A5F 0%, #2E4FBA 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, #F7F9FF 0%, #EEF2FB 100%);
+}
+
+.fade-in-up {
+  animation: fadeInUp .35s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in-right {
+  animation: slideInRight .3s ease forwards;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.pulse-dot {
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .3; }
+}
+
+/* Card hover shadows */
+.card-hover {
+  transition: border-color .2s, box-shadow .2s;
+}
+.card-hover:hover {
+  border-color: #3B5BDB !important;
+  box-shadow: 0 4px 16px rgba(59,91,219,.08);
+}
+
+/* Scrollbar refinements */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D9F0; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #B0C0E0; }

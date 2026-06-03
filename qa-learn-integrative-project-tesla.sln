@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QALearnBackend", "QALearnBackend", "{422F8372-636E-96C6-391E-85CC6F898A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QALearnAPI", "QALearnBackend\QALearnAPI.csproj", "{253CCC06-F879-F249-38D4-3312673A2538}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QALearnAPI", "QALearnBackend/QALearnAPI.csproj", "{253CCC06-F879-F249-38D4-3312673A2538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

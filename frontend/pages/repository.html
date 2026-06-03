@@ -166,7 +166,7 @@
 </div>
 
 <script>
-const BASE_URL='http://localhost:3000/api';const _TOKEN=localStorage.getItem('qa_token');if(!_TOKEN)window.location.href='../public/login.html';const _U=JSON.parse(localStorage.getItem('qa_user')||'{}');const _diag=JSON.parse(localStorage.getItem('qa_last_diagnostic')||'null');const _dn=_U.first_name?(_U.first_name+' '+(_U.last_name||'')).trim():(_U.name||'Usuario');const _ini=(_U.first_name?_U.first_name[0]:(_U.name||'U')[0]).toUpperCase()+(_U.last_name?_U.last_name[0].toUpperCase():'');if(document.getElementById('sb-avatar'))document.getElementById('sb-avatar').textContent=_ini;if(document.getElementById('sb-name'))document.getElementById('sb-name').textContent=_dn;if(document.getElementById('sb-level')&&_diag?.level)document.getElementById('sb-level').textContent=_diag.level.label;if(document.getElementById('logout-btn'))document.getElementById('logout-btn').onclick=async()=>{try{await fetch(BASE_URL+'/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+_TOKEN}});}catch{}localStorage.clear();window.location.href='../public/login.html';};async function apiFetch(p,o={}){const h={'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN,...(o.headers||{})};const r=await fetch(BASE_URL+p,{...o,headers:h});const d=await r.json().catch(()=>({}));if(r.status===401){localStorage.clear();window.location.href='../public/login.html';return null;}if(!r.ok)throw new Error(d.error||d.message||'Error '+r.status);return d;}function badge(s){const M={PASSED:['#2D9B6F','Pasado'],FAILED:['#C0392B','Fallido'],BLOCKED:['#D4A017','Bloqueado'],DRAFT:['#4A5073','Borrador'],ACTIVE:['#3B5BDB','Activo'],COMPLETED:['#2D9B6F','Completado'],ARCHIVED:['#4A5073','Archivado'],PENDING:['#D4A017','Pendiente']};const[c,l]=M[s]||['#4A5073',s];return `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;background:${c}20;color:${c}">${l}</span>`;}function fmtDate(iso){if(!iso)return '—';return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}document.addEventListener('DOMContentLoaded',function(){const ni=document.querySelectorAll('nav > div');ni.forEach(function(item){const link=item.querySelector(':scope > a');const sub=item.querySelector(':scope > div');const chev=link?link.querySelector('svg:last-child'):null;if(!link)return;const ia=item.dataset.active==='true';if(sub){sub.style.overflow='hidden';sub.style.transition='max-height 0.25s ease';if(ia){sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}else{sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}}if(!sub)return;link.addEventListener('click',function(e){e.preventDefault();const io=sub.style.maxHeight!=='0px'&&sub.style.maxHeight!=='';ni.forEach(function(o){if(o===item)return;const s=o.querySelector(':scope > div');const c=o.querySelector(':scope > a svg:last-child');if(s)s.style.maxHeight='0';if(c)c.style.transform='rotate(-90deg)';});if(io){sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}else{sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}});});});
+const BASE_URL='http://localhost:5000/api';const _TOKEN=localStorage.getItem('qa_token');if(!_TOKEN)window.location.href='../public/login.html';const _U=JSON.parse(localStorage.getItem('qa_user')||'{}');const _diag=JSON.parse(localStorage.getItem('qa_last_diagnostic')||'null');const _dn=_U.first_name?(_U.first_name+' '+(_U.last_name||'')).trim():(_U.name||'Usuario');const _ini=(_U.first_name?_U.first_name[0]:(_U.name||'U')[0]).toUpperCase()+(_U.last_name?_U.last_name[0].toUpperCase():'');if(document.getElementById('sb-avatar'))document.getElementById('sb-avatar').textContent=_ini;if(document.getElementById('sb-name'))document.getElementById('sb-name').textContent=_dn;if(document.getElementById('sb-level')&&_diag?.level)document.getElementById('sb-level').textContent=_diag.level.label;if(document.getElementById('logout-btn'))document.getElementById('logout-btn').onclick=async()=>{try{await fetch(BASE_URL+'/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+_TOKEN}});}catch{}localStorage.clear();window.location.href='../public/login.html';};async function apiFetch(p,o={}){const h={'Content-Type':'application/json','Authorization':'Bearer '+_TOKEN,...(o.headers||{})};const r=await fetch(BASE_URL+p,{...o,headers:h});const d=await r.json().catch(()=>({}));if(r.status===401){localStorage.clear();window.location.href='../public/login.html';return null;}if(!r.ok)throw new Error(d.error||d.message||'Error '+r.status);return d;}function badge(s){const M={PASSED:['#2D9B6F','Pasado'],FAILED:['#C0392B','Fallido'],BLOCKED:['#D4A017','Bloqueado'],DRAFT:['#4A5073','Borrador'],ACTIVE:['#3B5BDB','Activo'],COMPLETED:['#2D9B6F','Completado'],ARCHIVED:['#4A5073','Archivado'],PENDING:['#D4A017','Pendiente']};const[c,l]=M[s]||['#4A5073',s];return `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;background:${c}20;color:${c}">${l}</span>`;}function fmtDate(iso){if(!iso)return '—';return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}document.addEventListener('DOMContentLoaded',function(){const ni=document.querySelectorAll('nav > div');ni.forEach(function(item){const link=item.querySelector(':scope > a');const sub=item.querySelector(':scope > div');const chev=link?link.querySelector('svg:last-child'):null;if(!link)return;const ia=item.dataset.active==='true';if(sub){sub.style.overflow='hidden';sub.style.transition='max-height 0.25s ease';if(ia){sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}else{sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}}if(!sub)return;link.addEventListener('click',function(e){e.preventDefault();const io=sub.style.maxHeight!=='0px'&&sub.style.maxHeight!=='';ni.forEach(function(o){if(o===item)return;const s=o.querySelector(':scope > div');const c=o.querySelector(':scope > a svg:last-child');if(s)s.style.maxHeight='0';if(c)c.style.transform='rotate(-90deg)';});if(io){sub.style.maxHeight='0';if(chev)chev.style.transform='rotate(-90deg)';}else{sub.style.maxHeight=sub.scrollHeight+'px';if(chev)chev.style.transform='rotate(0deg)';}});});});
 
 // La biblioteca usa los datos de library_tests de la BD
 // GET /api/library → { libraryTests: [{ id_library, id_test_case, category, tags, validated_at }] }
@@ -256,17 +256,43 @@ async function openDetail(id) {
   document.getElementById('md-id').textContent   = 'ID: ' + (_selectedItem.id_test_case?.slice(0,12)+'...');
   document.getElementById('md-tags').innerHTML   = (_selectedItem.tags||[]).map(t=>`<span class="text-xs px-2 py-0.5 rounded-full" style="background:#EEF2FB;color:#4A5073">${t}</span>`).join('') || '<span class="text-xs text-muted">Sin tags</span>';
   
-  // Cargar datos del test case para mostrar titulo/pasos
+  // Cargar datos reales del test case desde el backend
   try {
-    // Necesitamos buscar en qué proyecto está este test case
-    // Por simplicidad, mostrar la info disponible de library
-    document.getElementById('md-title').textContent   = 'Caso de prueba validado';
-    document.getElementById('md-desc').textContent    = 'Este caso ha sido validado por el equipo de QA y esta disponible para importar en tus proyectos.';
-    document.getElementById('md-meta').innerHTML      = `<span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(59,91,219,.1);color:#3B5BDB">${_selectedItem.category||'General'}</span>`;
-    document.getElementById('md-expected').textContent = 'El sistema responde correctamente segun los criterios de aceptacion definidos.';
-    document.getElementById('md-steps').innerHTML = '<p class="text-xs text-muted">Ver el caso importado para consultar los pasos.</p>';
-    document.getElementById('import-ok').classList.add('hidden');
-  } catch {}
+    const detailData = await apiFetch('/library/' + _selectedItem.id_library + '/detail');
+    const tc = detailData?.testCase;
+    if (tc) {
+      document.getElementById('md-title').textContent = tc.title || 'Caso de prueba';
+      document.getElementById('md-desc').textContent  = tc.description || 'Sin descripción disponible.';
+      document.getElementById('md-meta').innerHTML    = `
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(59,91,219,.1);color:#3B5BDB">${_selectedItem.category||'General'}</span>
+        <span class="text-xs font-mono px-2 py-0.5 rounded-full" style="background:#EEF2FB;color:#4A5073">${tc.type||'—'}</span>
+        ${badge(tc.status||'DRAFT')}`;
+      
+      if (tc.steps && tc.steps.length) {
+        document.getElementById('md-steps').innerHTML = tc.steps.map(s => `
+          <div class="flex gap-3 py-2 border-b border-border last:border-0">
+            <span class="text-xs font-bold text-muted w-6 flex-shrink-0">${s.step_number || s.stepNumber || '?'}</span>
+            <div class="flex-1">
+              <p class="text-xs font-medium text-ink">${escHtml(s.action || '')}</p>
+              <p class="text-xs text-muted mt-0.5"><span class="font-semibold">Esperado:</span> ${escHtml(s.expected_result || s.expectedResult || '')}</p>
+            </div>
+          </div>`).join('');
+      } else {
+        document.getElementById('md-steps').innerHTML = '<p class="text-xs text-muted">Sin pasos definidos.</p>';
+      }
+    } else {
+      // Fallback a datos genéricos
+      document.getElementById('md-title').textContent = 'Caso de prueba validado';
+      document.getElementById('md-desc').textContent  = 'Disponible para importar en tus proyectos.';
+      document.getElementById('md-meta').innerHTML    = `<span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(59,91,219,.1);color:#3B5BDB">${_selectedItem.category||'General'}</span>`;
+    }
+  } catch {
+    document.getElementById('md-title').textContent = 'Caso de prueba';
+    document.getElementById('md-desc').textContent  = 'Disponible para importar en tus proyectos.';
+    document.getElementById('md-meta').innerHTML    = `<span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:rgba(59,91,219,.1);color:#3B5BDB">${_selectedItem.category||'General'}</span>`;
+    document.getElementById('md-steps').innerHTML = '<p class="text-xs text-muted">Cargar el caso importado para ver los pasos.</p>';
+  }
+  document.getElementById('import-ok').classList.add('hidden');
 }
 
 function closeDetail() {
@@ -297,20 +323,34 @@ async function confirmImport() {
 
   const okEl = document.getElementById('import-ok');
   try {
-    // Obtener datos del caso original de la biblioteca
-    const libDetail = await apiFetch('/library/'+_selectedItem.id_library).catch(()=>null);
-    const tcId = _selectedItem.id_test_case || libDetail?.id_test_case;
+    // Obtener datos completos del caso original (con pasos)
+    const detailData = await apiFetch('/library/' + _selectedItem.id_library + '/detail').catch(() => null);
+    const tc = detailData?.testCase || { title: 'Caso desde repositorio', steps: [], description: '', preconditions: '' };
 
     // Crear el caso de prueba en el proyecto/requerimiento destino
-    await apiFetch('/projects/'+projId+'/test-cases', {method:'POST', body:JSON.stringify({
-      title:         '[Importado] ' + (_selectedItem.title || 'Caso desde repositorio'),
-      type:          'FUNCTIONAL',
-      description:   'Importado desde el repositorio. Categoría: ' + (_selectedItem.category||'General'),
-      preconditions: '',
+    const newCase = await apiFetch('/projects/'+projId+'/test-cases', {method:'POST', body:JSON.stringify({
+      title:         '[Importado] ' + (tc.title || 'Caso desde repositorio'),
+      type:          tc.type || 'FUNCTIONAL',
+      description:   tc.description || 'Importado desde el repositorio. Categoría: ' + (_selectedItem.category||'General'),
+      preconditions: tc.preconditions || '',
       status:        'DRAFT',
       id_requirement: reqId,
     })});
-    okEl.textContent = '¡Caso importado correctamente!';
+    const newTcId = newCase?.testCase?.id_test_case || newCase?.id_test_case;
+    if (!newTcId) throw new Error('No se pudo obtener el ID del nuevo caso');
+
+    // Copiar los pasos del caso original al nuevo caso
+    if (tc.steps && tc.steps.length) {
+      for (const step of tc.steps) {
+        await apiFetch('/projects/'+projId+'/test-cases/'+newTcId+'/steps', {method:'POST', body:JSON.stringify({
+          step_number:     step.step_number || step.stepNumber || 1,
+          action:          step.action || '',
+          expected_result: step.expected_result || step.expectedResult || '',
+        })}).catch(() => {}); // continuar aunque un paso falle
+      }
+    }
+
+    okEl.textContent = '¡Caso importado correctamente con ' + (tc.steps?.length||0) + ' pasos!';
     okEl.style.background = '#F0FDF4'; okEl.style.color = '#2D9B6F';
     okEl.classList.remove('hidden');
     setTimeout(()=>okEl.classList.add('hidden'), 3500);
